@@ -301,16 +301,27 @@
   /* backdrop: a navy sheet with a circular aperture (radius driven by JS during the exit) */
   .bt-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
   .bt-fx{position:absolute;inset:0;pointer-events:none;transition:opacity .5s ease-out}
-  .bt-grid{opacity:0;transition:opacity 1.1s ease-out;
-    background:repeating-linear-gradient(0deg,transparent 0 47px,rgba(160,163,184,.06) 47px 48px),
-               repeating-linear-gradient(90deg,transparent 0 47px,rgba(160,163,184,.06) 47px 48px);
-    -webkit-mask-image:radial-gradient(70% 70% at 50% 46%,#000 30%,transparent 100%);
-            mask-image:radial-gradient(70% 70% at 50% 46%,#000 30%,transparent 100%)}
-  .bt-orb{position:absolute;width:70vmax;aspect-ratio:1;border-radius:50%;opacity:0;transition:opacity 1.2s ease-out;will-change:transform}
+  .bt-orb{position:absolute;width:70vmax;aspect-ratio:1;border-radius:50%;opacity:0;transition:opacity 1.2s ease-out;display:none;filter:blur(30px)}
+  .boot.nogl .bt-orb{display:block}   /* fallback when WebGL is unavailable */
   .bt-orb.g{left:-28vmax;top:-30vmax;background:radial-gradient(circle,rgba(212,175,55,.12),transparent 62%)}
   .bt-orb.t{right:-28vmax;bottom:-30vmax;background:radial-gradient(circle,rgba(14,165,168,.12),transparent 62%)}
-  .bt-cv{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease-out}
-  .boot.p1 .bt-grid,.boot.p1 .bt-orb,.boot.p1 .bt-cv{opacity:1}
+  /* deep-space layers */
+  .bt-neb{position:absolute;left:-12px;top:-12px;width:calc(100% + 24px);height:calc(100% + 24px);opacity:0;transition:opacity 1.6s ease-out;will-change:transform}
+  .bt-stars{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease-out}
+  .bt-halo{position:absolute;width:calc(var(--dial) * 1.9);height:calc(var(--dial) * 1.9);transform:translate(-50%,-50%);opacity:0;
+    transition:opacity 1.4s ease-out;border-radius:50%;pointer-events:none;
+    background:radial-gradient(closest-side at 40% 50%,rgba(212,175,55,.10),rgba(212,175,55,0) 78%),
+               radial-gradient(closest-side at 60% 50%,rgba(14,165,168,.10),rgba(14,165,168,0) 78%)}
+  .bt-halo::after{content:"";position:absolute;left:50%;top:50%;width:calc(var(--dial) * .9);height:calc(var(--dial) * .9);
+    transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,.05);box-shadow:0 0 18px rgba(160,190,220,.04)}
+  .bt-grain{position:absolute;inset:-100%;opacity:.03;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:160px;animation:btgrain .6s steps(5) infinite}
+  @keyframes btgrain{0%{transform:translate(0,0)}20%{transform:translate(-37px,21px)}40%{transform:translate(23px,-49px)}60%{transform:translate(-61px,-13px)}80%{transform:translate(43px,57px)}100%{transform:translate(0,0)}}
+  .boot.p1 .bt-orb,.boot.p1 .bt-neb,.boot.p1 .bt-stars,.boot.p1 .bt-halo{opacity:1}
+  /* during the exit the background shares the aperture, so the hero shows through while the stars streak */
+  .bt-fx.ap{-webkit-mask-image:radial-gradient(circle at var(--apx) var(--apy),transparent var(--apr),#000 calc(var(--apr) + 1.5px));
+                  mask-image:radial-gradient(circle at var(--apx) var(--apy),transparent var(--apr),#000 calc(var(--apr) + 1.5px))}
 
   /* centre stage */
   .bt-stage{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
@@ -375,8 +386,6 @@
   .bt-c.tr{right:22px;top:22px;border-top-width:1px;border-right-width:1px}
   .bt-c.bl{left:22px;bottom:22px;border-bottom-width:1px;border-left-width:1px}
   .bt-c.br{right:22px;bottom:22px;border-bottom-width:1px;border-right-width:1px}
-  .bt-read{position:absolute;right:50px;top:24px;text-align:right;font-size:.66rem;letter-spacing:.14em;color:var(--muted);line-height:1.7}
-  .bt-read b{color:#fff;font-weight:500}
   .bt-log{position:absolute;left:50px;bottom:52px;font-size:.7rem;letter-spacing:.06em;line-height:1.9;color:var(--muted);white-space:pre}
   .bt-log .ln{display:block;min-height:1.9em}
   .bt-log .st{font-weight:700;color:var(--muted)}
@@ -397,7 +406,8 @@
   .boot.p5 .bt-bloom{animation:btbloom .8s ease-out forwards}
   @keyframes btbloom{0%{opacity:0;transform:scale(.3)}30%{opacity:.85}100%{opacity:0;transform:scale(1.15)}}
   .boot.p5 .bt-stage{transition:opacity .28s ease-in,transform .7s cubic-bezier(.5,0,.75,0);opacity:0;transform:translate(-50%,-50%) scale(1.35)}
-  .boot.p5 .bt-fx,.boot.p5 .bt-hud,.boot.p5 .bt-snd,.boot.p5 .bt-skip{opacity:0;transition:opacity .3s ease-in}
+  .boot.p5 .bt-hud,.boot.p5 .bt-snd,.boot.p5 .bt-skip{opacity:0;transition:opacity .3s ease-in}
+  .boot.p5 .bt-fx{opacity:0;transition:opacity .3s ease-in .38s}
   .bt-fly{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;pointer-events:none;opacity:0;
     background:radial-gradient(circle,#fff,#F2D27A 45%,rgba(242,210,122,0) 72%)}
   .boot.p5 .bt-fly{animation:btfly .75s cubic-bezier(.55,0,.8,.3) forwards}
@@ -409,7 +419,7 @@
   body.boot-on .hero .kicker,body.boot-on .hero h1{opacity:0;transform:translateY(18px)}
 
   /* reduced motion: static logo + number, then a simple fade */
-  .boot.rm .bt-dialwrap,.boot.rm .bt-word,.boot.rm .bt-cv,.boot.rm .bt-orb,.boot.rm .bt-log,.boot.rm .bt-skip,.boot.rm .bt-bloom,.boot.rm .bt-fly{display:none}
+  .boot.rm .bt-dialwrap,.boot.rm .bt-word,.boot.rm .bt-log,.boot.rm .bt-skip,.boot.rm .bt-bloom,.boot.rm .bt-fly{display:none}
   .bt-static{display:none;width:min(260px,58vw);height:auto;margin-bottom:22px}
   .boot.rm .bt-static{display:block}
   .boot.rm .bt-bg{background:var(--bg)}
@@ -420,7 +430,6 @@
   @media (max-width:640px){
     .boot{--dial:min(86vw,46vh)}
     .bt-stage{top:40%}
-    .bt-read{right:40px;font-size:.58rem}
     .bt-log{position:static;margin:16px auto 0;font-size:.62rem;line-height:1.8;width:max-content;max-width:88vw}
     .bt-skip{bottom:48px}
     .bt-c.tl,.bt-c.tr{top:16px}.bt-c.bl,.bt-c.br{bottom:16px}.bt-c.tl,.bt-c.bl{left:16px}.bt-c.tr,.bt-c.br{right:16px}
@@ -1267,15 +1276,18 @@
   <div class="boot" id="boot" role="status" aria-live="polite" aria-label="Causvia is initializing">
     <svg class="bt-bg" aria-hidden="true">
       <defs><mask id="btAperture" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
-        <rect width="100%" height="100%" fill="#fff"/><circle id="btApHole" cx="50%" cy="46%" r="0" fill="#000"/></mask></defs>
-      <rect width="100%" height="100%" fill="#0B1220" mask="url(#btAperture)"/>
+        <rect width="100%" height="100%" fill="#fff"/><circle id="btApHole" cx="50%" cy="46%" r="0" fill="#000"/></mask>
+        <radialGradient id="btBaseGrad" gradientUnits="userSpaceOnUse" cx="720" cy="414" r="900"><stop offset="0" stop-color="#101A2E"/><stop offset=".5" stop-color="#0B1220"/><stop offset="1" stop-color="#060A14"/></radialGradient></defs>
+      <rect width="100%" height="100%" fill="url(#btBaseGrad)" mask="url(#btAperture)"/>
       <circle id="btApGold" cx="50%" cy="46%" r="0" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0"/>
       <circle id="btApTeal" cx="50%" cy="46%" r="0" fill="none" stroke="#0EA5A8" stroke-width="2" opacity="0"/>
     </svg>
-    <div class="bt-fx bt-par" id="btFx" aria-hidden="true">
-      <div class="bt-fx bt-grid"></div>
+    <div class="bt-fx" id="btFx" aria-hidden="true">
       <span class="bt-orb g"></span><span class="bt-orb t"></span>
-      <canvas class="bt-cv" id="btCv"></canvas>
+      <canvas class="bt-neb" id="btNeb"></canvas>
+      <canvas class="bt-stars" id="btStars"></canvas>
+      <span class="bt-halo" id="btHalo"></span>
+      <span class="bt-grain"></span>
     </div>
     <div class="bt-bloom" aria-hidden="true"></div>
 
@@ -1323,7 +1335,6 @@
 
     <div class="bt-hud" aria-hidden="true">
       <span class="bt-c tl"></span><span class="bt-c tr"></span><span class="bt-c bl"></span><span class="bt-c br"></span>
-      <div class="bt-read"><b>CAUSVIA SYSTEM · v1.0</b><br><span id="btClock">--:--:-- UTC</span></div>
       <div class="bt-log" id="btLog"></div>
     </div>
     <div class="bt-skip" id="btSkip" aria-hidden="true">Press Enter or click to skip</div>
@@ -1830,11 +1841,6 @@
       srcs.forEach(function(s){ var im=new Image(); im.onload=im.onerror=function(){ if(++n===srcs.length) __bootMark("images"); }; im.src=s; }); })();
     if(window.THREE) __bootMark("three");
 
-    /* ---- UTC clock ---- */
-    function p2(n){ return ("0"+n).slice(-2); }
-    function clock(){ var d=new Date(); $("btClock").textContent=p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+" UTC"; }
-    clock(); var clk=setInterval(clock,1000);
-
     /* ---- sound: Web Audio only, off until the visitor asks ---- */
     var bsnd=false, humG=null, humO=[];
     function startSound(){ if(bsnd) return; if(!initAudio()) return; if(actx.state==="suspended") actx.resume(); bsnd=true;
@@ -1864,14 +1870,125 @@
     /* ---- finishing (shared by every path) ---- */
     function announceReady(){ annc.textContent="Causvia is ready"; }
     function releasePage(){ document.body.classList.remove("boot-on"); document.body.style.overflow=""; }
-    function cleanup(){ if(gone) return; gone=true; cancelAnimationFrame(rafB); clearInterval(clk); removeEventListener("keydown",onKey);
+    function cleanup(){ if(gone) return; gone=true; cancelAnimationFrame(rafB); BG.destroy(); removeEventListener("keydown",onKey);
       releasePage(); try{ sessionStorage.setItem("cvBooted","1"); }catch(e){}
       boot.classList.add("gone"); setTimeout(function(){ if(boot.parentNode) boot.parentNode.removeChild(boot); },50); }
     setTimeout(function(){ if(!gone){ announceReady(); cleanup(); } },9000);   // never get stuck
 
+    /* ================= deep-space background =================
+       back → front: base gradient (SVG) · WebGL nebula at reduced resolution · 3-layer starfield (2D) · halo · film grain */
+    var BG=(function(){
+      var fxEl=$("btFx"), neb=$("btNeb"), stc=$("btStars"), halo=$("btHalo"), baseG=$("btBaseGrad");
+      var sctx=stc.getContext("2d"), SDPR=Math.min(devicePixelRatio||1,1.5), W=0, H=0, C=[0,0], R=1, stars=[], lastBg=0, nebFrame=0;
+      var sized=false, gl=null, prog=null, buf=null, uRes, uT, uC, NSCALE=MOB?.33:.5, OCT=MOB?3:5, tB=performance.now(), dead=false;
+      // [count, depth 0..1, outward drift speed, mouse-parallax px] — far, mid, near
+      var LAY=MOB?[[50,.3,.010,3],[28,.62,.017,6],[12,1,.027,12]]:[[140,.3,.010,3],[75,.62,.017,6],[35,1,.027,12]];
+      var FS=[
+        "precision mediump float;",
+        "#define OCT "+OCT,
+        "uniform vec2 uRes; uniform float uT; uniform vec2 uC;",
+        // 2D simplex noise (Ashima Arts / Stefan Gustavson, MIT)
+        "vec3 permute(vec3 x){return mod(((x*34.0)+1.0)*x,289.0);}",
+        "float snoise(vec2 v){const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);",
+        " vec2 i=floor(v+dot(v,C.yy)); vec2 x0=v-i+dot(i,C.xx); vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);",
+        " vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1; i=mod(i,289.0);",
+        " vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));",
+        " vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0); m=m*m; m=m*m;",
+        " vec3 x=2.0*fract(p*C.www)-1.0; vec3 h=abs(x)-0.5; vec3 ox=floor(x+0.5); vec3 a0=x-ox;",
+        " m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);",
+        " vec3 g; g.x=a0.x*x0.x+h.x*x0.y; g.yz=a0.yz*x12.xz+h.yz*x12.yw; return 130.0*dot(m,g);}",
+        "float fbm(vec2 p){float v=0.0,a=0.5; for(int i=0;i<OCT;i++){v+=a*snoise(p); p=p*1.92+vec2(17.3,9.1); a*=0.42;} return v;}",
+        "void main(){",
+        " vec2 uv=gl_FragCoord.xy/uRes; float asp=uRes.x/uRes.y; vec2 p=vec2(uv.x*asp,uv.y);",
+        " float t=uT*0.011;",
+        " vec2 q=vec2(fbm(p*0.85+vec2(t,-t*0.7)),fbm(p*0.85+vec2(-t*0.6,t)+5.2));",
+        " float d=smoothstep(-0.55,0.75,fbm(p*0.7+q*0.6+vec2(t*0.4,t*0.25)));",
+        " vec2 c=vec2(uC.x*asp,uC.y);",
+        " float g=smoothstep(1.15,0.05,distance(p,c+vec2(-0.55*asp*0.62,0.42)));",   // gold, upper left
+        " float k=smoothstep(1.15,0.05,distance(p,c+vec2(0.55*asp*0.62,-0.42)));",   // teal, lower right
+        " vec3 col=mix(vec3(0.055,0.647,0.659),vec3(0.831,0.686,0.216),clamp(g/(g+k+0.0001),0.0,1.0));",
+        " float a=clamp((0.35+0.65*d)*(0.62*g+0.62*k+0.07)*0.17,0.0,0.11);",
+        " gl_FragColor=vec4(col*a,a);",
+        "}"].join("\n");
+
+      function glInit(){
+        try{ gl=neb.getContext("webgl",{alpha:true,premultipliedAlpha:true,antialias:false,depth:false,stencil:false,powerPreference:"low-power"}); }catch(e){ gl=null; }
+        if(!gl) return false;
+        function sh(type,src){ var s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return gl.getShaderParameter(s,gl.COMPILE_STATUS)?s:null; }
+        var v=sh(gl.VERTEX_SHADER,"attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}"), f=sh(gl.FRAGMENT_SHADER,FS);
+        if(!v||!f){ gl=null; return false; }
+        prog=gl.createProgram(); gl.attachShader(prog,v); gl.attachShader(prog,f); gl.linkProgram(prog);
+        if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){ gl=null; return false; }
+        gl.useProgram(prog);
+        buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+        var loc=gl.getAttribLocation(prog,"p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+        uRes=gl.getUniformLocation(prog,"uRes"); uT=gl.getUniformLocation(prog,"uT"); uC=gl.getUniformLocation(prog,"uC");
+        gl.clearColor(0,0,0,0); return true;
+      }
+      function centre(){ var el=$("btDialWrap"), r=el.getBoundingClientRect();
+        if(!r.width){ el=$("btStage"); r=el.getBoundingClientRect(); }
+        return [r.left+r.width/2, r.top+r.height/2]; }
+      function size(){
+        W=innerWidth; H=innerHeight; C=centre(); R=Math.hypot(Math.max(C[0],W-C[0]),Math.max(C[1],H-C[1]));
+        stc.width=Math.round(W*SDPR); stc.height=Math.round(H*SDPR); sctx.setTransform(SDPR,0,0,SDPR,0,0);
+        baseG.setAttribute("cx",C[0]); baseG.setAttribute("cy",C[1]); baseG.setAttribute("r",R);
+        halo.style.left=C[0]+"px"; halo.style.top=C[1]+"px";
+        if(gl){ neb.width=Math.max(2,Math.round(W*NSCALE)); neb.height=Math.max(2,Math.round(H*NSCALE)); gl.viewport(0,0,neb.width,neb.height); nebFrame=0; }
+      }
+      function spawn(s,init){ s.a=Math.random()*6.283; s.ca=Math.cos(s.a); s.sa=Math.sin(s.a); s.d=init?Math.sqrt(Math.random())*R:R*(.05+Math.random()*.25); s.age=init?1:0; }
+      function makeStars(){ stars=[];
+        LAY.forEach(function(L){ for(var i=0;i<L[0];i++){ var tone=Math.random(), s={z:L[1],sp:L[2]*(.7+Math.random()*.6),px:L[3],
+          r:(.25+Math.random()*.3)+L[1]*.55, b:.35+Math.random()*.4+L[1]*.2, tw:.6+Math.random()*1.6, ph:Math.random()*6.283,
+          c:tone<.08?1:tone<.15?2:0}; spawn(s,true); stars.push(s); } }); }
+      function drawNeb(sec){ if(!gl) return; gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.uniform2f(uRes,neb.width,neb.height); gl.uniform1f(uT,sec); gl.uniform2f(uC,C[0]/W,1-C[1]/H); gl.drawArrays(gl.TRIANGLES,0,3); }
+      // stars are kept in three colour groups so each frame sets fillStyle 3 times and only globalAlpha per star
+      var COLS=["#E8ECF6","#E8C96E","#5ED6D8"];
+      function drawStars(dt,boost,streak,ox,oy,now){
+        sctx.clearRect(0,0,W,H); sctx.lineCap="round";
+        var ts=now*.001, sr=1/R;
+        for(var g=0;g<3;g++){
+          if(streak>0) sctx.strokeStyle=COLS[g]; else sctx.fillStyle=COLS[g];
+          for(var i=0;i<stars.length;i++){ var s=stars[i]; if(s.c!==g) continue;
+            if(dt){ s.d+= (s.d*s.sp + 2*s.z)*(dt*.001)*boost; if(s.age<1) s.age=Math.min(1,s.age+dt/900); }
+            var x=C[0]+s.ca*s.d-ox*s.px, y=C[1]+s.sa*s.d-oy*s.px;
+            if(x<-20||x>W+20||y<-20||y>H+20){ spawn(s,false); continue; }
+            var q=s.d*sr; if(q>1) q=1;
+            var rr=s.r*(.75+.5*q), al=s.b*s.age*(.72+.28*Math.sin(ts*s.tw+s.ph));
+            sctx.globalAlpha=al;
+            if(streak>0){ var len=streak*(3+s.z*15)*(.35+q); sctx.lineWidth=rr*1.6;
+              sctx.beginPath(); sctx.moveTo(x,y); sctx.lineTo(x-s.ca*len,y-s.sa*len); sctx.stroke(); }
+            else if(rr<.7){ sctx.fillRect(x-rr,y-rr,rr*2,rr*2); }
+            else { sctx.beginPath(); sctx.arc(x,y,rr,0,6.283); sctx.fill(); }
+          }
+        }
+        sctx.globalAlpha=1;
+      }
+      var ok=glInit(); if(!ok) boot.classList.add("nogl");
+      size(); makeStars(); addEventListener("resize",size);
+      return {
+        /* one frame, capped at 60fps; prog 0..100; exitMs = ms since the aperture started opening (-1 before) */
+        frame:function(now,prog,exitMs,sx,sy){
+          if(dead||document.hidden) return;
+          if(!sized){ sized=true; size(); }   // re-measure once the stage layout has settled (mobile log moves under the dial)
+          if(now-lastBg<15.5) return; var dt=lastBg?Math.min(50,now-lastBg):16; lastBg=now;
+          var streak = exitMs<0 ? 0 : exitMs<120 ? exitMs/120 : exitMs<400 ? 1 : Math.max(0,1-(exitMs-400)/250);
+          drawStars(dt, 1+prog/100*.7+streak*12, streak, sx, sy, now);
+          if((nebFrame++ & 1)===0) drawNeb((now-tB)/1000);           // the haze drifts so slowly that 30fps is plenty
+          neb.style.transform="translate3d("+(-sx*4).toFixed(2)+"px,"+(-sy*4).toFixed(2)+"px,0)";
+          halo.style.transform="translate(-50%,-50%) translate3d("+(sx*5).toFixed(2)+"px,"+(sy*5).toFixed(2)+"px,0)";
+        },
+        still:function(){ size(); drawNeb(37); drawStars(0,0,0,0,0,0); },
+        aperture:function(cx,cy,r){ fxEl.style.setProperty("--apx",cx+"px"); fxEl.style.setProperty("--apy",cy+"px"); fxEl.style.setProperty("--apr",r+"px"); fxEl.classList.add("ap"); },
+        destroy:function(){ if(dead) return; dead=true; removeEventListener("resize",size);
+          if(gl){ try{ gl.deleteBuffer(buf); gl.deleteProgram(prog); var lc=gl.getExtension("WEBGL_lose_context"); if(lc) lc.loseContext(); }catch(e){} gl=null; }
+          neb.width=neb.height=1; stc.width=stc.height=1; stars=[]; }
+      };
+    })();
+
     /* ================= reduced motion: static logo, number, 400ms fade ================= */
     if(RM){
-      boot.classList.add("rm","p1");
+      boot.classList.add("rm","p1"); BG.still();   // still nebula frame, still stars, no grain motion
       (function step(){ var t=performance.now()-t0, v=t>6000?100:real;
         $("btPct").innerHTML=Math.round(v)+"<small>%</small>";
         if(v>=100 && t>500){ boot.classList.add("p5"); announceReady(); releasePage(); setTimeout(cleanup,420); return; }
@@ -1934,14 +2051,6 @@
       var row=document.createElement("span"); row.className="ln"; logEl.appendChild(row);
       return {row:row,txt:txt,val:l[1],cls:l[2],start:650+i*300,last:"",ticked:false}; });
 
-    /* ---- particles (one 2D canvas) ---- */
-    var cvB=$("btCv"), cx2=cvB.getContext("2d"), DPRB=Math.min(devicePixelRatio||1,1.5), PW=0, PH=0, parts=[];
-    function sizeCv(){ PW=innerWidth; PH=innerHeight; cvB.width=PW*DPRB; cvB.height=PH*DPRB; cx2.setTransform(DPRB,0,0,DPRB,0,0); }
-    sizeCv(); addEventListener("resize",sizeCv);
-    for(var k=0;k<(MOB?50:120);k++){ var tone=Math.random();
-      parts.push({x:Math.random()*PW,y:Math.random()*PH,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12-.03,r:.5+Math.random()*1.2,
-        a:.1+Math.random()*.2,c:tone<.15?"212,175,55":tone<.3?"14,165,168":"220,226,240",z:.4+Math.random()*.9}); }
-
     /* ---- parallax (mouse, or gyroscope on phones) ---- */
     var mx=0,my=0,sx=0,sy=0, fx=$("btFx"), dw=$("btDialWrap");
     addEventListener("mousemove",function(e){ mx=e.clientX/innerWidth*2-1; my=e.clientY/innerHeight*2-1; },{passive:true});
@@ -1980,13 +2089,7 @@
       var tt = RET ? t : (shift<0 ? Math.min(t,600) : t-shift);
       // parallax
       sx+=(mx-sx)*.06; sy+=(my-sy)*.06;
-      fx.style.transform="translate3d("+(-sx*8).toFixed(2)+"px,"+(-sy*8).toFixed(2)+"px,0)";
       dw.style.transform="translate3d("+(sx*5).toFixed(2)+"px,"+(sy*5).toFixed(2)+"px,0)";
-      // particles
-      cx2.clearRect(0,0,PW,PH);
-      for(var i=0;i<parts.length;i++){ var p=parts[i]; p.x+=p.vx*dt/16.7; p.y+=p.vy*dt/16.7;
-        if(p.x<-5) p.x=PW+5; else if(p.x>PW+5) p.x=-5; if(p.y<-5) p.y=PH+5; else if(p.y>PH+5) p.y=-5;
-        cx2.fillStyle="rgba("+p.c+","+p.a+")"; cx2.beginPath(); cx2.arc(p.x-sx*6*p.z,p.y-sy*6*p.z,p.r,0,6.283); cx2.fill(); }
 
       // ---- progress (real, eased, never faster than the sequence) ----
       var lim = RET ? cl(t/500)*100 : cl((tt-250)/1750)*100;
@@ -2044,9 +2147,11 @@
 
       // ---- exit: aperture opens from the dial ring, with a chromatic edge ----
       if(E0>=0){ var ek=cl((t-E0)/(RET?450:650)), ap=apR0+(apMax-apR0)*eio(ek);
-        apHole.setAttribute("r",ap.toFixed(1)); apG.setAttribute("r",(ap+3).toFixed(1)); apT.setAttribute("r",(ap+7).toFixed(1));
+        apHole.setAttribute("r",ap.toFixed(1)); BG.aperture(apC[0],apC[1],ap); apG.setAttribute("r",(ap+3).toFixed(1)); apT.setAttribute("r",(ap+7).toFixed(1));
         var ce=(ek<.85?.55:.55*(1-(ek-.85)/.15)).toFixed(2); apG.setAttribute("opacity",ce); apT.setAttribute("opacity",ce);
         if(ek>=1){ cleanup(); return; } }
+      // deep-space background: drift quickens with progress, stars streak as the aperture opens
+      BG.frame(now, shown, E0>=0 ? t-E0 : -1, sx, sy);
       rafB=requestAnimationFrame(frame);
     }
     rafB=requestAnimationFrame(frame);
