@@ -1,0 +1,91 @@
+/* ============ FinalCta — giant closing display CTA ============ */
+
+.sz-finalcta{
+  text-align:center;
+  overflow:hidden; /* clip decorative glow, never the layout */
+}
+
+.sz-finalcta .fc-inner{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:26px;
+  padding-block:clamp(16px,6vw,64px);
+}
+
+/* faint red bloom behind the headline — pure decoration */
+.sz-finalcta .fc-inner::before{
+  content:'';
+  position:absolute;
+  top:0; left:50%;
+  transform:translateX(-50%);
+  width:min(720px,90vw);
+  height:min(360px,50vw);
+  background:radial-gradient(ellipse at center, var(--primary-dimmed), transparent 70%);
+  opacity:.18;
+  pointer-events:none;
+}
+
+.sz-finalcta .fc-title{
+  position:relative;
+  font-size:clamp(3rem,10vw,7rem);
+  line-height:1.02;
+  max-width:16ch;
+}
+
+.sz-finalcta .fc-hot{ color:var(--primary); }
+
+.sz-finalcta .fc-body{
+  position:relative;
+  color:var(--card-foreground);
+  max-width:52ch;
+  font-size:clamp(1rem,1.4vw,1.125rem);
+}
+
+.sz-finalcta .fc-actions{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:6px;
+}
+
+.sz-finalcta .fc-btn{
+  padding:16px 30px;
+  font-size:14px;
+}
+
+.sz-finalcta .fc-chip{
+  position:relative;
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  font-size:11px;
+  letter-spacing:.12em;
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:7px 14px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  white-space:normal;
+}
+.sz-finalcta .fc-chip::before{
+  content:'';
+  flex:none;
+  width:6px; height:6px;
+  background:var(--warning);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:480px){
+  .sz-finalcta .fc-inner{ gap:22px; }
+  .sz-finalcta .fc-chip{ letter-spacing:.08em; }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .sz-finalcta .fc-btn:hover{ transform:none; }
+}

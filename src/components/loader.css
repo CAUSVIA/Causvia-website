@@ -1,0 +1,56 @@
+/* ============ Loader — full-screen boot overlay ============ */
+
+.sz-loader{
+  position:fixed; inset:0; z-index:var(--z-loader);
+  background:var(--card-dark);
+  display:flex; align-items:center; justify-content:center;
+  padding-inline:var(--sides);
+  opacity:1; transition:opacity .4s ease;
+}
+.sz-loader.out{ opacity:0; pointer-events:none; }
+
+.sz-loader .szl-col{
+  display:flex; flex-direction:column; align-items:center;
+  text-align:center; gap:14px;
+  width:min(420px,100%);
+}
+
+/* small red square mark */
+.sz-loader .szl-mark{
+  width:12px; height:12px; background:var(--primary);
+  animation:pulse-dot 1.2s ease-in-out infinite;
+}
+
+/* mono system label */
+.sz-loader .szl-sys{
+  text-transform:uppercase; font-size:11px; letter-spacing:.14em;
+  color:var(--muted);
+}
+
+/* display-font boot line (.display utility supplies font + uppercase) */
+.sz-loader .szl-line{
+  font-size:clamp(1.05rem,3.4vw,1.6rem);
+  color:var(--foreground); letter-spacing:.04em;
+}
+
+/* ticking percent readout */
+.sz-loader .szl-pct{
+  font-size:12px; letter-spacing:.1em; color:var(--secondary);
+  font-variant-numeric:tabular-nums; margin-top:6px;
+}
+
+/* thin progress bar — red fill on border track */
+.sz-loader .szl-bar{
+  width:100%; max-width:320px; height:2px;
+  background:var(--border); overflow:hidden; position:relative;
+}
+.sz-loader .szl-fill{
+  display:block; height:100%; width:0%;
+  background:var(--primary);
+}
+
+/* reduced motion: JS skips the boot entirely; belt-and-braces here too */
+@media (prefers-reduced-motion: reduce){
+  .sz-loader{ transition:none; }
+  .sz-loader .szl-mark{ animation:none; }
+}

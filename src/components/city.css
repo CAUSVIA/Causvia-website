@@ -1,0 +1,99 @@
+/* ---------- city scene ---------- */
+.sz-city .city-stage{
+  background:var(--card-dark);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:clamp(12px,2.5vw,28px);
+  overflow:hidden;
+  position:relative;
+}
+.sz-city .city-svg{ width:100%; height:auto; display:block; }
+
+/* backdrop */
+.sz-city .grid line{ stroke:var(--border); stroke-width:1; }
+.sz-city .ground{ stroke:var(--border-solid); stroke-width:1.5; }
+
+/* scan beam sweeping the skyline */
+.sz-city .scan{
+  fill:var(--primary);
+  opacity:.05;
+  animation:sz-city-scan 9s linear infinite;
+}
+@keyframes sz-city-scan{ from{transform:translateX(0)} to{transform:translateX(1360px)} }
+
+/* buildings */
+.sz-city .bld{ cursor:pointer; outline:none; }
+.sz-city .bld .body{
+  fill:var(--card-secondary);
+  stroke:var(--border-solid);
+  stroke-width:1;
+  transition:fill .3s ease, stroke .3s ease;
+}
+.sz-city .bld .roof{ fill:var(--accent); transition:fill .3s ease; }
+.sz-city .bld .win{ fill:var(--accent); transition:fill .3s ease; }
+.sz-city .bld .win.lit{ fill:color-mix(in srgb, var(--secondary) 55%, transparent); }
+
+.sz-city .bld.online .body{ stroke:var(--border-solid); }
+.sz-city .bld.online .win.lit{ fill:color-mix(in srgb, var(--secondary-accent) 75%, transparent); }
+
+.sz-city .bld.hot .body{ fill:var(--card); stroke:var(--secondary); }
+.sz-city .bld.online.hot .body{ stroke:var(--primary); }
+.sz-city .bld.online.hot .win.lit{ fill:color-mix(in srgb, var(--primary) 70%, transparent); }
+.sz-city .bld:focus-visible .body{ stroke:var(--primary); stroke-width:2; }
+
+/* denied flash for locked buildings */
+.sz-city .bld.denied .body{ stroke:var(--error); animation:hud-flicker .5s var(--ease-glitch) 1; }
+.sz-city .bld.denied .hud-bracket path{ stroke:var(--warning); }
+
+/* antenna + beacon */
+.sz-city .antenna{ stroke:var(--border-solid); stroke-width:2; }
+.sz-city .beacon{ fill:var(--primary); }
+.sz-city .beacon-pulse{
+  fill:none; stroke:var(--primary); stroke-width:2;
+  transform-origin:center; transform-box:fill-box;
+  animation:badge-pulse 1.6s ease-out infinite;
+}
+
+/* HUD targeting */
+.sz-city .hud-bracket path{
+  fill:none; stroke:var(--secondary); stroke-width:2;
+  animation:hud-wipe .28s var(--ease-out-expo) 1;
+}
+.sz-city .bld.online .hud-bracket path{ stroke:var(--primary); }
+
+/* HUD readout — fixed-size HTML chip pinned to the stage corner */
+.sz-city .city-readout{
+  position:absolute; top:clamp(14px,2.5vw,28px); left:clamp(14px,2.5vw,28px);
+  z-index:1; pointer-events:none;
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted);
+  background:color-mix(in srgb, var(--card-dark) 85%, transparent);
+  border:1px solid var(--border-solid); border-radius:3px;
+  padding:6px 12px;
+  animation:hud-flicker .4s var(--ease-glitch) 1;
+}
+.sz-city .city-readout i{ width:7px; height:7px; background:var(--accent); flex:none; }
+.sz-city .city-readout.online{ color:var(--foreground); border-color:var(--primary); }
+.sz-city .city-readout.online i{ background:var(--primary); }
+.sz-city .city-readout.denied{ color:var(--warning); }
+.sz-city .city-readout.denied i{ background:var(--warning); }
+
+/* legend */
+.sz-city .city-legend{
+  display:flex; gap:22px; justify-content:flex-end;
+  margin-top:10px; font-size:11px; letter-spacing:.1em; color:var(--muted);
+  text-transform:uppercase;
+}
+.sz-city .lg-item{ display:inline-flex; align-items:center; gap:8px; }
+.sz-city .lg-item i{ width:8px; height:8px; background:var(--accent); display:inline-block; }
+.sz-city .lg-item.on i{ background:var(--primary); }
+
+@media (max-width:640px){
+  .sz-city .city-legend{ justify-content:center; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .sz-city .scan,.sz-city .beacon-pulse{ animation:none; display:none; }
+  .sz-city .hud-bracket path,.sz-city .city-readout,.sz-city .bld.denied .body{ animation:none; }
+}

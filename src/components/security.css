@@ -1,0 +1,143 @@
+/* ============ SECURITY — [05] SENTINEL ============ */
+
+.sz-security{
+  background:var(--card-dark);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  overflow:hidden; /* marquee safety — no horizontal overflow ever */
+}
+
+/* ---------- centered section head ---------- */
+.sz-security .szs-head{
+  margin-inline:auto;
+  text-align:center;
+}
+
+/* ---------- scan marquee ---------- */
+.sz-security .szs-marquee{
+  overflow:hidden;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding-block:16px;
+  margin-bottom:clamp(40px, 6vw, 72px);
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.sz-security .szs-track{
+  display:flex;
+  width:max-content;
+  animation:marquee 30s linear infinite; /* keyframes shared from styles.css */
+}
+.sz-security .szs-marquee:hover .szs-track{
+  animation-play-state:paused;
+}
+.sz-security .szs-list{
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:clamp(28px, 4vw, 52px);
+  padding-right:clamp(28px, 4vw, 52px); /* = gap, so the -50% loop is seamless */
+}
+.sz-security .szs-badge{
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.12em;
+  color:var(--secondary);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  white-space:nowrap;
+}
+.sz-security .szs-sq{ width:8px; height:8px; flex:none; }
+.sz-security .szs-sq-0{ background:var(--primary); }
+.sz-security .szs-sq-1{ background:var(--success); }
+.sz-security .szs-sq-2{ background:var(--warning); }
+.sz-security .szs-sq-3{ background:var(--secondary); }
+
+/* static fallback when prefers-reduced-motion (reduce flag from data.js) */
+.sz-security .szs-marquee.szs-static{
+  -webkit-mask-image:none;
+  mask-image:none;
+}
+.sz-security .szs-static .szs-list{
+  flex-wrap:wrap;
+  justify-content:center;
+  padding-right:0;
+  padding-inline:var(--sides);
+  row-gap:14px;
+}
+@media (prefers-reduced-motion: reduce){
+  .sz-security .szs-track{ animation:none; }
+}
+
+/* ---------- cards ---------- */
+.sz-security .szs-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:var(--grid-gap);
+}
+@media (min-width:900px){
+  .sz-security .szs-grid{ grid-template-columns:repeat(3, 1fr); }
+}
+
+.sz-security .szs-card{
+  background:var(--card-secondary);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:clamp(20px, 3vw, 28px);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  transition:border-color .16s ease, transform .16s ease;
+}
+.sz-security .szs-card > .tk{ position:absolute; inset:0; pointer-events:none; }
+.sz-security .szs-card:hover{
+  border-color:var(--border-solid);
+  transform:translateY(-2px);
+}
+
+.sz-security .szs-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.sz-security .szs-idx{
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.12em;
+  color:var(--primary);
+}
+.sz-security .szs-glyph{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+  line-height:1;
+  color:var(--primary);
+  background:color-mix(in srgb, var(--primary) 10%, transparent);
+  border:1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+  border-radius:var(--radius);
+}
+.sz-security .szs-title{
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:1.1rem;
+  line-height:1.3;
+  color:var(--foreground);
+}
+.sz-security .szs-body{
+  color:var(--card-foreground);
+  font-size:.925rem;
+  line-height:1.6;
+}
+.sz-security .szs-det{
+  margin-top:auto;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.1em;
+  color:var(--muted);
+}

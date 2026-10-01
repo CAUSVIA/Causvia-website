@@ -1,0 +1,148 @@
+/* ============ HERO — .sz-hero ============ */
+
+.sz-hero{
+  /* first section: clear the fixed header */
+  padding-top: calc(var(--header-h) + clamp(56px, 9vw, 110px));
+}
+
+/* ---------- (a) top block ---------- */
+.sz-hero .sz-hero-top{ max-width: 900px; }
+
+.sz-hero .sz-hero-kicker{
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: var(--muted);
+}
+.sz-hero .sz-hero-kicker i{
+  font-style: normal;
+  color: var(--primary);
+}
+
+.sz-hero h1{
+  font-size: clamp(2.2rem, 1rem + 5.6vw, 4.6rem);
+  margin-top: 18px;
+}
+
+.sz-hero .sz-hero-sub{
+  color: var(--card-foreground);
+  max-width: 62ch;
+  margin-top: 20px;
+}
+
+.sz-hero .sz-hero-cta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+/* ---------- (b) tab console ---------- */
+.sz-hero .sz-hero-console{
+  margin-top: clamp(40px, 6vw, 64px);
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* tab rail */
+.sz-hero .sz-hero-tabs{
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sz-hero .sz-hero-tabs::-webkit-scrollbar{ display: none; }
+
+.sz-hero .sz-hero-tab{
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .1em;
+  color: var(--muted);
+  padding: 14px 18px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* underline sits on the rail border */
+  transition: color .16s ease, border-color .16s ease;
+}
+.sz-hero .sz-hero-tab:hover{ color: var(--secondary-accent); }
+.sz-hero .sz-hero-tab.on{
+  color: var(--foreground);
+  border-bottom-color: var(--primary);
+}
+.sz-hero .sz-hero-tab.on .idx{ color: var(--primary); }
+
+/* terminal readout */
+.sz-hero .sz-hero-readout{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 18px 10px;
+  min-height: 148px; /* keeps panel height stable across tabs */
+}
+
+.sz-hero .sz-hero-row{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  letter-spacing: .02em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  animation: rise-in .45s ease both;
+}
+.sz-hero .sz-hero-row:nth-child(1){ animation-delay: .05s; }
+.sz-hero .sz-hero-row:nth-child(2){ animation-delay: .17s; }
+.sz-hero .sz-hero-row:nth-child(3){ animation-delay: .29s; }
+.sz-hero .sz-hero-row:nth-child(4){ animation-delay: .41s; }
+.sz-hero .sz-hero-row:nth-child(5){ animation-delay: .53s; }
+
+.sz-hero .sz-hero-row .lbl{ color: var(--secondary-accent); }
+.sz-hero .sz-hero-row .arw{ color: var(--muted); }
+.sz-hero .sz-hero-row .val{
+  color: var(--muted-foreground);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.sz-hero .sz-hero-row .ok{
+  color: var(--success);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* panel footer caption */
+.sz-hero .sz-hero-cap{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding: 12px 18px;
+  animation: rise-in .45s ease both;
+  animation-delay: .38s;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 640px){
+  .sz-hero .sz-hero-readout{
+    min-height: 236px; /* rows wrap on narrow screens; keep tabs from jumping */
+    padding-inline: 14px;
+  }
+  .sz-hero .sz-hero-cap{ padding-inline: 14px; }
+  .sz-hero .sz-hero-tab{ padding: 12px 14px 10px; }
+}
+
+/* JS auto-cycle is already disabled via `reduce`; the global reduced-motion
+   rule in styles.css neutralises the row/caption animations. Belt-and-braces: */
+@media (prefers-reduced-motion: reduce){
+  .sz-hero .sz-hero-row,
+  .sz-hero .sz-hero-cap{ animation: none; }
+}
