@@ -294,24 +294,137 @@
   .feat-row .fn{font-family:var(--head);font-weight:500;font-size:.92rem}
   .feat-row .fo{margin-left:auto;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 
-  /* ================= boot loader ================= */
-  .boot{position:fixed;inset:0;z-index:100000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;
-    cursor:pointer;transition:opacity .6s ease;padding:24px}
-  .boot.done{opacity:0;pointer-events:none}
-  .boot .bt-orbs{position:absolute;inset:0;pointer-events:none}
-  .boot .bt-orbs::before{content:"";position:absolute;left:50%;top:44%;width:min(620px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
-    background:radial-gradient(circle at 40% 45%,rgba(212,175,55,.16),transparent 55%),radial-gradient(circle at 62% 55%,rgba(14,165,168,.16),transparent 55%)}
-  .boot .bt-logo{position:relative;width:min(260px,58vw);height:auto;display:block;margin-bottom:34px}
-  .boot .bt-title{position:relative;font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-  .boot .bt-title b{color:#fff;font-weight:500}
-  .boot .bt-row{position:relative;display:flex;align-items:center;gap:16px}
-  .boot .bt-track{width:min(320px,60vw);height:2px;background:var(--border);border-radius:2px;overflow:hidden}
-  .boot .bt-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--teal))}
-  .boot .bt-pct{font-family:var(--mono);font-size:.9rem;font-weight:500;color:#fff;min-width:3.6em;text-align:right}
-  .boot .bt-snd{position:absolute;bottom:9vh;left:0;right:0;text-align:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:10px}
-  .boot .bt-snd svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .boot .bt-snd.on{color:var(--gold)}
+  /* ================= boot loader: Causvia power-up sequence ================= */
+  .boot{position:fixed;inset:0;z-index:100000;overflow:hidden;color:#fff;font-family:var(--mono);cursor:pointer;
+    -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+  .boot.gone{display:none}
+  /* backdrop: a navy sheet with a circular aperture (radius driven by JS during the exit) */
+  .bt-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .bt-fx{position:absolute;inset:0;pointer-events:none;transition:opacity .5s ease-out}
+  .bt-grid{opacity:0;transition:opacity 1.1s ease-out;
+    background:repeating-linear-gradient(0deg,transparent 0 47px,rgba(160,163,184,.06) 47px 48px),
+               repeating-linear-gradient(90deg,transparent 0 47px,rgba(160,163,184,.06) 47px 48px);
+    -webkit-mask-image:radial-gradient(70% 70% at 50% 46%,#000 30%,transparent 100%);
+            mask-image:radial-gradient(70% 70% at 50% 46%,#000 30%,transparent 100%)}
+  .bt-orb{position:absolute;width:70vmax;aspect-ratio:1;border-radius:50%;opacity:0;transition:opacity 1.2s ease-out;will-change:transform}
+  .bt-orb.g{left:-28vmax;top:-30vmax;background:radial-gradient(circle,rgba(212,175,55,.12),transparent 62%)}
+  .bt-orb.t{right:-28vmax;bottom:-30vmax;background:radial-gradient(circle,rgba(14,165,168,.12),transparent 62%)}
+  .bt-cv{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease-out}
+  .boot.p1 .bt-grid,.boot.p1 .bt-orb,.boot.p1 .bt-cv{opacity:1}
+
+  /* centre stage */
+  .bt-stage{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;
+    width:min(92vw,560px)}
+  .bt-par{will-change:transform}
+  .bt-dialwrap{position:relative;width:var(--dial);height:var(--dial)}
+  .boot{--dial:min(520px,58vh,88vw)}
+  .bt-dial{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .bt-ticks line{stroke:rgba(160,163,184,.16);stroke-width:2;stroke-linecap:round}
+  .bt-ring{opacity:0;transform-origin:300px 300px;transform:scale(.94) rotate(-8deg);transition:opacity .7s ease-out,transform 1s var(--ease)}
+  .boot.p2 .bt-ring{opacity:1;transform:none}
+  .bt-arc{fill:none;stroke:url(#btArcGrad);stroke-width:2;stroke-linecap:round}
+  .bt-arc-bg{fill:none;stroke:rgba(160,163,184,.1);stroke-width:2}
+  .bt-orbit{fill:none;stroke:#D4AF37;stroke-width:1.6;opacity:.55}
+  .bt-trail{fill:none;stroke:#F2D27A;stroke-linecap:round}
+  .bt-dot{fill:#FFF3C4}
+  .bt-dotglow{fill:url(#btDotGlow)}
+  .bt-cfill{fill:url(#btCGrad)}
+  .bt-mpath{fill:none;stroke:#fff;stroke-width:74;stroke-linecap:butt}
+  .bt-join{fill:url(#btFlash);opacity:0;transform-box:fill-box;transform-origin:center}
+  .bt-join.on{animation:btflash .55s ease-out forwards}
+  @keyframes btflash{0%{opacity:0;transform:scale(.4)}35%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.6)}}
+  .bt-svgmark{transition:opacity .45s ease-out}
+  /* ignition point: compositor-driven, so it stays smooth while the 3D scene builds */
+  .bt-ign{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;z-index:2;pointer-events:none;opacity:0;
+    background:radial-gradient(circle,#FFF3C4 0 9%,rgba(242,210,122,.55) 16%,rgba(242,210,122,.12) 42%,transparent 70%);
+    animation:btign .35s ease-out forwards,btpulse .5s ease-in-out .35s 1,btbreathe 1.6s ease-in-out .85s infinite;transition:opacity .15s}
+  .bt-ign.off{opacity:0!important;animation:none}
+  @keyframes btign{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+  @keyframes btpulse{50%{transform:scale(1.7)}}
+  @keyframes btbreathe{50%{transform:scale(1.18)}}
+  .bt-png{position:absolute;opacity:0;transition:opacity .45s ease-out;pointer-events:none}
+  .boot.swap .bt-svgmark{opacity:0}
+  .boot.swap .bt-png{opacity:1}
+  .bt-png.flash{animation:btlogoflash .5s ease-out}
+  @keyframes btlogoflash{40%{filter:brightness(1.6) drop-shadow(0 0 18px rgba(242,210,122,.7))}}
+
+  /* percentage → wordmark slot */
+  .bt-slot{position:relative;width:min(300px,64vw);height:52px;margin-top:6px;display:grid;place-items:center}
+  .bt-pct{font-family:var(--mono);font-weight:500;font-size:1.05rem;letter-spacing:.08em;color:#fff;transition:opacity .35s ease-out,transform .35s ease-out}
+  .bt-pct small{font-size:.7em;color:var(--muted);margin-left:2px}
+  .boot.p4 .bt-pct{opacity:0;transform:translateY(-8px)}
+  .bt-word{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);aspect-ratio:720/69}
+  .bt-l{position:absolute;top:0;height:100%;background-image:url(/causvia-wordmark.png);background-repeat:no-repeat;
+    opacity:0;transform:translateY(60%);filter:blur(6px)}
+  .boot.p4 .bt-l{animation:btletter .42s var(--ease) forwards}
+  @keyframes btletter{to{opacity:1;transform:none;filter:blur(0)}}
+  .bt-v{position:absolute;top:0;height:100%;overflow:visible}
+  .bt-v path{fill:none;stroke-width:3.2;stroke-linecap:round}
+  .bt-vspark{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;opacity:0;
+    background:radial-gradient(circle,#fff,rgba(242,210,122,.6) 40%,transparent 70%)}
+  .bt-vspark.on{animation:btflash .5s ease-out forwards}
+  .bt-tag{font-family:var(--head);font-weight:500;font-size:clamp(.9rem,1.6vw,1.05rem);color:#D9DBE6;margin-top:10px;text-align:center;
+    opacity:0;transform:translateY(6px);transition:opacity .45s ease-out,transform .45s ease-out}
+  .boot.p4b .bt-tag{opacity:1;transform:none}
+
+  /* HUD: corner brackets, readout, system log */
+  .bt-hud{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s ease-out}
+  .boot.p1 .bt-hud{opacity:1}
+  .bt-c{position:absolute;width:18px;height:18px;border:0 solid rgba(160,163,184,.5)}
+  .bt-c.tl{left:22px;top:22px;border-top-width:1px;border-left-width:1px}
+  .bt-c.tr{right:22px;top:22px;border-top-width:1px;border-right-width:1px}
+  .bt-c.bl{left:22px;bottom:22px;border-bottom-width:1px;border-left-width:1px}
+  .bt-c.br{right:22px;bottom:22px;border-bottom-width:1px;border-right-width:1px}
+  .bt-read{position:absolute;right:50px;top:24px;text-align:right;font-size:.66rem;letter-spacing:.14em;color:var(--muted);line-height:1.7}
+  .bt-read b{color:#fff;font-weight:500}
+  .bt-log{position:absolute;left:50px;bottom:52px;font-size:.7rem;letter-spacing:.06em;line-height:1.9;color:var(--muted);white-space:pre}
+  .bt-log .ln{display:block;min-height:1.9em}
+  .bt-log .st{font-weight:700;color:var(--muted)}
+  .bt-log .st.ai{color:var(--teal)}.bt-log .st.hu{color:var(--gold)}
+  .bt-log .cur{display:inline-block;width:.55em;height:1em;vertical-align:-2px;background:rgba(160,163,184,.6);animation:btcur .8s steps(1) infinite}
+  @keyframes btcur{50%{opacity:0}}
+  .bt-snd{position:absolute;left:0;right:0;bottom:24px;text-align:center;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);display:flex;align-items:center;justify-content:center;gap:9px}
+  .bt-snd svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .bt-snd.on{color:var(--gold)}
+  .bt-skip{position:absolute;right:50px;bottom:24px;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(160,163,184,.75);
+    opacity:0;transition:opacity .5s ease-out}
+  .bt-skip.on{opacity:1}
+
+  /* exit: aperture, chromatic edge, bloom, flying point */
+  .bt-bloom{position:absolute;left:50%;top:46%;width:120vmax;height:120vmax;margin:-60vmax 0 0 -60vmax;border-radius:50%;pointer-events:none;opacity:0;
+    background:radial-gradient(circle,rgba(255,246,220,.55),rgba(242,210,122,.18) 22%,transparent 55%)}
+  .boot.p5 .bt-bloom{animation:btbloom .8s ease-out forwards}
+  @keyframes btbloom{0%{opacity:0;transform:scale(.3)}30%{opacity:.85}100%{opacity:0;transform:scale(1.15)}}
+  .boot.p5 .bt-stage{transition:opacity .28s ease-in,transform .7s cubic-bezier(.5,0,.75,0);opacity:0;transform:translate(-50%,-50%) scale(1.35)}
+  .boot.p5 .bt-fx,.boot.p5 .bt-hud,.boot.p5 .bt-snd,.boot.p5 .bt-skip{opacity:0;transition:opacity .3s ease-in}
+  .bt-fly{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;pointer-events:none;opacity:0;
+    background:radial-gradient(circle,#fff,#F2D27A 45%,rgba(242,210,122,0) 72%)}
+  .boot.p5 .bt-fly{animation:btfly .75s cubic-bezier(.55,0,.8,.3) forwards}
+  @keyframes btfly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--fx),var(--fy)) scale(46)}}
+
+  /* hand-off: hero lines rise in as the aperture opens */
+  .hero .kicker,.hero h1{transition:opacity .9s var(--ease) .28s,transform 1s var(--ease) .28s}
+  .hero h1{transition-delay:.4s}
+  body.boot-on .hero .kicker,body.boot-on .hero h1{opacity:0;transform:translateY(18px)}
+
+  /* reduced motion: static logo + number, then a simple fade */
+  .boot.rm .bt-dialwrap,.boot.rm .bt-word,.boot.rm .bt-cv,.boot.rm .bt-orb,.boot.rm .bt-log,.boot.rm .bt-skip,.boot.rm .bt-bloom,.boot.rm .bt-fly{display:none}
+  .bt-static{display:none;width:min(260px,58vw);height:auto;margin-bottom:22px}
+  .boot.rm .bt-static{display:block}
+  .boot.rm .bt-bg{background:var(--bg)}
+  .boot.rm.p5{opacity:0;transition:opacity .4s linear}
+  .boot.rm.p5 .bt-stage{opacity:1;transform:translate(-50%,-50%)}
+
+  @media (max-width:1023px){ .bt-skip{right:0;left:0;text-align:center;bottom:50px} .bt-log{bottom:86px} }
+  @media (max-width:640px){
+    .boot{--dial:min(86vw,46vh)}
+    .bt-stage{top:40%}
+    .bt-read{right:40px;font-size:.58rem}
+    .bt-log{position:static;margin:16px auto 0;font-size:.62rem;line-height:1.8;width:max-content;max-width:88vw}
+    .bt-skip{bottom:48px}
+    .bt-c.tl,.bt-c.tr{top:16px}.bt-c.bl,.bt-c.br{bottom:16px}.bt-c.tl,.bt-c.bl{left:16px}.bt-c.tr,.bt-c.br{right:16px}
+  }
 
   /* ================= post-flight sections ================= */
   .after{position:relative;z-index:7;background:var(--bg)}
@@ -709,11 +822,11 @@
   }
   @media (prefers-reduced-transparency:reduce){
     .glass,.glass-thin,.glass-thick{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
-    .orbs,#sky .horb,.boot .bt-orbs{display:none}
+    .orbs,#sky .horb,.bt-orb{display:none}
   }
 </style>
 </head>
-<body>
+<body class="boot-on">
   <!-- Causvia mark: gold-to-teal crescent C with an orbiting point of light -->
   <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
     <defs>
@@ -1150,14 +1263,74 @@
   <div class="grain" aria-hidden="true"></div><div class="vig" aria-hidden="true"></div>
   <div class="toast" id="toast" role="status"></div>
 
-  <!-- boot loader -->
+  <!-- boot loader: Causvia power-up sequence (ignition → assembly → system check → reveal → aperture) -->
   <div class="boot" id="boot" role="status" aria-live="polite" aria-label="Causvia is initializing">
-    <span class="bt-orbs" aria-hidden="true"></span>
-    <img class="bt-logo" src="/causvia-logo.png" alt="Causvia">
-    <div class="bt-title"><b>Causvia</b> is initializing</div>
-    <div class="bt-row"><div class="bt-track"><div class="bt-fill" id="btFill"></div></div><span class="bt-pct" id="btPct">0%</span></div>
+    <svg class="bt-bg" aria-hidden="true">
+      <defs><mask id="btAperture" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+        <rect width="100%" height="100%" fill="#fff"/><circle id="btApHole" cx="50%" cy="46%" r="0" fill="#000"/></mask></defs>
+      <rect width="100%" height="100%" fill="#0B1220" mask="url(#btAperture)"/>
+      <circle id="btApGold" cx="50%" cy="46%" r="0" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0"/>
+      <circle id="btApTeal" cx="50%" cy="46%" r="0" fill="none" stroke="#0EA5A8" stroke-width="2" opacity="0"/>
+    </svg>
+    <div class="bt-fx bt-par" id="btFx" aria-hidden="true">
+      <div class="bt-fx bt-grid"></div>
+      <span class="bt-orb g"></span><span class="bt-orb t"></span>
+      <canvas class="bt-cv" id="btCv"></canvas>
+    </div>
+    <div class="bt-bloom" aria-hidden="true"></div>
+
+    <div class="bt-stage" id="btStage">
+      <img class="bt-static" src="/causvia-logo.png" alt="Causvia">
+      <div class="bt-dialwrap bt-par" id="btDialWrap" aria-hidden="true">
+        <span class="bt-ign" id="btIgn"></span>
+        <svg class="bt-dial" id="btDial" viewBox="0 0 600 600">
+          <defs>
+            <linearGradient id="btCGrad" gradientUnits="userSpaceOnUse" x1="171" y1="0" x2="429" y2="0">
+              <stop offset="0" stop-color="#E6C04F"/><stop offset=".42" stop-color="#D4AF37"/><stop offset=".6" stop-color="#F59E0B" stop-opacity=".9"/>
+              <stop offset=".74" stop-color="#22B8BB"/><stop offset="1" stop-color="#0EA5A8"/></linearGradient>
+            <linearGradient id="btArcGrad" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="540" y2="0">
+              <stop offset="0" stop-color="#D4AF37"/><stop offset="1" stop-color="#0EA5A8"/></linearGradient>
+            <radialGradient id="btDotGlow"><stop offset="0" stop-color="rgba(255,243,196,.9)"/><stop offset=".35" stop-color="rgba(242,210,122,.45)"/><stop offset="1" stop-color="rgba(242,210,122,0)"/></radialGradient>
+            <radialGradient id="btFlash"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="rgba(242,210,122,.85)"/><stop offset="1" stop-color="rgba(14,165,168,0)"/></radialGradient>
+            <clipPath id="btWedge"><path d="M0 0H600V600H0Z M300 300 L600 214 V386 Z" clip-rule="evenodd"/></clipPath>
+            <mask id="btCMask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="600">
+              <path class="bt-mpath" id="btG1"/><path class="bt-mpath" id="btG2"/><path class="bt-mpath" id="btT1"/><path class="bt-mpath" id="btT2"/></mask>
+          </defs>
+          <g class="bt-ring">
+            <circle class="bt-arc-bg" cx="300" cy="300" r="240"/>
+            <circle class="bt-arc" id="btArc" cx="300" cy="300" r="240" transform="rotate(-90 300 300)"/>
+            <g class="bt-ticks" id="btTicks"></g>
+          </g>
+          <g class="bt-svgmark">
+            <path id="btOrbit" class="bt-orbit"/>
+            <g clip-path="url(#btWedge)"><path class="bt-cfill" mask="url(#btCMask)" fill-rule="evenodd"
+              d="M171.5 300a128.5 128.5 0 1 0 257 0a128.5 128.5 0 1 0 -257 0Z M223.5 300a96.5 96.5 0 1 0 193 0a96.5 96.5 0 1 0 -193 0Z"/></g>
+            <circle class="bt-join" id="btJ1" r="26"/><circle class="bt-join" id="btJ2" r="26"/>
+          </g>
+          <image class="bt-png" id="btPng" href="/causvia-mark.png" x="89" y="155.5" width="400" height="293"/>
+          <g class="bt-svgmark" id="btPoint">
+            <path class="bt-trail" id="btTr3" stroke-width="2.4" opacity=".22"/><path class="bt-trail" id="btTr2" stroke-width="2.6" opacity=".45"/><path class="bt-trail" id="btTr1" stroke-width="2.8" opacity=".8"/>
+            <circle class="bt-dotglow" id="btDotG" r="22" opacity="0"/><circle class="bt-dot" id="btDot" r="4.2" opacity="0"/>
+          </g>
+        </svg>
+      </div>
+      <div class="bt-slot">
+        <span class="bt-pct" id="btPct">0<small>%</small></span>
+        <div class="bt-word" id="btWord" aria-hidden="true"></div>
+      </div>
+      <p class="bt-tag" aria-hidden="true">AI flies the routine. You command the flight.</p>
+    </div>
+
+    <div class="bt-hud" aria-hidden="true">
+      <span class="bt-c tl"></span><span class="bt-c tr"></span><span class="bt-c bl"></span><span class="bt-c br"></span>
+      <div class="bt-read"><b>CAUSVIA SYSTEM · v1.0</b><br><span id="btClock">--:--:-- UTC</span></div>
+      <div class="bt-log" id="btLog"></div>
+    </div>
+    <div class="bt-skip" id="btSkip" aria-hidden="true">Press Enter or click to skip</div>
     <div class="bt-snd" id="btSnd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg><span>Click anywhere to enable sound</span></div>
+    <span class="bt-fly" id="btFly" aria-hidden="true"></span>
   </div>
+  <div class="vh" id="bootAnnounce" role="status" aria-live="polite"></div>
 
   <!-- stage explorer: the 7-step loop + Guardrail gate -->
   <div class="ovl xpl" id="xpl" aria-hidden="true" role="dialog" aria-modal="true" aria-label="The Causvia loop — stage explorer">
@@ -1637,21 +1810,247 @@
     this.classList.toggle("on",sndOn); this.setAttribute("aria-pressed",sndOn?"true":"false");
     this.querySelector(".sl").textContent = sndOn ? "Sound on" : "Sound off"; });
 
-  /* ---- boot: percentage, then fade; click anywhere enables sound ---- */
+  /* ================= boot loader: Causvia power-up sequence =================
+     0–0.6s ignition · 0.6–2.2s assembly + system check · reveal at 100% · aperture exit
+     Progress is real (fonts, logo images, three.js, 3D scene); min ~2.2s to 100%, forced at 6s. */
   (function(){
     var boot=document.getElementById("boot"); if(!boot) return;
-    var fill=document.getElementById("btFill"), pct=document.getElementById("btPct"), snd=document.getElementById("btSnd");
-    document.body.style.overflow="hidden";
-    boot.addEventListener("click",function(){
-      var m=document.getElementById("snd"); if(m && !sndOn) m.click();
-      snd.classList.add("on"); snd.querySelector("span").textContent="Sound on"; });
-    function finish(){ boot.classList.add("done"); document.body.style.overflow="";
-      setTimeout(function(){ if(boot.parentNode) boot.parentNode.removeChild(boot); },700); }
-    var p=0, t=setInterval(function(){
-      p+=RM?20:2+Math.random()*5;
-      if(p>=100){ p=100; clearInterval(t); setTimeout(finish,RM?0:420); }
-      pct.textContent=Math.round(p)+"%"; fill.style.width=p+"%";
-    },RM?30:90);
+    function $(id){ return document.getElementById(id); }
+    var NSB="http://www.w3.org/2000/svg", annc=$("bootAnnounce");
+    var RET=false; try{ RET=sessionStorage.getItem("cvBooted")==="1"; }catch(e){}
+    var MOB=innerWidth<640, t0=performance.now(), rafB=0, exiting=false, gone=false;
+    document.body.classList.add("boot-on"); document.body.style.overflow="hidden";
+
+    /* ---- real progress ---- */
+    var W8={fonts:20,images:20,three:30,scene:30}, doneK={}, real=0;
+    window.__bootMark=function(k){ if(doneK[k]||!W8[k]) return; doneK[k]=1; real+=W8[k]; };
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ __bootMark("fonts"); }, function(){ __bootMark("fonts"); });
+    else __bootMark("fonts");
+    (function(){ var srcs=["/causvia-mark.png","/causvia-wordmark.png","/causvia-logo.png"], n=0;
+      srcs.forEach(function(s){ var im=new Image(); im.onload=im.onerror=function(){ if(++n===srcs.length) __bootMark("images"); }; im.src=s; }); })();
+    if(window.THREE) __bootMark("three");
+
+    /* ---- UTC clock ---- */
+    function p2(n){ return ("0"+n).slice(-2); }
+    function clock(){ var d=new Date(); $("btClock").textContent=p2(d.getUTCHours())+":"+p2(d.getUTCMinutes())+":"+p2(d.getUTCSeconds())+" UTC"; }
+    clock(); var clk=setInterval(clock,1000);
+
+    /* ---- sound: Web Audio only, off until the visitor asks ---- */
+    var bsnd=false, humG=null, humO=[];
+    function startSound(){ if(bsnd) return; if(!initAudio()) return; if(actx.state==="suspended") actx.resume(); bsnd=true;
+      var m=$("snd"); if(m && !sndOn) m.click();
+      var lp=actx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=380;
+      humG=actx.createGain(); humG.gain.value=0; lp.connect(humG); humG.connect(actx.destination);
+      [[55,"sine",.6],[110.5,"triangle",.22]].forEach(function(d){ var o=actx.createOscillator(), g=actx.createGain();
+        o.type=d[1]; o.frequency.value=d[0]; g.gain.value=d[2]; o.connect(g); g.connect(lp); o.start(); humO.push(o); });
+      humG.gain.setTargetAtTime(.045,actx.currentTime,.4);
+      var s=$("btSnd"); s.classList.add("on"); s.querySelector("span").textContent="Sound on"; }
+    function humPitch(p){ if(!bsnd) return; var t=actx.currentTime;
+      humO[0].frequency.setTargetAtTime(55+p*.3,t,.25); humO[1].frequency.setTargetAtTime(110.5+p*.6,t,.25); }
+    function blipB(f,v,d){ if(!bsnd) return; var t=actx.currentTime+.005, o=actx.createOscillator(), g=actx.createGain();
+      o.type="sine"; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.006); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+      o.start(t); o.stop(t+d+.05); }
+    function tickS(){ blipB(1760,.022,.06); }
+    function chime(){ if(!bsnd) return; [[659.25,.05],[987.77,.03],[1318.5,.012]].forEach(function(c){ blipB(c[0],c[1],1.8); }); }
+    function humOff(){ if(!bsnd||!humG) return; var t=actx.currentTime; humG.gain.setTargetAtTime(0,t,.22); humO.forEach(function(o){ try{ o.stop(t+1.4); }catch(e){} }); }
+
+    /* ---- input: click enables sound (first), then click / Enter skips ---- */
+    var skipOn=false;
+    boot.addEventListener("click",function(){ if(!bsnd){ startSound(); return; } if(skipOn) skip(); });
+    function onKey(e){ if(gone) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); skip(); } }
+    addEventListener("keydown",onKey);
+
+    /* ---- finishing (shared by every path) ---- */
+    function announceReady(){ annc.textContent="Causvia is ready"; }
+    function releasePage(){ document.body.classList.remove("boot-on"); document.body.style.overflow=""; }
+    function cleanup(){ if(gone) return; gone=true; cancelAnimationFrame(rafB); clearInterval(clk); removeEventListener("keydown",onKey);
+      releasePage(); try{ sessionStorage.setItem("cvBooted","1"); }catch(e){}
+      boot.classList.add("gone"); setTimeout(function(){ if(boot.parentNode) boot.parentNode.removeChild(boot); },50); }
+    setTimeout(function(){ if(!gone){ announceReady(); cleanup(); } },9000);   // never get stuck
+
+    /* ================= reduced motion: static logo, number, 400ms fade ================= */
+    if(RM){
+      boot.classList.add("rm","p1");
+      (function step(){ var t=performance.now()-t0, v=t>6000?100:real;
+        $("btPct").innerHTML=Math.round(v)+"<small>%</small>";
+        if(v>=100 && t>500){ boot.classList.add("p5"); announceReady(); releasePage(); setTimeout(cleanup,420); return; }
+        rafB=requestAnimationFrame(step); })();
+      return;
+    }
+
+    /* ================= geometry ================= */
+    var CX=300, CY=300;
+    function pc(a,r){ a=a*Math.PI/180; return [CX+r*Math.cos(a), CY+r*Math.sin(a)]; }
+    // dial: 60 ticks, lit clockwise from 12 o'clock, gold → teal
+    var ticks=[], tg=$("btTicks");
+    function lerpC(t){ var a=[212,175,55], b=[14,165,168]; return "rgb("+a.map(function(v,i){ return Math.round(v+(b[i]-v)*t); }).join(",")+")"; }
+    for(var i=0;i<60;i++){ var a=-90+i*6, p1=pc(a,212), p2b=pc(a,226), ln=document.createElementNS(NSB,"line");
+      ln.setAttribute("x1",p1[0].toFixed(1)); ln.setAttribute("y1",p1[1].toFixed(1)); ln.setAttribute("x2",p2b[0].toFixed(1)); ln.setAttribute("y2",p2b[1].toFixed(1));
+      if(i%5===0){ var p3=pc(a,206); ln.setAttribute("x1",p3[0].toFixed(1)); ln.setAttribute("y1",p3[1].toFixed(1)); }
+      tg.appendChild(ln); ticks.push({el:ln,col:lerpC(i/59),on:false}); }
+    var arc=$("btArc"), ARC_L=2*Math.PI*240; arc.setAttribute("stroke-dasharray",ARC_L.toFixed(1)); arc.setAttribute("stroke-dashoffset",ARC_L.toFixed(1));
+    // orbit: tilted ellipse matching the logo artwork; the point ends where the logo's point of light sits
+    var OC=[285,299.5], ORX=179, ORY=10, OROT=-2.6*Math.PI/180;
+    function op(th){ var x=ORX*Math.cos(th), y=ORY*Math.sin(th);
+      return [OC[0]+x*Math.cos(OROT)-y*Math.sin(OROT), OC[1]+x*Math.sin(OROT)+y*Math.cos(OROT)]; }
+    var od="M"+op(0).join(" "); for(var q=1;q<=4;q++){ od+=" A"+ORX+" "+ORY+" -2.6 0 1 "+op(q*Math.PI/2).map(function(v){ return v.toFixed(2); }).join(" "); }
+    var orbit=$("btOrbit"); orbit.setAttribute("d",od);
+    var OL=orbit.getTotalLength(); orbit.setAttribute("stroke-dasharray",OL.toFixed(1)); orbit.setAttribute("stroke-dashoffset",OL.toFixed(1));
+    var trails=[[$("btTr1"),34],[$("btTr2"),78],[$("btTr3"),150]];
+    trails.forEach(function(tr){ tr[0].setAttribute("d",od); tr[0].setAttribute("stroke-dasharray",tr[1]+" "+(OL+tr[1]).toFixed(1)); tr[0].style.opacity="0"; });
+    var dot=$("btDot"), dotG=$("btDotG"), END=op(0);
+    // crescent C: drawn through a mask — gold from the left, teal from the tips, meeting at 120° / 240°
+    var CR=112;
+    function arcPath(a1,a2){ var s=pc(a1,CR), e=pc(a2,CR), sweep=a2>a1?1:0, large=Math.abs(a2-a1)>180?1:0;
+      return "M"+s[0].toFixed(2)+" "+s[1].toFixed(2)+" A"+CR+" "+CR+" 0 "+large+" "+sweep+" "+e[0].toFixed(2)+" "+e[1].toFixed(2); }
+    var MP=[["btG1",180,246],["btG2",180,114],["btT1",344,234],["btT2",16,126]].map(function(m){
+      var el=$(m[0]); el.setAttribute("d",arcPath(m[1],m[2])); var L=CR*Math.abs(m[2]-m[1])*Math.PI/180;
+      el.setAttribute("stroke-dasharray",L.toFixed(1)); el.setAttribute("stroke-dashoffset",L.toFixed(1)); return {el:el,L:L}; });
+    var J1=$("btJ1"), J2=$("btJ2"), jp1=pc(240,CR), jp2=pc(120,CR);
+    J1.setAttribute("cx",jp1[0]); J1.setAttribute("cy",jp1[1]); J2.setAttribute("cx",jp2[0]); J2.setAttribute("cy",jp2[1]);
+
+    /* ---- wordmark: letters sliced from the real artwork; the V is drawn as two strokes ---- */
+    var LET=[[9,82],[119,206],[244,318],[360,430],[461,542],[578,590],[627,713]], word=$("btWord"), vSpan=null;
+    LET.forEach(function(s,i){ var w=s[1]-s[0], sp=document.createElement("span"); sp.className="bt-l";
+      sp.style.left=(s[0]/720*100)+"%"; sp.style.width=(w/720*100)+"%";
+      sp.style.backgroundSize=(720/w*100)+"% 100%"; sp.style.backgroundPosition=(s[0]/(720-w)*100)+"% 0";
+      if(i===4){ vSpan=sp; sp.style.animation="none"; } else sp.style.animationDelay=((i>4?i-1:i)*50)+"ms";
+      word.appendChild(sp); });
+    var vsv=document.createElementNS(NSB,"svg"); vsv.setAttribute("class","bt-v"); vsv.setAttribute("viewBox","461 0 81 69"); vsv.setAttribute("preserveAspectRatio","none");
+    vsv.style.left=(461/720*100)+"%"; vsv.style.width=(81/720*100)+"%";
+    var vG=document.createElementNS(NSB,"path"), vT=document.createElementNS(NSB,"path");
+    vG.setAttribute("d","M467 12 L501.5 60"); vG.setAttribute("stroke","#D4AF37"); vT.setAttribute("d","M536 12 L501.5 60"); vT.setAttribute("stroke","#0EA5A8");
+    [vG,vT].forEach(function(p){ p.setAttribute("stroke-dasharray","60"); p.setAttribute("stroke-dashoffset","60"); vsv.appendChild(p); });
+    word.appendChild(vsv);
+    var spark=document.createElement("span"); spark.className="bt-vspark"; spark.style.left=(501.5/720*100)+"%"; spark.style.top=(60/69*100)+"%"; word.appendChild(spark);
+
+    /* ---- system check log ---- */
+    var LOG = MOB ? [["WORLD MODEL","OK","ai"],["SKEPTIC","OK","ai"],["EVIDENCE LEDGER","SYNCED","ai"],["HUMAN GATES","ARMED","hu"],["AUTONOMY MAP","62%","ai"]]
+                  : [["LOADING WORLD MODEL","OK","ai"],["CALIBRATING SKEPTIC","OK","ai"],["EVIDENCE LEDGER","SYNCED","ai"],["HUMAN GATES","ARMED","hu"],["AUTONOMY MAP","62%","ai"]];
+    var COLW=MOB?20:30, logEl=$("btLog");
+    if(MOB) $("btStage").appendChild(logEl);
+    var lines=LOG.map(function(l,i){ var txt="> "+l[0]+" "; while(txt.length<COLW) txt+="."; txt+=" ";
+      var row=document.createElement("span"); row.className="ln"; logEl.appendChild(row);
+      return {row:row,txt:txt,val:l[1],cls:l[2],start:650+i*300,last:"",ticked:false}; });
+
+    /* ---- particles (one 2D canvas) ---- */
+    var cvB=$("btCv"), cx2=cvB.getContext("2d"), DPRB=Math.min(devicePixelRatio||1,1.5), PW=0, PH=0, parts=[];
+    function sizeCv(){ PW=innerWidth; PH=innerHeight; cvB.width=PW*DPRB; cvB.height=PH*DPRB; cx2.setTransform(DPRB,0,0,DPRB,0,0); }
+    sizeCv(); addEventListener("resize",sizeCv);
+    for(var k=0;k<(MOB?50:120);k++){ var tone=Math.random();
+      parts.push({x:Math.random()*PW,y:Math.random()*PH,vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.12-.03,r:.5+Math.random()*1.2,
+        a:.1+Math.random()*.2,c:tone<.15?"212,175,55":tone<.3?"14,165,168":"220,226,240",z:.4+Math.random()*.9}); }
+
+    /* ---- parallax (mouse, or gyroscope on phones) ---- */
+    var mx=0,my=0,sx=0,sy=0, fx=$("btFx"), dw=$("btDialWrap");
+    addEventListener("mousemove",function(e){ mx=e.clientX/innerWidth*2-1; my=e.clientY/innerHeight*2-1; },{passive:true});
+    addEventListener("deviceorientation",function(e){ if(e.gamma==null) return; mx=Math.max(-1,Math.min(1,e.gamma/30)); my=Math.max(-1,Math.min(1,(e.beta-45)/30)); },{passive:true});
+
+    /* ================= timeline ================= */
+    function cl(v){ return v<0?0:v>1?1:v; }
+    function eio(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+    function eo(t){ return 1-Math.pow(1-t,3); }
+    var shift=-1, ignOff=false, ign=$("btIgn"), shown=0, lastInt=-1, scrUntil=0, pctLast="", pctEl=$("btPct"), litN=0, f2=false, f4b=false, R0=-1, E0=-1, swapped=false, joined=false, vDone=false, lastT=t0;
+    var apHole=$("btApHole"), apG=$("btApGold"), apT=$("btApTeal"), fly=$("btFly"), apC=[0,0], apMax=0, apR0=0;
+    function setPhase(c){ boot.classList.add(c); }
+    setPhase("p1");
+    if(RET){ setPhase("p2"); setPhase("swap"); swapped=true; }
+
+    function placeExit(){
+      var r=dw.getBoundingClientRect(); apC=[r.left+r.width/2, r.top+r.height/2]; apR0=r.width*240/600;
+      apMax=Math.hypot(Math.max(apC[0],innerWidth-apC[0]),Math.max(apC[1],innerHeight-apC[1]))+40;
+      [apHole,apG,apT].forEach(function(c){ c.setAttribute("cx",apC[0]); c.setAttribute("cy",apC[1]); });
+      var bl=boot.querySelector(".bt-bloom"); bl.style.left=apC[0]+"px"; bl.style.top=apC[1]+"px";
+      var m=$("btDial").getScreenCTM(), px=m?END[0]*m.a+m.e:apC[0], py=m?END[1]*m.d+m.f:apC[1];
+      fly.style.left=px+"px"; fly.style.top=py+"px";
+      fly.style.setProperty("--fx",((innerWidth/2-px)*.5)+"px"); fly.style.setProperty("--fy",((innerHeight/2-py)*.5)+"px");
+    }
+    function startExit(t){ if(E0>=0) return; E0=t; exiting=true; placeExit(); setPhase("p5"); humOff();
+      announceReady(); releasePage(); }
+    function skip(){ if(E0>=0) return; shown=100; real=100;
+      if(!swapped){ setPhase("p2"); setPhase("swap"); swapped=true; }
+      ticks.forEach(function(tk){ tk.el.style.stroke=tk.col; }); arc.setAttribute("stroke-dashoffset","0");
+      startExit(performance.now()-t0); }
+
+    function frame(now){
+      var t=now-t0, dt=Math.min(64,now-lastT); lastT=now;
+      // sequence clock: ignition holds until the scene is ready (max 1.6s), then assembly runs on tt
+      if(!RET && shift<0 && t>=600 && (doneK.scene || t>=1600)) shift=t-600;
+      var tt = RET ? t : (shift<0 ? Math.min(t,600) : t-shift);
+      // parallax
+      sx+=(mx-sx)*.06; sy+=(my-sy)*.06;
+      fx.style.transform="translate3d("+(-sx*8).toFixed(2)+"px,"+(-sy*8).toFixed(2)+"px,0)";
+      dw.style.transform="translate3d("+(sx*5).toFixed(2)+"px,"+(sy*5).toFixed(2)+"px,0)";
+      // particles
+      cx2.clearRect(0,0,PW,PH);
+      for(var i=0;i<parts.length;i++){ var p=parts[i]; p.x+=p.vx*dt/16.7; p.y+=p.vy*dt/16.7;
+        if(p.x<-5) p.x=PW+5; else if(p.x>PW+5) p.x=-5; if(p.y<-5) p.y=PH+5; else if(p.y>PH+5) p.y=-5;
+        cx2.fillStyle="rgba("+p.c+","+p.a+")"; cx2.beginPath(); cx2.arc(p.x-sx*6*p.z,p.y-sy*6*p.z,p.r,0,6.283); cx2.fill(); }
+
+      // ---- progress (real, eased, never faster than the sequence) ----
+      var lim = RET ? cl(t/500)*100 : cl((tt-250)/1750)*100;
+      var target=Math.min(t>6000?100:real, lim);
+      if(t>6000) target=Math.max(target,lim);
+      shown += (target-shown)*(1-Math.pow(.8,dt/16.7)); if(target-shown<1) shown=target;
+      // digits briefly scramble before settling on each new value
+      var si=Math.floor(shown);
+      if(si!==lastInt){ lastInt=si; scrUntil=now+70; }
+      var ptxt=(now<scrUntil && si<100) ? String(si).replace(/\d$/,String((Math.random()*10)|0)) : String(si);
+      if(ptxt!==pctLast){ pctEl.innerHTML=ptxt+"<small>%</small>"; pctLast=ptxt; }
+      var n=Math.round(shown/100*60);
+      if(n!==litN){ for(var k2=0;k2<60;k2++){ var on=k2<n; if(on!==ticks[k2].on){ ticks[k2].on=on; ticks[k2].el.style.stroke=on?ticks[k2].col:""; } } litN=n; }
+      arc.setAttribute("stroke-dashoffset",(ARC_L*(1-shown/100)).toFixed(1));
+      humPitch(shown);
+
+      if(!RET && E0<0){
+        // ignition: a point of gold light fades in at the centre and pulses once
+        // ignition is held (CSS-animated point) until the 3D scene has finished building, so assembly plays without hitches
+        if(tt>=600 && tt<750){ if(!ignOff){ ignOff=true; ign.classList.add("off"); }
+          var mv=eio(cl((tt-600)/150)), px=CX+(END[0]-CX)*mv, py=CY+(END[1]-CY)*mv;
+          dot.setAttribute("cx",px); dot.setAttribute("cy",py); dot.setAttribute("opacity","1");
+          dotG.setAttribute("cx",px); dotG.setAttribute("cy",py); dotG.setAttribute("opacity",".7"); }
+        if(tt>=700 && !f2){ f2=true; setPhase("p2"); }
+        // orbit lap, drawing the line behind the point with a fading trail
+        if(tt>=750 && tt<2250){ var s=OL*eio(cl((tt-750)/1350)), pt=orbit.getPointAtLength(Math.min(s,OL-.01));
+          dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y); dot.setAttribute("r","4.2"); dotG.setAttribute("cx",pt.x); dotG.setAttribute("cy",pt.y);
+          orbit.setAttribute("stroke-dashoffset",(OL-s).toFixed(1));
+          var tf=tt<2100?1:1-cl((tt-2100)/150);
+          trails.forEach(function(tr){ tr[0].style.opacity=tf; tr[0].setAttribute("stroke-dashoffset",(-(s-tr[1])).toFixed(1)); }); }
+        // the C: teal from the tips 0.9–1.6s, gold from the left 1.0–1.6s, flash where they meet
+        var tk=eio(cl((tt-900)/700)), gk=eio(cl((tt-1000)/600));
+        MP[0].el.setAttribute("stroke-dashoffset",(MP[0].L*(1-gk)).toFixed(1)); MP[1].el.setAttribute("stroke-dashoffset",(MP[1].L*(1-gk)).toFixed(1));
+        MP[2].el.setAttribute("stroke-dashoffset",(MP[2].L*(1-tk)).toFixed(1)); MP[3].el.setAttribute("stroke-dashoffset",(MP[3].L*(1-tk)).toFixed(1));
+        if(!joined && tt>=1560){ joined=true; J1.classList.add("on"); J2.classList.add("on"); }
+        // system check log
+        for(var li=0;li<lines.length;li++){ var L=lines[li], e=tt-L.start; if(e<0) continue;
+          var nc=Math.min(L.txt.length,Math.floor(e/200*L.txt.length)), typed=nc>=L.txt.length;
+          var html=L.txt.slice(0,nc);
+          if(typed) html+= e<420 ? '<span class="st">...</span>' : '<span class="st '+L.cls+'">'+L.val+'</span>';
+          else html+='<span class="cur"></span>';
+          if(html!==L.last){ L.row.innerHTML=html; L.last=html; }
+          if(typed && e>=420 && !L.ticked){ L.ticked=true; tickS(); } }
+        // crossfade the drawn mark to the real logo artwork
+        if(!swapped && tt>=2150){ swapped=true; setPhase("swap"); }
+        // reveal once the sequence has played and loading is truly complete
+        if(R0<0 && tt>=2200 && shown>=100){ R0=tt; setPhase("p4"); chime(); }
+        if(R0>=0){ var r=tt-R0;
+          var vk=eo(cl((r-340)/260)); vG.setAttribute("stroke-dashoffset",(60*(1-vk)).toFixed(1)); vT.setAttribute("stroke-dashoffset",(60*(1-vk)).toFixed(1));
+          if(!vDone && r>=600){ vDone=true; spark.classList.add("on"); vSpan.style.animation="btletter .3s ease-out forwards"; vsv.style.transition="opacity .3s"; vsv.style.opacity="0"; }
+          if(r>=480 && !f4b){ f4b=true; setPhase("p4b"); }
+          if(r>=950) startExit(t); }
+      }
+      if(RET && E0<0){ if(t>=500 && !$("btPng").classList.contains("flash")) $("btPng").classList.add("flash"); if(t>=620 && shown>=100) startExit(t); }
+
+      // ---- exit: aperture opens from the dial ring, with a chromatic edge ----
+      if(E0>=0){ var ek=cl((t-E0)/(RET?450:650)), ap=apR0+(apMax-apR0)*eio(ek);
+        apHole.setAttribute("r",ap.toFixed(1)); apG.setAttribute("r",(ap+3).toFixed(1)); apT.setAttribute("r",(ap+7).toFixed(1));
+        var ce=(ek<.85?.55:.55*(1-(ek-.85)/.15)).toFixed(2); apG.setAttribute("opacity",ce); apT.setAttribute("opacity",ce);
+        if(ek>=1){ cleanup(); return; } }
+      rafB=requestAnimationFrame(frame);
+    }
+    rafB=requestAnimationFrame(frame);
+    setTimeout(function(){ if(E0<0){ skipOn=true; $("btSkip").classList.add("on"); } },1000);
   })();
 
   /* ---- finale backdrop: continuous wireframe city fabric with dotted window bands ---- */
@@ -1719,7 +2118,7 @@
   function startFlight(){
     function webglOK(){ try{ var c=document.createElement("canvas");
       return !!(window.WebGLRenderingContext && (c.getContext("webgl")||c.getContext("experimental-webgl"))); }catch(e){ return false; } }
-    function fallback(){ document.getElementById("city").style.display="none";
+    function fallback(){ if(window.__bootMark){ window.__bootMark("three"); window.__bootMark("scene"); } document.getElementById("city").style.display="none";
       var fb=document.getElementById("fallback"); fb.style.display="flex";
       var g=fb.querySelector("g"),d="",x=0; while(x<1200){ var w=16+Math.random()*44,h=50+Math.random()*300;
         d+='<rect x="'+x+'" y="'+(400-h)+'" width="'+(w-3)+'" height="'+h+'"/>'; x+=w; } g.innerHTML=d; }
@@ -2155,12 +2554,15 @@
         wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight); });
       wires.setAttribute("width",innerWidth); wires.setAttribute("height",innerHeight);
 
+      try{ renderer.compile(scene,camera); renderer.render(scene,camera); }catch(e){}
+      if(window.__bootMark) window.__bootMark("scene");
     }catch(err){ if(raf) cancelAnimationFrame(raf); fallback(); }
   }
   function loadThree(cb){ if(window.THREE) return cb();
     var s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
-    s.onload=cb; s.onerror=cb; document.head.appendChild(s); }
-  (window.requestIdleCallback||function(f){ return setTimeout(f,60); })(function(){ loadThree(startFlight); },{timeout:600});
+    s.onload=s.onerror=function(){ if(window.__bootMark) window.__bootMark("three"); cb(); }; document.head.appendChild(s); }
+  /* start fetching three.js right after the first frame paints (still lazy, but early enough for the loader) */
+  requestAnimationFrame(function(){ setTimeout(function(){ loadThree(startFlight); },0); });
 })();
 </script>
 </body>
