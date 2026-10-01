@@ -662,6 +662,98 @@
   .stack-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;justify-content:center}
   .stack-list span{font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:5px 11px}
 
+  /* ---- animated diagrams: evidence flow + integration orbit ---- */
+  .dg{position:relative;width:100%;max-width:620px;margin:36px auto 0}
+  .dg-ev{margin-bottom:34px}
+  .dg>svg{width:100%;height:auto;display:block;margin:0;overflow:visible}
+  .ev-c{fill:none;stroke:rgba(160,163,184,.26);stroke-width:1.4;stroke-linecap:round}
+  .ev-hl{fill:none;stroke-width:2.2;stroke-linecap:round;opacity:0;transition:opacity .35s ease-out}
+  .ev-hl.teal{stroke:var(--teal)}.ev-hl.gold{stroke:var(--gold)}
+  .ev-hl.on{opacity:.85}
+  .ev-tile{cursor:pointer;outline:none}
+  .ev-tbox{fill:rgba(26,35,56,.62);stroke:url(#evRim);stroke-width:1.2}
+  .ev-tring{fill:none;stroke:var(--teal);stroke-width:1.6;opacity:0;transition:opacity .4s ease-out}
+  .ev-tile[data-c="gold"] .ev-tring{stroke:var(--gold)}
+  .ev-tile.lit .ev-tring,.ev-tile.hover .ev-tring,.ev-tile.prov .ev-tring{opacity:1}
+  .ev-tile:focus-visible .ev-tbox{stroke:var(--teal);stroke-width:2}
+  .ev-tile .ic{fill:none;stroke:#D3D6E2;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .4s ease-out}
+  .ev-tile.lit .ic,.ev-tile.hover .ic,.ev-tile.prov .ic{stroke:#7fe0e1}
+  .ev-tile[data-c="gold"].lit .ic,.ev-tile[data-c="gold"].hover .ic,.ev-tile[data-c="gold"].prov .ic{stroke:#ecd078}
+  .ev-lbl{fill:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:1px;text-anchor:middle}
+  .ev-val{fill:#fff;font-family:var(--mono);font-size:13px;font-weight:500;text-anchor:middle}
+  .ev-dmn{fill:#1A2338;stroke:url(#cvRim);stroke-width:2;stroke-linejoin:round}
+  .ev-dmn-in{fill:none;stroke:rgba(255,255,255,.1);stroke-width:1.2;stroke-linejoin:round}
+  .ev-scan{fill:none;stroke:var(--teal);stroke-width:1.5;stroke-linecap:round;opacity:0}
+  .pk{pointer-events:none}
+  .pk path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .pk .t1{stroke-width:2.8;opacity:.85}.pk .t2{stroke-width:2.2;opacity:.42}.pk .t3{stroke-width:1.6;opacity:.18}
+  .ev-checks{position:absolute;left:50%;top:21%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none}
+  .ev-checks span{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--success);letter-spacing:.04em;opacity:0;transform:translateY(5px);
+    transition:opacity .3s ease-out,transform .4s cubic-bezier(.16,1,.3,1)}
+  .ev-checks span.on{opacity:1;transform:none}
+  .ev-noise{position:absolute;left:0;top:0;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--slate);white-space:nowrap;pointer-events:none;
+    opacity:0;transform:translate(-50%,-170%);transition:opacity .25s ease-out}
+  .ev-noise.on{opacity:1}
+  .ev-chip{position:absolute;left:50%;top:96.5%;transform:translate(-50%,10px);opacity:0;pointer-events:none;cursor:default;
+    display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:10px;white-space:nowrap;
+    font-family:var(--mono);font-size:11px;font-weight:500;color:#fff;letter-spacing:.02em;
+    background:rgba(26,35,56,.72);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 30px rgba(0,0,0,.35);
+    transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+  .ev-chip.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+  .ev-chip svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:var(--success);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+  .ev-chip:hover,.ev-chip:focus-visible{border-color:rgba(34,197,94,.55)}
+  .dg-tip{position:absolute;left:0;top:0;z-index:3;width:max-content;max-width:min(260px,80%);padding:9px 12px;border-radius:10px;pointer-events:none;
+    font-family:var(--sans);font-size:12.5px;line-height:1.45;color:#E4E6EE;opacity:0;transform:translate(-50%,calc(-100% - 10px));transition:opacity .2s ease-out;
+    background:rgba(26,35,56,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 32px rgba(0,0,0,.4)}
+  .dg-tip.on{opacity:1}
+  .dg-tip b{font-family:var(--mono);font-weight:500;color:#fff}
+  .dg-tip .ea{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:3px}
+  /* orbit */
+  .ob-spoke{stroke:rgba(160,163,184,.14);stroke-width:1;transition:stroke .3s}
+  .ob-spoke.on{stroke:rgba(14,165,168,.6)}.ob-spoke.on.gold{stroke:rgba(212,175,55,.65)}
+  .ob-node{cursor:pointer;outline:none}
+  .ob-nb{transition:transform .35s cubic-bezier(.34,1.4,.64,1)}
+  .ob-node.hover .ob-nb,.ob-node:focus-visible .ob-nb{transform:scale(1.12)}
+  .ob-nc{fill:rgba(26,35,56,.72);stroke:url(#evRim);stroke-width:1.4}
+  .ob-node.hover .ob-nc,.ob-node:focus-visible .ob-nc{stroke:var(--teal)}
+  .ob-node[data-c="gold"].hover .ob-nc,.ob-node[data-c="gold"]:focus-visible .ob-nc{stroke:var(--gold)}
+  .ob-node .oic{fill:none;stroke:#D3D6E2;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .ob-lbl{fill:#E4E6EE;font-family:var(--mono);font-size:13px;font-weight:500;text-anchor:middle;letter-spacing:.3px}
+  .ob-st{fill:var(--muted);font-family:var(--mono);font-size:11px;text-anchor:middle}
+  .ob-edge{stroke-width:3;stroke-linecap:round;opacity:0}
+  .ob-ripple{fill:none;stroke:var(--teal);stroke-width:1.4;opacity:0}
+  .stack-list{display:none}
+  @media (max-width:640px){
+    .ev-tile.mhide,.ev-c[data-i="1"],.ev-c[data-i="4"]{display:none}
+    .ev-lbl{font-size:20px;transform:translateY(6px)}.ev-val{font-size:22px;transform:translateY(17px)}
+    .dg-ev{margin-bottom:58px}
+    .ev-chip{top:auto;bottom:-50px;white-space:normal;width:max-content;max-width:92%;text-align:left;font-size:10.5px}
+    .ev-checks span{font-size:10px}
+    .ob-lbl,.ob-st{display:none}
+    .stack-list{display:flex}
+  }
+  /* layered diagrams: moving parts live on their own compositor layers */
+  .dg-base{position:relative}
+  .dgl{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;will-change:transform}
+  .dg-ob>.dg-base{will-change:transform}
+  #obRing,#obMidL{transform-origin:50% 51.4286%}
+  .ob-breathe{animation:obbreathe 4s ease-in-out infinite}
+  @keyframes obbreathe{0%,100%{opacity:.42}50%{opacity:.64}}
+  .ev-glowd{position:absolute;left:50%;top:48.27%;width:21.8%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;will-change:opacity;
+    background:radial-gradient(closest-side,rgba(14,165,168,.42),rgba(212,175,55,.14) 50%,rgba(11,18,32,0))}
+  .obn{position:absolute;left:0;top:0;width:0;height:0;will-change:transform,opacity;pointer-events:auto;outline:none;cursor:pointer}
+  .obn-b{position:absolute;width:var(--nd,54px);height:var(--nd,54px);left:calc(var(--nd,54px) / -2);top:calc(var(--nd,54px) / -2);transition:transform .35s cubic-bezier(.34,1.4,.64,1)}
+  .obn-b svg{display:block;width:100%;height:100%;overflow:visible}
+  .obn.hover .obn-b,.obn:focus-visible .obn-b{transform:scale(1.12)}
+  .obn .oic{fill:none;stroke:#D3D6E2;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .obn.hover .ob-nc,.obn:focus-visible .ob-nc{stroke:var(--teal)}
+  .obn[data-c="gold"].hover .ob-nc,.obn[data-c="gold"]:focus-visible .ob-nc{stroke:var(--gold)}
+  .obn-l{position:absolute;left:0;top:0;white-space:nowrap;text-align:center;line-height:1.3;pointer-events:none}
+  .obn-l b{display:block;font-family:var(--mono);font-weight:500;font-size:var(--lf,10px);color:#E4E6EE;letter-spacing:.02em}
+  .obn-l span{display:block;font-family:var(--mono);font-size:calc(var(--lf,10px) * .85);color:var(--muted)}
+  @media (max-width:640px){ .obn-l{display:none} }
   /* ---- manifesto ---- */
   .sec-man{background:linear-gradient(180deg,var(--bg),#0a1120 50%,var(--bg))}
   .man{display:flex;gap:14px;height:min(560px,70vh);min-height:460px}
@@ -1071,74 +1163,103 @@
             <span class="eyebrow">Evidence ledger</span>
             <h2 class="title">Every recommendation has an experiment behind it</h2>
             <p class="lede">Most AI vendors ask you to trust the pitch. Causvia shows its working: every recommendation links back to the experiment that produced it, with the data, the holdout and the confidence.</p>
-            <svg class="hub-diagram" viewBox="0 0 680 520" role="img" aria-label="Tickets, CSAT, quality, cost, errors and wellbeing data feeding the Causvia evidence ledger">
-              <circle class="hbloom" cx="340" cy="260" r="150" fill="url(#cvBloom)"/>
-              <g>
-                <path class="rib" d="M146 125 C213.5 125 228.5 215 296 215"/><path class="rib" d="M146 131 C213.5 131 228.5 221 296 221"/>
-                <path class="rib" d="M146 255 C198.2 255 209.8 255 262 255"/><path class="rib" d="M146 261 C198.2 261 209.8 261 262 261"/>
-                <path class="rib" d="M146 385 C213.5 385 228.5 295 296 295"/><path class="rib" d="M146 391 C213.5 391 228.5 301 296 301"/>
-                <path class="rib" d="M534 125 C466.5 125 451.5 215 384 215"/><path class="rib" d="M534 131 C466.5 131 451.5 221 384 221"/>
-                <path class="rib" d="M534 255 C481.8 255 470.2 255 418 255"/><path class="rib" d="M534 261 C481.8 261 470.2 261 418 261"/>
-                <path class="rib" d="M534 385 C466.5 385 451.5 295 384 295"/><path class="rib" d="M534 391 C466.5 391 451.5 301 384 301"/>
-                <path class="spark" d="M146 128 C213.5 128 228.5 218 296 218" style="animation-delay:-0.5s"/>
-                <path class="spark" d="M146 258 C198.2 258 209.8 258 262 258" style="animation-delay:-2.6s;animation-duration:4.7s"/>
-                <path class="spark g" d="M146 388 C213.5 388 228.5 298 296 298" style="animation-delay:-1.4s;animation-duration:3.8s"/>
-                <path class="spark" d="M534 128 C466.5 128 451.5 218 384 218" style="animation-delay:-3.3s;animation-duration:4.4s"/>
-                <path class="spark" d="M534 258 C481.8 258 470.2 258 418 258" style="animation-delay:-0.9s;animation-duration:4.1s"/>
-                <path class="spark g" d="M534 388 C466.5 388 451.5 298 384 298" style="animation-delay:-2.1s;animation-duration:4.6s"/>
+            <div class="dg dg-ev" id="dgEv">
+            <div class="ev-glowd" id="evGlowD" aria-hidden="true"></div>
+            <svg class="hub-diagram dg-base" id="evSvg" viewBox="0 0 680 520" role="img" aria-label="Evidence flow: data from tickets, CSAT, quality, cost, errors and team wellbeing flows into the Causvia core. The Skeptic checks it for seasonality, ticket mix and holdout fairness, rejects noise, and a recommendation comes out with its evidence attached.">
+              <defs>
+                <linearGradient id="evRim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(255,255,255,.30)"/><stop offset=".6" stop-color="rgba(255,255,255,.06)"/><stop offset="1" stop-color="rgba(255,255,255,.03)"/></linearGradient>
+                <radialGradient id="pkTeal"><stop offset="0" stop-color="rgba(154,243,244,.75)"/><stop offset=".4" stop-color="rgba(14,165,168,.32)"/><stop offset="1" stop-color="rgba(14,165,168,0)"/></radialGradient>
+                <radialGradient id="pkGold"><stop offset="0" stop-color="rgba(255,240,194,.8)"/><stop offset=".4" stop-color="rgba(212,175,55,.34)"/><stop offset="1" stop-color="rgba(212,175,55,0)"/></radialGradient>
+                <radialGradient id="pkSlate"><stop offset="0" stop-color="rgba(203,213,225,.55)"/><stop offset=".4" stop-color="rgba(148,163,184,.22)"/><stop offset="1" stop-color="rgba(148,163,184,0)"/></radialGradient>
+                <radialGradient id="evCoreGlow"><stop offset="0" stop-color="rgba(14,165,168,.42)"/><stop offset=".5" stop-color="rgba(212,175,55,.14)"/><stop offset="1" stop-color="rgba(11,18,32,0)"/></radialGradient>
+              </defs>
+              <circle cx="340" cy="251" r="150" fill="url(#cvBloom)"/>
+              <g id="evCurves">
+                <path class="ev-c" data-i="0" d="M146 116 C214 116 240 209.5 298.5 209.5"/>
+                <path class="ev-c" data-i="1" d="M146 251 C190 251 215 251 257 251"/>
+                <path class="ev-c" data-i="2" d="M146 386 C214 386 240 292.5 298.5 292.5"/>
+                <path class="ev-c" data-i="3" d="M534 116 C466 116 440 209.5 381.5 209.5"/>
+                <path class="ev-c" data-i="4" d="M534 251 C490 251 465 251 423 251"/>
+                <path class="ev-c" data-i="5" d="M534 386 C466 386 440 292.5 381.5 292.5"/>
               </g>
-              <!-- tickets -->
-              <g class="tileg"><rect class="tile" x="54" y="84" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(81,111) scale(1.6)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></g>
-                <text class="hlbl" x="100" y="196" text-anchor="middle">TICKETS</text></g>
-              <!-- csat (human) -->
-              <g class="tileg hu"><rect class="tile" x="54" y="214" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(81,241) scale(1.6)"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></g>
-                <text class="hlbl" x="100" y="326" text-anchor="middle">CSAT</text></g>
-              <!-- quality -->
-              <g class="tileg"><rect class="tile" x="54" y="344" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(81,371) scale(1.6)"><path d="M12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3Z"/></g>
-                <text class="hlbl" x="100" y="456" text-anchor="middle">QUALITY</text></g>
-              <!-- cost -->
-              <g class="tileg"><rect class="tile" x="534" y="84" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(561,111) scale(1.6)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></g>
-                <text class="hlbl" x="580" y="196" text-anchor="middle">COST</text></g>
-              <!-- errors -->
-              <g class="tileg"><rect class="tile" x="534" y="214" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(561,241) scale(1.6)"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></g>
-                <text class="hlbl" x="580" y="326" text-anchor="middle">ERRORS</text></g>
-              <!-- wellbeing (human) -->
-              <g class="tileg hu"><rect class="tile" x="534" y="344" width="92" height="92" rx="20"/>
-                <g class="ic" transform="translate(561,371) scale(1.6)"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12H9l1-2 2 4.5 2-7 1.5 4.5h5"/></g>
-                <text class="hlbl" x="580" y="456" text-anchor="middle">WELLBEING</text></g>
-              <rect class="dmn" x="281" y="201" width="118" height="118" rx="22" transform="rotate(45 340 260)"/>
-              <rect class="dmn-in" x="295" y="215" width="90" height="90" rx="15" transform="rotate(45 340 260)"/>
-              <svg x="303" y="219.3" width="74" height="81.4" viewBox="0 0 100 110"><use href="#causviaMark"/></svg>
+              <g id="evHl"></g>
+              <g id="evCore">
+                <path class="ev-dmn" id="evDmn" d="M340 168 L423 251 L340 334 L257 251 Z"/>
+                <path class="ev-dmn-in" id="evDmnIn" d="M340 187 L404 251 L340 315 L276 251 Z"/>
+                <g id="evLogo"><svg x="303" y="214.3" width="74" height="81.4" viewBox="0 0 100 110"><use href="#causviaMark"/></svg></g>
+              </g>
+              <g id="evTiles">
+                <g class="ev-tile" data-i="0" data-c="teal" tabindex="0" aria-label="Tickets: volume, type and handling time for every case">
+                  <rect class="ev-tbox" x="54" y="70" width="92" height="92" rx="20"/><rect class="ev-tring" x="54" y="70" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(81,97) scale(1.6)"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/></g>
+                  <text class="ev-lbl" x="100" y="182">TICKETS</text><text class="ev-val" x="100" y="199">12,480</text></g>
+                <g class="ev-tile mhide" data-i="1" data-c="teal" tabindex="0" aria-label="Quality: QA scores from reviewed conversations">
+                  <rect class="ev-tbox" x="54" y="205" width="92" height="92" rx="20"/><rect class="ev-tring" x="54" y="205" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(81,232) scale(1.6)"><path d="M12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3Z"/></g>
+                  <text class="ev-lbl" x="100" y="317">QUALITY</text><text class="ev-val" x="100" y="334">98.1%</text></g>
+                <g class="ev-tile" data-i="2" data-c="gold" tabindex="0" aria-label="CSAT: customer satisfaction, measured per ticket">
+                  <rect class="ev-tbox" x="54" y="340" width="92" height="92" rx="20"/><rect class="ev-tring" x="54" y="340" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(81,367) scale(1.6)"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></g>
+                  <text class="ev-lbl" x="100" y="452">CSAT</text><text class="ev-val" x="100" y="469">4.6</text></g>
+                <g class="ev-tile" data-i="3" data-c="teal" tabindex="0" aria-label="Cost: fully loaded cost per ticket, human and AI">
+                  <rect class="ev-tbox" x="534" y="70" width="92" height="92" rx="20"/><rect class="ev-tring" x="534" y="70" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(561,97) scale(1.6)"><path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.67 0 6.67-10 0-10"/></g>
+                  <text class="ev-lbl" x="580" y="182">COST</text><text class="ev-val" x="580" y="199">₹18/ticket</text></g>
+                <g class="ev-tile mhide" data-i="4" data-c="teal" tabindex="0" aria-label="Errors: wrong answers, reopened tickets and escalations">
+                  <rect class="ev-tbox" x="534" y="205" width="92" height="92" rx="20"/><rect class="ev-tring" x="534" y="205" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(561,232) scale(1.6)"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></g>
+                  <text class="ev-lbl" x="580" y="317">ERRORS</text><text class="ev-val" x="580" y="334">0.4%</text></g>
+                <g class="ev-tile" data-i="5" data-c="gold" tabindex="0" aria-label="Wellbeing: team workload and sentiment signals">
+                  <rect class="ev-tbox" x="534" y="340" width="92" height="92" rx="20"/><rect class="ev-tring" x="534" y="340" width="92" height="92" rx="20"/>
+                  <g class="ic" transform="translate(561,367) scale(1.6)"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12H9l1-2 2 4.5 2-7 1.5 4.5h5"/></g>
+                  <text class="ev-lbl" x="580" y="452">WELLBEING</text><text class="ev-val" x="580" y="469">87</text></g>
+              </g>
             </svg>
+            <canvas class="dgl dg-cv" id="evCv" aria-hidden="true"></canvas>
+            <div class="ev-checks" id="evChecks" aria-hidden="true"><span>Seasonality ✓</span><span>Ticket mix ✓</span><span>Holdout ✓</span></div>
+            <div class="ev-noise" id="evNoise" aria-hidden="true">✕ noise</div>
+            <button class="ev-chip" id="evChip" type="button" aria-label="Recommendation: move refunds to AI-handled, 92% confidence, experiment EXP-142. Supported by tickets, quality, CSAT and cost data.">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Refunds → AI-handled · 92% confidence · EXP-142</span></button>
+            <div class="dg-tip" id="evTip" role="tooltip"></div>
+            </div>
           </div>
 
           <div class="wcol sv" style="transition-delay:.1s" id="stack">
             <span class="eyebrow">Integrations</span>
             <h2 class="title">Works with your operations stack</h2>
             <p class="lede">Causvia is built to connect with the tools your operations already run on, such as Zendesk, Freshdesk, Salesforce, ServiceNow and your own AI models, so experiments happen inside real work. Integrations are rolling out in early access.</p>
-            <svg class="orbit-diagram" viewBox="0 0 700 620" role="img" aria-label="Causvia at the centre of your operations stack: helpdesk, CRM, team chat, ticketing, AI models and data">
+            <div class="dg dg-ob" id="dgOb">
+            <!-- layer stack (back → front): ring · base hexes · middle hex · inner core · canvas (spokes, pulses, ripples) · nodes -->
+            <svg class="dgl ob-ring orbit-diagram" id="obRing" viewBox="-60 -50 820 700" aria-hidden="true">
+              <defs><mask id="obRingMask" maskUnits="userSpaceOnUse" x="-60" y="-50" width="820" height="700"><circle id="obRingM" cx="350" cy="310" r="250" fill="none" stroke="#fff" stroke-width="8"/></mask></defs>
               <circle cx="350" cy="310" r="172" fill="url(#cvBloom)"/>
-              <circle class="orb-track" cx="350" cy="310" r="250"/>
-              <path class="orb-dark2" d="M551.7 281.7 Q568 310 551.7 338.3 L475.4 470.5 Q459 498.8 426.3 498.8 L273.7 498.8 Q241 498.8 224.7 470.5 L148.4 338.3 Q132 310 148.4 281.7 L224.7 149.5 Q241 121.2 273.7 121.2 L426.3 121.2 Q459 121.2 475.4 149.5 Z"/>
-              <path class="orb-band" d="M514.7 286.9 Q528 310 514.7 333.1 L452.4 441 Q439 464.2 412.3 464.2 L287.7 464.2 Q261 464.2 247.7 441 L185.4 333.1 Q172 310 185.4 286.9 L247.7 179 Q261 155.8 287.7 155.8 L412.3 155.8 Q439 155.8 452.4 179 Z"/>
-              <path class="orb-dark1" d="M465.9 292.5 Q476 310 465.9 327.5 L423.1 401.7 Q413 419.1 392.8 419.1 L307.2 419.1 Q287 419.1 276.9 401.7 L234.1 327.5 Q224 310 234.1 292.5 L276.9 218.3 Q287 200.9 307.2 200.9 L392.8 200.9 Q413 200.9 423.1 218.3 Z"/>
-              <path class="orb-logo" d="M426.9 297.6 Q434 310 426.9 322.4 L399.1 370.4 Q392 382.7 377.7 382.7 L322.3 382.7 Q308 382.7 300.9 370.4 L273.1 322.4 Q266 310 273.1 297.6 L300.9 249.6 Q308 237.3 322.3 237.3 L377.7 237.3 Q392 237.3 399.1 249.6 Z"/>
-              <svg x="306" y="262" width="88" height="96.8" viewBox="0 0 100 110"><use href="#causviaMark"/></svg>
-              <g class="orb-ring" id="orbRing">
-                <g class="ochip" transform="translate(225,93.5)"><title>AI models</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/><path d="M19 3v4M17 5h4"/></g></g></g>
-                <g class="ochip" transform="translate(475,93.5)"><title>Data warehouse</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></g></g>
-                <g class="ochip" transform="translate(100,310)"><title>Team chat</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></g></g></g>
-                <g class="ochip" transform="translate(600,310)"><title>CRM</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></g></g></g>
-                <g class="ochip" transform="translate(225,526.5)"><title>Helpdesk</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></g></g></g>
-                <g class="ochip" transform="translate(475,526.5)"><title>Ticketing</title><circle r="36"/><g class="oturn"><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></g></g></g>
-              </g>
+              <circle class="orb-track" cx="350" cy="310" r="250" mask="url(#obRingMask)"/>
             </svg>
-            <div class="stack-list" aria-hidden="true"><span>Helpdesk</span><span>CRM</span><span>Team chat</span><span>Ticketing</span><span>AI models</span><span>Data</span></div>
+            <svg class="orbit-diagram dg-base" id="obSvg" viewBox="-60 -50 820 700" role="img" aria-label="Integration orbit: Causvia sits at the centre of your operations tools. Helpdesk, CRM, team chat, ticketing, AI models and data tools orbit the core and send data into it. Integrations are rolling out in early access.">
+              <path class="orb-dark2" id="obOuter" d="M551.7 281.7 Q568 310 551.7 338.3 L475.4 470.5 Q459 498.8 426.3 498.8 L273.7 498.8 Q241 498.8 224.7 470.5 L148.4 338.3 Q132 310 148.4 281.7 L224.7 149.5 Q241 121.2 273.7 121.2 L426.3 121.2 Q459 121.2 475.4 149.5 Z"/>
+              <path class="orb-band" id="obBand" d="M514.7 286.9 Q528 310 514.7 333.1 L452.4 441 Q439 464.2 412.3 464.2 L287.7 464.2 Q261 464.2 247.7 441 L185.4 333.1 Q172 310 185.4 286.9 L247.7 179 Q261 155.8 287.7 155.8 L412.3 155.8 Q439 155.8 452.4 179 Z"/>
+            </svg>
+            <svg class="dgl orbit-diagram" id="obMidL" viewBox="-60 -50 820 700" aria-hidden="true">
+              <path class="orb-dark1" d="M465.9 292.5 Q476 310 465.9 327.5 L423.1 401.7 Q413 419.1 392.8 419.1 L307.2 419.1 Q287 419.1 276.9 401.7 L234.1 327.5 Q224 310 234.1 292.5 L276.9 218.3 Q287 200.9 307.2 200.9 L392.8 200.9 Q413 200.9 423.1 218.3 Z"/>
+            </svg>
+            <svg class="dgl orbit-diagram" id="obTop" viewBox="-60 -50 820 700" aria-hidden="true">
+              <defs><radialGradient id="obCoreGlow"><stop offset="0" stop-color="rgba(14,165,168,.4)"/><stop offset=".55" stop-color="rgba(212,175,55,.12)"/><stop offset="1" stop-color="rgba(11,18,32,0)"/></radialGradient></defs>
+              <path class="orb-logo" id="obInner" d="M426.9 297.6 Q434 310 426.9 322.4 L399.1 370.4 Q392 382.7 377.7 382.7 L322.3 382.7 Q308 382.7 300.9 370.4 L273.1 322.4 Q266 310 273.1 297.6 L300.9 249.6 Q308 237.3 322.3 237.3 L377.7 237.3 Q392 237.3 399.1 249.6 Z"/>
+              <g id="obGlowG"><circle class="ob-breathe" id="obGlow" cx="350" cy="310" r="64" fill="url(#obCoreGlow)"/></g>
+              <g id="obLogo"><svg x="306" y="262" width="88" height="96.8" viewBox="0 0 100 110"><use href="#causviaMark"/></svg></g>
+            </svg>
+            <canvas class="dgl dg-cv" id="obCv" aria-hidden="true"></canvas>
+            <div class="dgl ob-nodes" id="obNodes">
+              <div class="obn" data-a="240" data-c="teal" tabindex="0" role="button" aria-label="AI models: your own models or hosted large language models. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/><path d="M19 3v4M17 5h4"/></g></svg></div><div class="obn-l"><b>AI models</b><span>Early access</span></div></div>
+              <div class="obn" data-a="300" data-c="teal" tabindex="0" role="button" aria-label="Data: your data warehouse or data lake. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></svg></div><div class="obn-l"><b>Data</b><span>Early access</span></div></div>
+              <div class="obn" data-a="180" data-c="gold" tabindex="0" role="button" aria-label="Team chat: Slack, Microsoft Teams and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></g></svg></div><div class="obn-l"><b>Team chat</b><span>Early access</span></div></div>
+              <div class="obn" data-a="0" data-c="teal" tabindex="0" role="button" aria-label="CRM: Salesforce, HubSpot and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></g></svg></div><div class="obn-l"><b>CRM</b><span>Early access</span></div></div>
+              <div class="obn" data-a="120" data-c="gold" tabindex="0" role="button" aria-label="Helpdesk: Zendesk, Freshdesk and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></g></svg></div><div class="obn-l"><b>Helpdesk</b><span>Early access</span></div></div>
+              <div class="obn" data-a="60" data-c="teal" tabindex="0" role="button" aria-label="Ticketing: ServiceNow, Jira Service Management and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></g></svg></div><div class="obn-l"><b>Ticketing</b><span>Early access</span></div></div>
+            </div>
+            <div class="dg-tip" id="obTip" role="tooltip"></div>
+            </div>
+            <div class="stack-list" aria-hidden="true"><span>Helpdesk · early access</span><span>CRM · early access</span><span>Team chat · early access</span><span>Ticketing · early access</span><span>AI models · early access</span><span>Data · early access</span></div>
           </div>
         </div>
       </div>
@@ -1852,6 +1973,260 @@
       if(en.isIntersecting){ en.target.classList.add("in"); svIO.unobserve(en.target); } }); },{threshold:.14});
     [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ svIO.observe(el); });
   } else { [].slice.call(document.querySelectorAll(".sv")).forEach(function(el){ el.classList.add("in"); }); }
+
+  /* ================= animated diagrams: evidence flow + integration orbit =================
+     Static artwork stays in SVG; everything that moves is either a canvas (packets, scan ring, spokes, pulses,
+     ripples, edge flashes — one shared packet renderer) or a layer moved only by transform/opacity (orbit nodes,
+     labels, rotating ring and middle hex, core glow), so motion costs almost no paint. Runs only while on screen. */
+  (function(){
+    function cl(v){ return v<0?0:v>1?1:v; }
+    var ease={ expo:function(t){ return t>=1?1:1-Math.pow(2,-10*t); }, sine:function(t){ return -(Math.cos(Math.PI*t)-1)/2; },
+      back:function(t){ var c1=1.5,c3=c1+1; return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2); }, accel:function(t){ return Math.pow(t,1.6); } };
+    var MOB=matchMedia("(max-width:640px)").matches, FINE=matchMedia("(hover:hover)").matches;
+    var PK={teal:{head:"#9AF3F4",trail:"#0EA5A8",g:["rgba(154,243,244,.75)","rgba(14,165,168,.32)","rgba(14,165,168,0)"]},
+            gold:{head:"#FFF0C2",trail:"#D4AF37",g:["rgba(255,240,194,.8)","rgba(212,175,55,.34)","rgba(212,175,55,0)"]},
+            slate:{head:"#CBD5E1",trail:"#94A3B8",g:["rgba(203,213,225,.55)","rgba(148,163,184,.22)","rgba(148,163,184,0)"]}};
+
+    /* canvas sized to its diagram, drawing in the SVG's viewBox units */
+    function Stage(cv,vb){ var ctx=cv.getContext("2d"), st={ctx:ctx,s:1,dirty:true};
+      st.fit=function(){ var w=cv.clientWidth, h=cv.clientHeight, d=Math.min(devicePixelRatio||1,2); if(!w) return;
+        cv.width=Math.round(w*d); cv.height=Math.round(h*d); st.s=w/vb.width;
+        ctx.setTransform(st.s*d,0,0,st.s*d,-vb.x*st.s*d,-vb.y*st.s*d); };
+      st.clear=function(){ ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,cv.width,cv.height); ctx.restore(); };
+      st.fit(); addEventListener("resize",st.fit); return st; }
+
+    /* the shared packet: bright head, soft glow, a trail that fades over ~40 units */
+    function drawPacket(ctx,pts,c,alpha,sc){ var C=PK[c], n=pts.length, h=pts[n-1];
+      ctx.lineCap="round"; ctx.strokeStyle=C.trail;
+      for(var i=1;i<n;i++){ var t=i/(n-1); ctx.globalAlpha=alpha*(0.04+0.82*t*t); ctx.lineWidth=(1.1+1.9*t)*sc;
+        ctx.beginPath(); ctx.moveTo(pts[i-1][0],pts[i-1][1]); ctx.lineTo(pts[i][0],pts[i][1]); ctx.stroke(); }
+      var gr=ctx.createRadialGradient(h[0],h[1],0,h[0],h[1],10*sc); gr.addColorStop(0,C.g[0]); gr.addColorStop(.4,C.g[1]); gr.addColorStop(1,C.g[2]);
+      ctx.globalAlpha=alpha; ctx.fillStyle=gr; ctx.beginPath(); ctx.arc(h[0],h[1],10*sc,0,6.2832); ctx.fill();
+      ctx.fillStyle=C.head; ctx.beginPath(); ctx.arc(h[0],h[1],3.2*sc,0,6.2832); ctx.fill(); ctx.globalAlpha=1; }
+    function Packet(){ this.live=false; }
+    Packet.prototype.go=function(track,c,dur,o){ this.track=track; this.c=c; this.dur=dur; this.t=0; this.o=o||{}; this.stopT=-1; this.live=true; this.alpha=1; };
+    Packet.prototype.step=function(dt){ if(!this.live) return; this.t+=dt; var o=this.o, f=ease.accel(cl(this.t/this.dur));
+      if(o.reject && f>=o.stop){ f=o.stop; if(this.stopT<0){ this.stopT=this.t; this.c="slate"; if(o.onStop) o.onStop(this.track.at(f*this.track.L())); } }
+      this.f=f;
+      if(this.stopT>=0){ this.alpha=1-cl((this.t-this.stopT)/450); if(this.alpha<=0) this.live=false; }
+      else if(this.t>=this.dur){ this.live=false; if(o.onArrive) o.onArrive(); } };
+    Packet.prototype.draw=function(ctx,sc,tl){ var L=this.track.L(), s=this.f*L, a=Math.max(0,s-tl), pts=[];
+      for(var j=0;j<=8;j++) pts.push(this.track.at(a+(s-a)*j/8)); drawPacket(ctx,pts,this.c,this.alpha,sc); };
+    function Pool(n){ var a=[]; for(var i=0;i<n;i++) a.push(new Packet());
+      return { get:function(){ for(var i=0;i<a.length;i++) if(!a[i].live) return a[i]; return null; },
+        step:function(dt){ var any=false; for(var i=0;i<a.length;i++){ a[i].step(dt); if(a[i].live) any=true; } return any; },
+        draw:function(ctx,sc,tl){ for(var i=0;i<a.length;i++) if(a[i].live) a[i].draw(ctx,sc,tl); } }; }
+    /* arc-length lookup so a packet sits exactly on its curve */
+    function curveTrack(path){ var L=path.getTotalLength(), N=120, pts=[];
+      for(var i=0;i<=N;i++){ var p=path.getPointAtLength(L*i/N); pts.push(p.x,p.y); }
+      return { L:function(){ return L; }, at:function(s){ s=s<0?0:s>L?L:s; var f=s/L*N, i=Math.min(N-1,f|0), r=f-i;
+        return [pts[2*i]+(pts[2*i+2]-pts[2*i])*r, pts[2*i+1]+(pts[2*i+3]-pts[2*i+1])*r]; } }; }
+
+    function vbPct(vb){ return function(x,y){ return [((x-vb.x)/vb.width*100)+"%", ((y-vb.y)/vb.height*100)+"%"]; }; }
+    function tipShow(tip,html,pos){ tip.innerHTML=html; tip.style.top=pos[1];
+      // keep the tooltip inside the diagram: centre on the point, clamped to the edges
+      var W=tip.parentNode.clientWidth, w=tip.offsetWidth, x=parseFloat(pos[0])/100*W; x=Math.max(w/2+4,Math.min(W-w/2-4,x));
+      tip.style.left=x.toFixed(1)+"px"; tip.classList.add("on"); }
+    /* entrance at 30% in view (once); frames only while on screen and the tab is visible */
+    function drive(root,api){ var vis=false, raf=0, last=0, started=false;
+      function tick(now){ var dt=last?Math.min(50,now-last):16; last=now; api.frame(now,dt); raf=(vis&&!document.hidden)?requestAnimationFrame(tick):0; }
+      function wake(){ if(!raf && vis && !document.hidden){ last=0; raf=requestAnimationFrame(tick); } }
+      new IntersectionObserver(function(es){ es.forEach(function(e){ vis=e.isIntersecting;
+        if(!started && e.intersectionRatio>=0.3){ started=true; api.enter(performance.now()); }
+        if(vis) wake(); }); },{threshold:[0,0.3]}).observe(root);
+      document.addEventListener("visibilitychange",wake);
+      return { wake:wake }; }
+    function interactive(el,on,off){ var touch=false;
+      el.addEventListener("pointerenter",function(e){ if(e.pointerType==="mouse") on(); });
+      el.addEventListener("pointerleave",function(e){ if(e.pointerType==="mouse") off(); });
+      el.addEventListener("pointerdown",function(e){ touch=e.pointerType!=="mouse"; });
+      el.addEventListener("click",function(){ if(touch){ if(el.classList.contains("hover")) off(); else on(); } });
+      el.addEventListener("focus",on); el.addEventListener("blur",off); }
+
+    /* ================= DIAGRAM 1 — evidence flow ================= */
+    (function(){
+      var root=document.getElementById("dgEv"); if(!root) return;
+      var svg=document.getElementById("evSvg"), vb=svg.viewBox.baseVal, P=vbPct(vb), stage=Stage(document.getElementById("evCv"),vb),
+          tip=document.getElementById("evTip"), chip=document.getElementById("evChip"), noise=document.getElementById("evNoise"),
+          checks=[].slice.call(document.querySelectorAll("#evChecks span")), glow=document.getElementById("evGlowD"),
+          dmn=document.getElementById("evDmn"), dmnIn=document.getElementById("evDmnIn"), logo=document.getElementById("evLogo"), hlLayer=document.getElementById("evHl");
+      var pool=new Pool(8);
+      var META=[ {v:12480,f:function(v){ return Math.round(v).toLocaleString("en-IN"); },n:function(v){ return v+3+Math.floor(Math.random()*15); }},
+        {v:98.1,f:function(v){ return v.toFixed(1)+"%"; },n:function(v){ return Math.max(97.8,Math.min(98.4,v+(Math.random()-.5)*.3)); }},
+        {v:4.6,f:function(v){ return v.toFixed(1); },n:function(){ return Math.random()<.8?4.6:(Math.random()<.5?4.5:4.7); }},
+        {v:18,f:function(v){ return "₹"+Math.round(v)+"/ticket"; },n:function(){ return Math.random()<.75?18:17; }},
+        {v:0.4,f:function(v){ return v.toFixed(1)+"%"; },n:function(){ return [0.3,0.4,0.4,0.5][(Math.random()*4)|0]; }},
+        {v:87,f:function(v){ return String(Math.round(v)); },n:function(v){ return Math.max(85,Math.min(89,v+((Math.random()*3)|0)-1)); }} ];
+      var TIPS=["<b>Tickets</b> · volume, type and handling time for every case","<b>Quality</b> · QA scores from reviewed conversations",
+        "<b>CSAT</b> · customer satisfaction, measured per ticket","<b>Cost</b> · fully loaded cost per ticket, human and AI",
+        "<b>Errors</b> · wrong answers, reopened tickets and escalations","<b>Wellbeing</b> · team workload and sentiment signals"];
+      var TILE_C=[[100,116],[100,251],[100,386],[580,116],[580,251],[580,386]];
+      var NS="http://www.w3.org/2000/svg";
+      var tiles=[].slice.call(svg.querySelectorAll(".ev-tile")).map(function(g){
+        var i=+g.dataset.i, path=svg.querySelector('.ev-c[data-i="'+i+'"]'), hl=document.createElementNS(NS,"path");
+        hl.setAttribute("d",path.getAttribute("d")); hl.setAttribute("class","ev-hl "+g.dataset.c); hlLayer.appendChild(hl);
+        return {g:g,i:i,c:g.dataset.c,path:path,hl:hl,track:curveTrack(path),L:path.getTotalLength(),val:g.querySelector(".ev-val"),m:META[i],
+          shown:META[i].v,from:0,to:META[i].v,vt:-1,vd:500,txt:"",litUntil:0}; });
+      var visible=tiles.filter(function(t){ return !(MOB && t.g.classList.contains("mhide")); });
+      var ORDER=[0,3,1,4,2,5].filter(function(i){ return visible.some(function(t){ return t.i===i; }); });
+      var REJECT=MOB?[3,0]:[4,1], SUPPORT=[0,1,2,3];
+      var DL=dmn.getTotalLength(), started=false, eT=0, loopOn=false, lt=0, loopN=0, fired={}, glowBoost=0, glowLast=-1, scanT=-1, chipHover=false, noiseUntil=0, drew=false, now0=0;
+
+      function setVal(t,v,ms){ t.from=t.shown; t.to=v; t.vt=0; t.vd=ms; }
+      function send(t,o){ var p=pool.get(); if(!p) return;
+        p.go(t.track,t.c,1100,{reject:o&&o.reject,stop:.84,onArrive:function(){ glowBoost=1; },
+          onStop:function(pt){ var q=P(pt[0],pt[1]); noise.style.left=q[0]; noise.style.top=q[1]; noise.classList.add("on"); noiseUntil=now0+950; }}); }
+
+      if(!RM){
+        dmn.style.strokeDasharray=DL; dmn.style.strokeDashoffset=DL; dmnIn.style.opacity="0"; logo.style.opacity="0"; glow.style.opacity="0";
+        tiles.forEach(function(t){ t.path.style.strokeDasharray=t.L+" "+t.L; t.path.style.strokeDashoffset=-t.L;
+          t.g.style.opacity="0"; t.g.style.transform="translateY(8px)"; t.g.style.filter="blur(4px)"; t.val.textContent=t.m.f(0); t.shown=0; });
+      } else { glow.style.opacity=".5"; }
+
+      function enter(now){ if(RM) return; started=true; eT=now;
+        tiles.forEach(function(t){ setTimeout(function(){ setVal(t,t.m.v,900); }, 900+t.i*80); }); }
+
+      function frame(now,dt){ now0=now;
+        if(started && !loopOn){ var ed=now-eT;
+          if(ed<2400){
+            dmn.style.strokeDashoffset=(DL*(1-ease.expo(cl(ed/700)))).toFixed(1);
+            dmnIn.style.opacity=String(cl((ed-300)/400));
+            var lk=cl((ed-500)/500), ls=0.9+0.1*ease.expo(lk); logo.style.opacity=String(lk);
+            logo.setAttribute("transform","translate(340 251) scale("+ls.toFixed(4)+") translate(-340 -251)");
+            glow.style.opacity=String(ed<900?cl((ed-500)/400):0.5+0.5*(1-cl((ed-900)/700)));
+            tiles.forEach(function(t){ var k=ease.expo(cl((ed-700-t.i*80)/600)); t.path.style.strokeDashoffset=(-t.L*(1-k)).toFixed(1);
+              var r=cl((ed-900-t.i*80)/650), e=ease.expo(r); t.g.style.opacity=String(r>0?Math.min(1,r*1.6):0);
+              t.g.style.transform="translateY("+(8*(1-e)).toFixed(2)+"px)"; t.g.style.filter=e<0.999?"blur("+(4*(1-e)).toFixed(2)+"px)":"none"; });
+          } else { loopOn=true; dmn.style.strokeDasharray="none"; logo.removeAttribute("transform");
+            tiles.forEach(function(t){ t.path.style.strokeDasharray="none"; t.g.style.transform=""; t.g.style.filter=""; t.g.style.opacity=""; }); }
+        }
+        tiles.forEach(function(t){ if(t.vt>=0){ t.vt+=dt; var k=ease.expo(cl(t.vt/t.vd)); t.shown=t.from+(t.to-t.from)*k;
+            var s=t.m.f(t.shown); if(s!==t.txt){ t.val.textContent=s; t.txt=s; } if(k>=1) t.vt=-1; }
+          if(t.litUntil && now>t.litUntil){ t.litUntil=0; t.g.classList.remove("lit"); } });
+        // ---- 8 s loop: collect → check → output ----
+        if(loopOn && !chipHover){ lt+=dt;
+          if(lt>=8000){ lt-=8000; fired={}; loopN++; }
+          ORDER.forEach(function(i,k){ var key="s"+i; if(lt>=k*350 && !fired[key]){ fired[key]=1;
+            var t=tiles[i]; t.g.classList.add("lit"); t.litUntil=now+650; setVal(t,t.m.n(t.to),500);
+            send(t,{reject:i===REJECT[loopN%REJECT.length]}); } });
+          if(lt>=3000 && !fired.scan){ fired.scan=1; scanT=0; }
+          [3100,3450,3800].forEach(function(at,k){ if(lt>=at && !fired["c"+k]){ fired["c"+k]=1; checks[k].classList.add("on"); } });
+          if(lt>=5600 && !fired.coff){ fired.coff=1; checks.forEach(function(c){ c.classList.remove("on"); }); }
+          if(lt>=4400 && !fired.chip){ fired.chip=1; chip.classList.add("on"); }
+          if(lt>=6900 && !fired.choff){ fired.choff=1; chip.classList.remove("on"); }
+        }
+        if(noiseUntil && now>noiseUntil){ noiseUntil=0; noise.classList.remove("on"); }
+        if(loopOn){ glowBoost*=Math.pow(0.9,dt/16.7); var gv=Math.round((0.45+0.5*glowBoost)*100); if(gv!==glowLast){ glow.style.opacity=String(gv/100); glowLast=gv; } }
+        // ---- canvas: packets + the Skeptic scan ring ----
+        var busy=pool.step(dt), ctx=stage.ctx;
+        if(busy || scanT>=0 || drew){ stage.clear(); drew=false;
+          if(scanT>=0){ scanT+=dt; var sk=cl(scanT/1200), a0=-Math.PI/2+2*Math.PI*ease.sine(sk);
+            ctx.globalAlpha=Math.sin(Math.PI*sk)*0.95; ctx.strokeStyle="#0EA5A8"; ctx.lineWidth=1.5; ctx.lineCap="round";
+            ctx.beginPath(); ctx.arc(340,251,104,a0,a0+0.88); ctx.stroke(); ctx.globalAlpha=1; drew=true; if(sk>=1) scanT=-1; }
+          if(busy){ pool.draw(ctx,1,40); drew=true; } }
+      }
+      tiles.forEach(function(t){ var c=TILE_C[t.i];
+        interactive(t.g,function(){ t.g.classList.add("hover"); t.hl.classList.add("on");
+          tipShow(tip,TIPS[t.i],P(c[0],c[1]-50)); if(!RM){ send(t); D.wake(); } },
+          function(){ t.g.classList.remove("hover"); t.hl.classList.remove("on"); tip.classList.remove("on"); }); });
+      // hover the evidence chip: trace provenance back to the sources behind it
+      function prov(on){ chipHover=on; tiles.forEach(function(t){ var s=SUPPORT.indexOf(t.i)>=0; t.g.classList.toggle("prov",on&&s); t.hl.classList.toggle("on",on&&s); }); }
+      chip.addEventListener("pointerenter",function(){ prov(true); }); chip.addEventListener("pointerleave",function(){ prov(false); });
+      chip.addEventListener("focus",function(){ chip.classList.add("on"); prov(true); }); chip.addEventListener("blur",function(){ prov(false); });
+      if(RM){ chip.classList.add("on"); checks.forEach(function(c){ c.classList.add("on"); }); }
+      var D=drive(root,{enter:enter,frame:frame});
+    })();
+
+    /* ================= DIAGRAM 2 — integration orbit ================= */
+    (function(){
+      var root=document.getElementById("dgOb"); if(!root) return;
+      var svg=document.getElementById("obSvg"), vb=svg.viewBox.baseVal, P=vbPct(vb), stage=Stage(document.getElementById("obCv"),vb),
+          tip=document.getElementById("obTip"), CX=350, CY=310, R=250, HR=178, SPOKE_END=203;
+      var ringL=document.getElementById("obRing"), ringM=document.getElementById("obRingM"), midL=document.getElementById("obMidL"), topL=document.getElementById("obTop"),
+          band=document.getElementById("obBand"), outer=document.getElementById("obOuter"), inner=document.getElementById("obInner"),
+          logo=document.getElementById("obLogo"), glowG=document.getElementById("obGlowG");
+      var pool=new Pool(10);
+      var TIPS={"AI models":"<b>AI models</b> · your own models or hosted LLMs","Data":"<b>Data</b> · your warehouse or data lake",
+        "Team chat":"<b>Team chat</b> · Slack, Microsoft Teams and similar","CRM":"<b>CRM</b> · Salesforce, HubSpot and similar",
+        "Helpdesk":"<b>Helpdesk</b> · Zendesk, Freshdesk and similar","Ticketing":"<b>Ticketing</b> · ServiceNow, Jira Service Management and similar"};
+      var nodes=[].slice.call(root.querySelectorAll(".obn")).map(function(el){ var n={el:el,base:+el.dataset.a,c:el.dataset.c,lbl:el.querySelector(".obn-l"),
+        name:el.querySelector(".obn-l b").textContent,r:R,op:1,hold:0,tf:"",lf:"",x:0,y:0,ang:0}; return n; });
+      var edges=[0,0,0,0,0,0].map(function(){ return {t:-1,c:"#0EA5A8"}; });
+      var BL=band.getTotalLength(), RL=2*Math.PI*R, started=false, eT=0, loopOn=false, phi=0, pulseT=0, pulseIdx=0, hovered=null, rip=-1;
+      var par={x:0,y:0,tx:0,ty:0}, layerTf={};
+      function setTf(el,key,v){ if(layerTf[key]!==v){ el.style.transform=v; layerTf[key]=v; } }
+      function sizeVars(){ var s=stage.s; root.style.setProperty("--nd",(72*s).toFixed(2)+"px"); root.style.setProperty("--lf",Math.max(9.5,13*s).toFixed(2)+"px"); }
+      sizeVars(); addEventListener("resize",sizeVars);
+
+      function layout(){ var s=stage.s, nx=par.x*10, ny=par.y*10, cpx=par.x*3*s, cpy=par.y*3*s;
+        setTf(svg,"base","translate3d("+cpx.toFixed(2)+"px,"+cpy.toFixed(2)+"px,0)"); setTf(topL,"top","translate3d("+cpx.toFixed(2)+"px,"+cpy.toFixed(2)+"px,0)");
+        setTf(midL,"mid","translate3d("+cpx.toFixed(2)+"px,"+cpy.toFixed(2)+"px,0) rotate("+(-phi*0.55).toFixed(3)+"deg)");
+        setTf(ringL,"ring","translate3d("+(par.x*6*s).toFixed(2)+"px,"+(par.y*6*s).toFixed(2)+"px,0) rotate("+(-phi*0.4).toFixed(3)+"deg)");
+        nodes.forEach(function(n){ var a=(n.base+phi)*Math.PI/180, c=Math.cos(a), sn=Math.sin(a);
+          n.x=CX+n.r*c+nx; n.y=CY+n.r*sn+ny; n.ang=a; n.cx=CX+par.x*3; n.cy=CY+par.y*3;
+          var tf="translate3d("+((n.x-vb.x)*s).toFixed(2)+"px,"+((n.y-vb.y)*s).toFixed(2)+"px,0)";
+          if(tf!==n.tf){ n.el.style.transform=tf; n.tf=tf; }
+          // labels sit outside the orbit and always upright
+          var lx=c*(62+40*Math.abs(c)), ly=sn*64+(sn<-0.3?-12:sn>0.3?14:4);
+          var lf="translate3d("+(lx*s).toFixed(2)+"px,"+(ly*s).toFixed(2)+"px,0) translate(-50%,-50%)";
+          if(lf!==n.lf){ n.lbl.style.transform=lf; n.lf=lf; }
+          var op=String(n.op); if(n.el.style.opacity!==op) n.el.style.opacity=op; }); }
+      function spokeEnds(n){ var c=Math.cos(n.ang), s=Math.sin(n.ang); return [n.x-36*c, n.y-36*s, n.cx+SPOKE_END*c, n.cy+SPOKE_END*s]; }
+      function spokeTrack(n){ return { L:function(){ var e=spokeEnds(n); return Math.hypot(e[2]-n.x,e[3]-n.y); },
+        at:function(sd){ var e=spokeEnds(n), L=Math.hypot(e[2]-n.x,e[3]-n.y)||1, f=sd/L; return [n.x+(e[2]-n.x)*f, n.y+(e[3]-n.y)*f]; } }; }
+      function pulse(n){ var p=pool.get(); if(!p) return; p.go(spokeTrack(n),n.c,900,{onArrive:function(){
+        var deg=((n.ang*180/Math.PI)%360+360)%360, e=edges[Math.floor(deg/60)%6]; e.t=0; e.c=n.c==="gold"?"#D4AF37":"#0EA5A8"; rip=0; }}); }
+
+      if(!RM){
+        [inner,outer].forEach(function(el){ el.style.opacity="0"; }); midL.style.opacity="0";
+        band.style.strokeDasharray=BL; band.style.strokeDashoffset=BL; logo.style.opacity="0"; glowG.style.opacity="0";
+        ringM.style.strokeDasharray=RL; ringM.style.strokeDashoffset=RL;
+        nodes.forEach(function(n){ n.r=300; n.op=0; });
+      }
+      layout();
+      function enter(now){ if(RM) return; started=true; eT=now; }
+      function scl(el,k,from){ var s=from+(1-from)*ease.expo(k); el.setAttribute("transform","translate("+CX+" "+CY+") scale("+s.toFixed(4)+") translate("+(-CX)+" "+(-CY)+")"); el.style.opacity=String(k); }
+      function frame(now,dt){
+        if(started && !loopOn){ var ed=now-eT;
+          if(ed<2600){
+            scl(inner,cl(ed/500),0.85); scl(outer,cl((ed-250)/500),0.92); midL.style.opacity=String(cl((ed-250)/500));
+            band.style.strokeDashoffset=(BL*(1-ease.expo(cl((ed-450)/800)))).toFixed(1);
+            var lk=cl((ed-1000)/500); logo.style.opacity=String(lk); glowG.style.opacity=String(lk);
+            ringM.style.strokeDashoffset=(RL*(1-ease.expo(cl((ed-1150)/900)))).toFixed(1);
+            nodes.forEach(function(n,i){ var kn=cl((ed-1400-i*110)/800); n.r=300-50*ease.back(kn); n.op=Math.round(cl(kn*2)*100)/100; });
+          } else { loopOn=true; inner.removeAttribute("transform"); outer.removeAttribute("transform"); band.style.strokeDasharray="none";
+            ringM.style.strokeDasharray="none"; nodes.forEach(function(n){ n.r=R; n.op=1; }); }
+        }
+        par.x+=(par.tx-par.x)*0.06; par.y+=(par.ty-par.y)*0.06;
+        if(loopOn){
+          if(!hovered) phi+=dt/90000*360;                                   // one revolution per 90 s
+          pulseT+=dt; if(pulseT>=1500){ pulseT-=1500; if(!hovered){ pulse(nodes[pulseIdx%6]); pulseIdx++; } }
+          if(hovered){ hovered.hold+=dt; if(hovered.hold>=380){ hovered.hold=0; pulse(hovered); } }
+        }
+        layout();
+        // ---- canvas: spokes, pulses, edge flashes, ripple ----
+        var ctx=stage.ctx, busy=pool.step(dt); stage.clear(); ctx.lineCap="round";
+        nodes.forEach(function(n){ if(n.op<0.05) return; var e=spokeEnds(n), lit=hovered===n;
+          ctx.globalAlpha=n.op*(lit?0.75:0.16); ctx.strokeStyle=lit?(n.c==="gold"?"#D4AF37":"#0EA5A8"):"#A0A3B8"; ctx.lineWidth=lit?1.4:1;
+          ctx.beginPath(); ctx.moveTo(e[0],e[1]); ctx.lineTo(e[2],e[3]); ctx.stroke(); });
+        ctx.globalAlpha=1;
+        edges.forEach(function(e,k){ if(e.t<0) return; e.t+=dt; var q=cl(e.t/700), a=Math.sin(Math.PI*Math.min(1,q*1.4))*0.9*(1-q*0.3);
+          var a1=k*Math.PI/3, a2=(k+1)*Math.PI/3, ox=par.x*3, oy=par.y*3;
+          ctx.globalAlpha=Math.max(0,a); ctx.strokeStyle=e.c; ctx.lineWidth=3; ctx.beginPath();
+          ctx.moveTo(CX+ox+HR*Math.cos(a1),CY+oy+HR*Math.sin(a1)); ctx.lineTo(CX+ox+HR*Math.cos(a2),CY+oy+HR*Math.sin(a2)); ctx.stroke(); if(q>=1) e.t=-1; });
+        if(rip>=0){ rip+=dt; var rk=cl(rip/900); ctx.globalAlpha=0.32*(1-rk); ctx.strokeStyle="#0EA5A8"; ctx.lineWidth=1.4;
+          ctx.beginPath(); ctx.arc(CX+par.x*3,CY+par.y*3,60*(1+rk*1.1),0,6.2832); ctx.stroke(); if(rk>=1) rip=-1; }
+        ctx.globalAlpha=1; if(busy) pool.draw(ctx,0.8,26);
+      }
+      nodes.forEach(function(n){
+        interactive(n.el,function(){ hovered=n; n.hold=380; n.el.classList.add("hover");
+          tipShow(tip,TIPS[n.name]+'<span class="ea">Rolling out in early access</span>',P(n.x,n.y-46)); O.wake(); },
+          function(){ if(hovered===n) hovered=null; n.el.classList.remove("hover"); tip.classList.remove("on"); }); });
+      if(!RM && FINE) addEventListener("mousemove",function(e){ var r=svg.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return;
+        par.tx=Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(r.width/1.2))); par.ty=Math.max(-1,Math.min(1,(e.clientY-(r.top+r.height/2))/(r.height/1.2))); },{passive:true});
+      var O=drive(root,{enter:enter,frame:frame});
+    })();
+  })();
 
   var rail=document.getElementById("rail");
   for(var r=0;r<7;r++){ rail.appendChild(document.createElement("b")); }
