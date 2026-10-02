@@ -11,6 +11,10 @@
     {
       "source": "/app",
       "destination": "/app.html"
+    },
+    {
+      "source": "/charter",
+      "destination": "/charter.html"
     }
   ]
 }

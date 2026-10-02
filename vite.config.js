@@ -3,12 +3,12 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// Multi-page static site: the landing page, /about, /auth (sign-in and early access), /app and the legal pages,
+// Multi-page static site: the landing page, /about, /auth (sign-in and early access), /app, /charter and the legal pages,
 // plus the files in /public.
 const page = (f) => fileURLToPath(new URL(f, import.meta.url))
-const CLEAN = { '/about': '/about.html', '/auth': '/auth.html', '/app': '/app.html' }
+const CLEAN = { '/about': '/about.html', '/auth': '/auth.html', '/app': '/app.html', '/charter': '/charter.html' }
 
-// serve /about, /auth and /app without the .html suffix locally, matching the rewrites in vercel.json
+// serve /about, /auth, /app and /charter without the .html suffix locally, matching the rewrites in vercel.json
 function cleanUrls() {
   const rewrite = (req, _res, next) => {
     const [path, query] = req.url.split('?')
@@ -55,7 +55,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: page('index.html'), about: page('about.html'), auth: page('auth.html'), app: page('app.html'),
-        privacy: page('privacy.html'), terms: page('terms.html'),
+        privacy: page('privacy.html'), terms: page('terms.html'), charter: page('charter.html'),
       },
     },
   },

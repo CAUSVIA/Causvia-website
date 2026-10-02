@@ -1,0 +1,132 @@
+/* ================= Seven Rings (home page, after "Built for trust") ================= */
+.sec-rings{overflow:clip}                 /* clip, not hidden, so the diagram can stay sticky */
+.rg-kicker{font-family:var(--mono);font-weight:500;letter-spacing:.18em}
+
+.rg{display:grid;grid-template-columns:minmax(0,45fr) minmax(0,55fr);gap:clamp(32px,4.5vw,72px);align-items:start}
+.rg-art-col{position:sticky;top:max(96px,calc(50vh - 280px))}
+.rg-art{--R:270px;position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto}
+
+/* soft gold + teal glow behind the core */
+.rg-glow{position:absolute;inset:22%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(212,175,55,.26),rgba(14,165,168,.16) 52%,rgba(14,165,168,0))}
+.rg-core{position:absolute;left:50%;top:50%;width:17%;height:auto;transform:translate(-50%,-52%);overflow:visible;
+  filter:drop-shadow(0 0 18px rgba(212,175,55,.35))}
+
+/* ---- rings: one composited layer each, turning at its own speed ---- */
+.rg-ring{position:absolute;inset:0;pointer-events:none;transition:opacity .3s ease;will-change:transform}
+.rg-ring svg{display:block;width:100%;height:100%;overflow:visible}
+.rg-line,.rg-halo{fill:none;transition:stroke-opacity .3s ease,stroke-width .3s ease}
+.rg-ring.is-live .rg-line{stroke:#0EA5A8;stroke-width:2.2;stroke-opacity:.95}
+.rg-ring.is-live .rg-halo{stroke:#0EA5A8;stroke-width:9;stroke-opacity:.14}
+.rg-ring.is-building .rg-line{stroke:#0EA5A8;stroke-width:1.8;stroke-opacity:.5;stroke-dasharray:8 7}
+.rg-ring.is-horizon .rg-line{stroke:#D4AF37;stroke-width:2.2;stroke-opacity:.5;stroke-dasharray:.1 8;stroke-linecap:round}
+.rg-ring .rg-halo{stroke-opacity:0}
+.rg-ring.is-live .rg-halo{stroke-opacity:.14}
+.rg-hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke;cursor:pointer}
+/* draw-on: each ring is revealed through its mask */
+.rg-draw{fill:none;stroke:#fff;stroke-width:34;stroke-dasharray:var(--c);stroke-dashoffset:var(--c);transition:stroke-dashoffset .75s cubic-bezier(.4,0,.2,1)}
+.rg-ring.lit .rg-draw{stroke-dashoffset:0}
+
+/* the node on each ring carries its number and stays upright while the ring turns */
+.rg-node{position:absolute;left:var(--x);top:var(--y);width:26px;height:26px;margin:-13px 0 0 -13px;opacity:0;transition:opacity .35s ease .45s}
+.rg-ring.lit .rg-node{opacity:1}
+.rg-node-in{position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;
+  font-family:var(--mono);font-weight:500;font-size:11px;color:#fff;background:#0f1a2e;border:1px solid}
+.rg-ring.is-live .rg-node-in{background:#0b3a40;border-color:#0EA5A8;box-shadow:0 0 12px rgba(14,165,168,.45)}
+.rg-ring.is-building .rg-node-in{color:#9be3e4;border-color:rgba(14,165,168,.6)}
+.rg-ring.is-horizon .rg-node-in{color:#EBD488;border-color:rgba(212,175,55,.55);border-style:dashed}
+.rg-node-in::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1.5px solid currentColor;opacity:0;pointer-events:none}
+.rg-ring.is-live .rg-node-in::after{border-color:#0EA5A8}
+.rg-ring.lit .rg-node-in::after{animation:rg-ping .9s ease-out .55s 1}
+@keyframes rg-ping{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+
+.rg-spin .rg-ring{animation:rg-turn var(--t) linear infinite;animation-direction:var(--dir)}
+.rg-spin .rg-node-in{animation:rg-turn var(--t) linear infinite;animation-direction:var(--rev)}
+@keyframes rg-turn{to{transform:rotate(360deg)}}
+
+/* hover / focus: one ring bright, the rest dimmed */
+.rg-art.has-hl .rg-ring{opacity:.28}
+.rg-art.has-hl .rg-ring.hot{opacity:1}
+.rg-ring.hot .rg-line{stroke-opacity:1}
+.rg-ring.hot .rg-halo{stroke:currentColor;stroke-opacity:.22}
+.rg-ring.is-building.hot .rg-halo,.rg-ring.is-live.hot .rg-halo{stroke:#0EA5A8}
+.rg-ring.is-horizon.hot .rg-halo{stroke:#D4AF37}
+.rg-ring.flash .rg-line{stroke-opacity:1}
+.rg-ring.flash .rg-halo{stroke-opacity:.26}
+.rg-ring.is-horizon.flash .rg-halo{stroke:#D4AF37}
+.rg-ring.is-building.flash .rg-halo{stroke:#0EA5A8}
+
+/* the point of light travelling outward from the core */
+.rg-light{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a,0deg));pointer-events:none}
+.rg-light i{position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,#fff 0,#f6dd8c 35%,rgba(212,175,55,0) 72%);box-shadow:0 0 14px 4px rgba(212,175,55,.45)}
+.rg-light.go i{animation:rg-travel 2.1s linear 1}
+@keyframes rg-travel{
+  0%{opacity:0;transform:translateX(calc(var(--R) * .2))}
+  8%{opacity:1}
+  88%{opacity:1}
+  100%{opacity:0;transform:translateX(calc(var(--R) * 1.02))}}
+
+/* off screen: everything holds still */
+.rg-off .rg-ring,.rg-off .rg-node-in,.rg-off .rg-light i,.rg-off .rg-chip i{animation-play-state:paused}
+
+/* ---- the seven cards ---- */
+.rg-list{display:grid;gap:10px}
+.rg-card{position:relative;padding:16px 20px 15px;border-radius:16px;outline:none;
+  background:rgba(26,35,56,.55);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 34px -24px rgba(0,0,0,.7)}
+.rg-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.04) 60%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.rg-card::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;
+  border:1px solid rgba(14,165,168,.7);box-shadow:0 0 34px -10px rgba(14,165,168,.55),inset 0 0 24px -12px rgba(14,165,168,.4)}
+.rg-card[data-status="horizon"]::after{border-color:rgba(212,175,55,.65);box-shadow:0 0 34px -10px rgba(212,175,55,.5),inset 0 0 24px -12px rgba(212,175,55,.35)}
+.rg-card.hl::after{opacity:1}
+.rg-card.ignite::after{animation:rg-card-flash 1.1s ease-out 1}
+@keyframes rg-card-flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+.rg-card:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.rg-top{display:flex;align-items:center;gap:12px}
+.rg-n{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;color:#C9CCD8}
+.rg-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 9px;border-radius:999px;border:1px solid;
+  font-family:var(--mono);font-weight:500;font-size:10px;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.rg-chip i{width:7px;height:7px;border-radius:50%;flex:none}
+.rg-chip.is-live{color:#86EFAC;border-color:rgba(34,197,94,.42);background:rgba(34,197,94,.08)}
+.rg-chip.is-live i{background:#22C55E;box-shadow:0 0 8px rgba(34,197,94,.8)}
+.rg-chip.is-building{color:#8BE0E2;border-color:rgba(14,165,168,.45);background:rgba(14,165,168,.08)}
+.rg-chip.is-building i{background:#0EA5A8;animation:rg-dot 2.4s ease-in-out infinite}
+@keyframes rg-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.rg-chip.is-horizon{color:#EBD488;border-color:rgba(212,175,55,.42);background:rgba(212,175,55,.06)}
+.rg-chip.is-horizon i{border:1.5px solid #D4AF37;background:transparent}
+.rg-t{font-family:var(--head);font-weight:600;font-size:18px;line-height:1.25;letter-spacing:-.01em;color:#fff;margin:9px 0 4px}
+.rg-c{font-size:14.5px;line-height:1.55;color:#C3C7D4}
+.rg-moat{margin-top:9px;font-family:var(--mono);font-weight:500;font-size:10.5px;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.rg-moat span{color:#7f86a0;margin-right:6px}
+.rg-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:500;color:#E8CF7C;text-decoration:none;padding:6px 0}
+.rg-link:hover{text-decoration:underline;text-underline-offset:3px}
+.rg-legend{margin-top:14px;font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.06em;color:var(--muted)}
+
+/* ================= responsive ================= */
+@media (max-width:1023px){
+  .rg{grid-template-columns:minmax(0,1fr)}
+  .rg-art-col{position:static}
+  .rg-art{max-width:520px}
+}
+@media (max-width:639px){
+  .rg-node{width:22px;height:22px;margin:-11px 0 0 -11px}
+  .rg-node-in{font-size:10px}
+  .rg-card{padding:16px 16px 14px}
+  .rg-top{flex-direction:column;align-items:stretch;gap:8px}
+  .rg-chip{justify-content:center;width:100%}
+  .rg-t{font-size:17px}
+}
+
+/* reduced motion: drawn, still, no travelling light */
+.rg-still .rg-draw{transition:none;stroke-dashoffset:0}
+.rg-still .rg-node{transition:none}
+.rg-still .rg-node-in::after,.rg-still .rg-chip.is-building i{animation:none}
+.rg-still .rg-light{display:none}
+@media (prefers-reduced-motion:reduce){
+  .rg-ring,.rg-node-in,.rg-light i,.rg-chip i,.rg-card::after{animation:none!important}
+  .rg-ring,.rg-card::after,.rg-line,.rg-halo{transition:none}
+}
