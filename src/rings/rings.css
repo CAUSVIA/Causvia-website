@@ -1,132 +1,164 @@
-/* ================= Seven Rings (home page, after "Built for trust") ================= */
-.sec-rings{overflow:clip}                 /* clip, not hidden, so the diagram can stay sticky */
-.rg-kicker{font-family:var(--mono);font-weight:500;letter-spacing:.18em}
+/* ================= The Causvia moat (home page, after "Built for trust") =================
+   Seven concentric layers around the logo. Ring style = status (solid live · dashed in progress · dotted future),
+   ring colour alternates gold / teal. Rings and nodes are drawn by rings.js; only transform, opacity and stroke animate. */
+.sec-moat{padding:120px 0}
+.mt-wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 32px;box-sizing:content-box}
+.mt-kicker{font-family:var(--mono);font-weight:500;letter-spacing:.18em}
+.mt-head-block .title{max-width:20ch}
+.mt-head-block .lede{max-width:56ch}
+.mt{display:grid;grid-template-columns:minmax(0,720fr) minmax(0,470fr);gap:48px;align-items:center}
+.mt-vis{min-width:0}
 
-.rg{display:grid;grid-template-columns:minmax(0,45fr) minmax(0,55fr);gap:clamp(32px,4.5vw,72px);align-items:start}
-.rg-art-col{position:sticky;top:max(96px,calc(50vh - 280px))}
-.rg-art{--R:270px;position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto}
+/* ---- the visual ---- */
+.mt-art{position:relative;width:100%;max-width:720px;aspect-ratio:720/640;margin:0 auto}
+.mt-graphic{position:absolute;inset:0}
+.mt-glow{position:absolute;left:50%;top:50%;height:40%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(212,175,55,.34),rgba(14,165,168,.18) 55%,rgba(14,165,168,0));transition:opacity .9s ease}
+.mt-rings,.mt-fx{position:absolute;left:50%;top:0;height:100%;width:auto;aspect-ratio:1;overflow:visible;transform:translateX(-50%);will-change:transform}
+.mt-fx{pointer-events:none}
 
-/* soft gold + teal glow behind the core */
-.rg-glow{position:absolute;inset:22%;border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(212,175,55,.26),rgba(14,165,168,.16) 52%,rgba(14,165,168,0))}
-.rg-core{position:absolute;left:50%;top:50%;width:17%;height:auto;transform:translate(-50%,-52%);overflow:visible;
-  filter:drop-shadow(0 0 18px rgba(212,175,55,.35))}
+.mt-ring[data-tone="gold"]{--c:#D4AF37}
+.mt-ring[data-tone="teal"]{--c:#0EA5A8}
+.mt-line,.mt-halo{fill:none;stroke:var(--c);transition:stroke-width .45s ease,stroke-opacity .45s ease}
+.mt-ring[data-st="promise"],.mt-ring[data-st="building"]{--w:1.5;--o:1}
+.mt-ring[data-st="next"],.mt-ring[data-st="coming"]{--w:1.2;--o:.7}
+.mt-ring[data-st="future"]{--w:1;--o:.5}
+.mt-ring[data-st="next"] .mt-line,.mt-ring[data-st="coming"] .mt-line{stroke-dasharray:6 6}
+.mt-ring[data-st="future"] .mt-line{stroke-dasharray:1.2 4.6}
+.mt-line{stroke-width:var(--w);stroke-opacity:var(--o)}
+.mt-halo{stroke-width:12;stroke-opacity:0}
+.mt-ring{opacity:.3;transition:opacity .5s ease}               /* drawn, not yet built */
+.mt-ring.lit{opacity:1}                                         /* built: earlier layers stay lit */
+.mt-ring.active .mt-line{stroke-width:calc(var(--w) + 1.1);stroke-opacity:1}
+.mt-ring.active .mt-halo{stroke-opacity:.15}
+/* draw-on: each ring is revealed through its own mask */
+.mt-draw{fill:none;stroke:#fff;stroke-width:40;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.mt-draw.drawn{stroke-dashoffset:0}
 
-/* ---- rings: one composited layer each, turning at its own speed ---- */
-.rg-ring{position:absolute;inset:0;pointer-events:none;transition:opacity .3s ease;will-change:transform}
-.rg-ring svg{display:block;width:100%;height:100%;overflow:visible}
-.rg-line,.rg-halo{fill:none;transition:stroke-opacity .3s ease,stroke-width .3s ease}
-.rg-ring.is-live .rg-line{stroke:#0EA5A8;stroke-width:2.2;stroke-opacity:.95}
-.rg-ring.is-live .rg-halo{stroke:#0EA5A8;stroke-width:9;stroke-opacity:.14}
-.rg-ring.is-building .rg-line{stroke:#0EA5A8;stroke-width:1.8;stroke-opacity:.5;stroke-dasharray:8 7}
-.rg-ring.is-horizon .rg-line{stroke:#D4AF37;stroke-width:2.2;stroke-opacity:.5;stroke-dasharray:.1 8;stroke-linecap:round}
-.rg-ring .rg-halo{stroke-opacity:0}
-.rg-ring.is-live .rg-halo{stroke-opacity:.14}
-.rg-hit{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke;cursor:pointer}
-/* draw-on: each ring is revealed through its mask */
-.rg-draw{fill:none;stroke:#fff;stroke-width:34;stroke-dasharray:var(--c);stroke-dashoffset:var(--c);transition:stroke-dashoffset .75s cubic-bezier(.4,0,.2,1)}
-.rg-ring.lit .rg-draw{stroke-dashoffset:0}
+/* a soft pulse travels along the active ring */
+.mt-pulse{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:4 96;stroke-dashoffset:100;opacity:0}
+.mt-pulse[data-tone="gold"]{stroke:#F6DC86}
+.mt-pulse[data-tone="teal"]{stroke:#7FE6E8}
+.mt-pulse.go{animation:mt-pulse 3.6s linear infinite}
+@keyframes mt-pulse{0%{stroke-dashoffset:100;opacity:0}5%{opacity:1}42%{stroke-dashoffset:0;opacity:1}48%,100%{stroke-dashoffset:0;opacity:0}}
+/* the moat complete: one faint shimmer from the centre to the outer ring */
+.mt-shimmer{fill:none;stroke:#F2E6BE;stroke-width:2;opacity:0;transform-box:view-box;transform-origin:0 0;transform:scale(.25)}
+.mt-shimmer.go{animation:mt-shimmer 1.9s cubic-bezier(.2,.7,.2,1) 1}
+@keyframes mt-shimmer{0%{opacity:0;transform:scale(.25)}18%{opacity:.5}100%{opacity:0;transform:scale(1.02)}}
 
-/* the node on each ring carries its number and stays upright while the ring turns */
-.rg-node{position:absolute;left:var(--x);top:var(--y);width:26px;height:26px;margin:-13px 0 0 -13px;opacity:0;transition:opacity .35s ease .45s}
-.rg-ring.lit .rg-node{opacity:1}
-.rg-node-in{position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;
-  font-family:var(--mono);font-weight:500;font-size:11px;color:#fff;background:#0f1a2e;border:1px solid}
-.rg-ring.is-live .rg-node-in{background:#0b3a40;border-color:#0EA5A8;box-shadow:0 0 12px rgba(14,165,168,.45)}
-.rg-ring.is-building .rg-node-in{color:#9be3e4;border-color:rgba(14,165,168,.6)}
-.rg-ring.is-horizon .rg-node-in{color:#EBD488;border-color:rgba(212,175,55,.55);border-style:dashed}
-.rg-node-in::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1.5px solid currentColor;opacity:0;pointer-events:none}
-.rg-ring.is-live .rg-node-in::after{border-color:#0EA5A8}
-.rg-ring.lit .rg-node-in::after{animation:rg-ping .9s ease-out .55s 1}
-@keyframes rg-ping{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+/* the logo at the centre, its orbit point travelling the ellipse */
+.mt-logo{position:absolute;left:50%;top:50%;height:18%;width:auto;aspect-ratio:100/110;overflow:visible;transform:translate(-50%,-52%);
+  filter:drop-shadow(0 0 16px rgba(212,175,55,.35));transition:opacity .7s ease,transform .9s cubic-bezier(.34,1.4,.64,1)}
+.mt-orbit{cx:94.5px;cy:52.3px}
+@supports (offset-path:path("M0 0")){
+  .mt-orbit{cx:0;cy:0;offset-path:path("M95 57 A45 9 0 1 1 5 57 A45 9 0 1 1 95 57");offset-rotate:0deg;animation:mt-orbit 7s linear infinite}
+}
+@keyframes mt-orbit{from{offset-distance:0%}to{offset-distance:100%}}
 
-.rg-spin .rg-ring{animation:rg-turn var(--t) linear infinite;animation-direction:var(--dir)}
-.rg-spin .rg-node-in{animation:rg-turn var(--t) linear infinite;animation-direction:var(--rev)}
-@keyframes rg-turn{to{transform:rotate(360deg)}}
+/* nodes: a 40px glass circle per layer, positioned on its ring by rings.js */
+.mt-nodes{position:absolute;inset:0;pointer-events:none}
+.mt-node{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;padding:0;border:0;border-radius:50%;background:none;
+  display:grid;place-items:center;cursor:pointer;pointer-events:auto;color:#fff;will-change:transform}
+.mt-node[data-tone="gold"]{--c:#D4AF37;--g:rgba(212,175,55,.6)}
+.mt-node[data-tone="teal"]{--c:#0EA5A8;--g:rgba(14,165,168,.6)}
+.mt-node span{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
+  font-family:var(--mono);font-weight:500;font-size:13px;color:#fff;
+  background:radial-gradient(120% 120% at 30% 20%,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(18,26,44,.92);
+  border:1px solid color-mix(in srgb,var(--c) 60%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 16px -6px rgba(0,0,0,.7);
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .35s ease}
+.mt-node span::after{content:"";position:absolute;inset:-6px;border-radius:50%;pointer-events:none;opacity:0;
+  box-shadow:0 0 18px 4px var(--g);transition:opacity .4s ease}
+.mt-node.active span{border-color:var(--c)}
+.mt-node.active span::after{opacity:1}
+.mt-node:focus-visible{outline:none}
+.mt-node:focus-visible span{outline:2px solid var(--teal);outline-offset:3px}
 
-/* hover / focus: one ring bright, the rest dimmed */
-.rg-art.has-hl .rg-ring{opacity:.28}
-.rg-art.has-hl .rg-ring.hot{opacity:1}
-.rg-ring.hot .rg-line{stroke-opacity:1}
-.rg-ring.hot .rg-halo{stroke:currentColor;stroke-opacity:.22}
-.rg-ring.is-building.hot .rg-halo,.rg-ring.is-live.hot .rg-halo{stroke:#0EA5A8}
-.rg-ring.is-horizon.hot .rg-halo{stroke:#D4AF37}
-.rg-ring.flash .rg-line{stroke-opacity:1}
-.rg-ring.flash .rg-halo{stroke-opacity:.26}
-.rg-ring.is-horizon.flash .rg-halo{stroke:#D4AF37}
-.rg-ring.is-building.flash .rg-halo{stroke:#0EA5A8}
+/* short labels beside each node, upright, on the node's outer side */
+.mt-label{position:absolute;left:0;top:0;white-space:nowrap;pointer-events:none;will-change:transform;
+  padding:5px 10px;border-radius:999px;font-family:var(--sans);font-weight:500;font-size:12px;line-height:1.1;color:#D3D6E2;
+  background:rgba(11,18,32,.88);border:1px solid rgba(255,255,255,.1);transition:opacity .4s ease,color .3s ease,border-color .3s ease}
+.mt-label.active{color:#fff;border-color:color-mix(in srgb,var(--c,#D4AF37) 70%,transparent)}
+.mt-label[data-n="1"],.mt-label[data-n="3"],.mt-label[data-n="5"],.mt-label[data-n="7"]{--c:#D4AF37}
+.mt-label[data-n="2"],.mt-label[data-n="4"],.mt-label[data-n="6"]{--c:#0EA5A8}
 
-/* the point of light travelling outward from the core */
-.rg-light{position:absolute;left:50%;top:50%;width:0;height:0;transform:rotate(var(--a,0deg));pointer-events:none}
-.rg-light i{position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%;opacity:0;
-  background:radial-gradient(circle,#fff 0,#f6dd8c 35%,rgba(212,175,55,0) 72%);box-shadow:0 0 14px 4px rgba(212,175,55,.45)}
-.rg-light.go i{animation:rg-travel 2.1s linear 1}
-@keyframes rg-travel{
-  0%{opacity:0;transform:translateX(calc(var(--R) * .2))}
-  8%{opacity:1}
-  88%{opacity:1}
-  100%{opacity:0;transform:translateX(calc(var(--R) * 1.02))}}
+/* before the entrance (only when rings.js runs) */
+.mt-js:not(.mt-in) .mt-glow,.mt-js:not(.mt-in) .mt-logo{opacity:0}
+.mt-js:not(.mt-in) .mt-logo{transform:translate(-50%,-52%) scale(.88)}
+.mt-js .mt-node:not(.pop) span{opacity:0;transform:scale(.4)}
+.mt-js:not(.mt-ready) .mt-label{opacity:0}
+
+/* legend + note under the visual */
+.mt-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:20px;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.mt-legend span{display:inline-flex;align-items:center;gap:8px}
+.mt-sw{display:inline-block;width:24px;height:0;border-top:1.5px solid #C9CCD8}
+.mt-sw-dash{border-top:1.5px dashed #C9CCD8}
+.mt-sw-dot{border-top:2px dotted #C9CCD8}
+.mt-note{margin-top:8px;text-align:center;font-size:13px;line-height:1.5;color:var(--muted)}
+
+/* ---- the list of layers ---- */
+.mt-list{list-style:none;display:grid;gap:4px;margin:0;padding:0}
+.mt-row{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;padding:14px 18px;border-radius:16px;cursor:pointer;outline:none;
+  transform-origin:left center;transition:transform .4s cubic-bezier(.34,1.4,.64,1)}
+.mt-row[data-tone="gold"]{--c:#D4AF37}.mt-row[data-tone="teal"]{--c:#0EA5A8}
+.mt-row::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s ease;
+  background:rgba(26,35,56,.62);border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px -26px rgba(0,0,0,.8),0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent)}
+.mt-row.active::before{opacity:1}
+.mt-row.active{transform:scale(1.025)}
+.mt-row>*{position:relative}
+.mt-row:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.mt-n{font-family:var(--mono);font-weight:500;font-size:13px;line-height:1.7;color:#8C93AB;transition:color .3s ease}
+.mt-row.lit .mt-n{color:var(--c)}
+.mt-head{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.mt-t{margin:0;font-family:var(--head);font-weight:600;font-size:17px;line-height:1.35;color:#E4E6EE;transition:color .3s ease}
+.mt-row.active .mt-t{color:#fff}
+.mt-l{margin:4px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+.mt-link{display:inline-block;margin-top:6px;font-size:13px;font-weight:500;color:#E8CF7C;text-decoration:none;padding:6px 0}
+.mt-link:hover{text-decoration:underline;text-underline-offset:3px}
+
+.mt-chip{display:inline-flex;align-items:center;gap:7px;padding:2px 9px;border-radius:999px;border:1px solid;white-space:nowrap;
+  font-family:var(--mono);font-weight:500;font-size:10.5px;line-height:1.6;letter-spacing:.08em}
+.mt-chip i{flex:none;width:7px;height:7px;border-radius:50%}
+.st-promise{color:#86EFAC;border-color:rgba(34,197,94,.42);background:rgba(34,197,94,.08)}
+.st-promise i{background:#22C55E}
+.st-building{color:#8BE0E2;border-color:rgba(14,165,168,.45);background:rgba(14,165,168,.08)}
+.st-building i{background:#0EA5A8;animation:mt-dot 2.4s ease-in-out infinite}
+@keyframes mt-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+.st-next{color:#8BE0E2;border-color:rgba(14,165,168,.35);background:transparent}
+.st-next i{border:1.5px solid #0EA5A8}
+.st-coming{color:#EBD488;border-color:rgba(212,175,55,.38);background:transparent}
+.st-coming i{border:1.5px solid #D4AF37}
+.st-future{color:#BAC0D0;border-color:rgba(160,163,184,.38);border-style:dashed;background:transparent}
+.st-future i{border:1.5px dotted #A0A3B8}
 
 /* off screen: everything holds still */
-.rg-off .rg-ring,.rg-off .rg-node-in,.rg-off .rg-light i,.rg-off .rg-chip i{animation-play-state:paused}
-
-/* ---- the seven cards ---- */
-.rg-list{display:grid;gap:10px}
-.rg-card{position:relative;padding:16px 20px 15px;border-radius:16px;outline:none;
-  background:rgba(26,35,56,.55);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 14px 34px -24px rgba(0,0,0,.7)}
-.rg-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.04) 60%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-.rg-card::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s ease;
-  border:1px solid rgba(14,165,168,.7);box-shadow:0 0 34px -10px rgba(14,165,168,.55),inset 0 0 24px -12px rgba(14,165,168,.4)}
-.rg-card[data-status="horizon"]::after{border-color:rgba(212,175,55,.65);box-shadow:0 0 34px -10px rgba(212,175,55,.5),inset 0 0 24px -12px rgba(212,175,55,.35)}
-.rg-card.hl::after{opacity:1}
-.rg-card.ignite::after{animation:rg-card-flash 1.1s ease-out 1}
-@keyframes rg-card-flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
-.rg-card:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.rg-top{display:flex;align-items:center;gap:12px}
-.rg-n{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.06em;color:#C9CCD8}
-.rg-chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 9px;border-radius:999px;border:1px solid;
-  font-family:var(--mono);font-weight:500;font-size:10px;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
-.rg-chip i{width:7px;height:7px;border-radius:50%;flex:none}
-.rg-chip.is-live{color:#86EFAC;border-color:rgba(34,197,94,.42);background:rgba(34,197,94,.08)}
-.rg-chip.is-live i{background:#22C55E;box-shadow:0 0 8px rgba(34,197,94,.8)}
-.rg-chip.is-building{color:#8BE0E2;border-color:rgba(14,165,168,.45);background:rgba(14,165,168,.08)}
-.rg-chip.is-building i{background:#0EA5A8;animation:rg-dot 2.4s ease-in-out infinite}
-@keyframes rg-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-.rg-chip.is-horizon{color:#EBD488;border-color:rgba(212,175,55,.42);background:rgba(212,175,55,.06)}
-.rg-chip.is-horizon i{border:1.5px solid #D4AF37;background:transparent}
-.rg-t{font-family:var(--head);font-weight:600;font-size:18px;line-height:1.25;letter-spacing:-.01em;color:#fff;margin:9px 0 4px}
-.rg-c{font-size:14.5px;line-height:1.55;color:#C3C7D4}
-.rg-moat{margin-top:9px;font-family:var(--mono);font-weight:500;font-size:10.5px;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.rg-moat span{color:#7f86a0;margin-right:6px}
-.rg-link{display:inline-block;margin-top:8px;font-size:13px;font-weight:500;color:#E8CF7C;text-decoration:none;padding:6px 0}
-.rg-link:hover{text-decoration:underline;text-underline-offset:3px}
-.rg-legend{margin-top:14px;font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.06em;color:var(--muted)}
+.mt-off .mt-pulse,.mt-off .mt-orbit,.mt-off .mt-chip i,.mt-off .mt-shimmer{animation-play-state:paused}
 
 /* ================= responsive ================= */
 @media (max-width:1023px){
-  .rg{grid-template-columns:minmax(0,1fr)}
-  .rg-art-col{position:static}
-  .rg-art{max-width:520px}
+  .mt{grid-template-columns:minmax(0,1fr);gap:40px}
+  .mt-list{max-width:640px;width:100%;margin:0 auto}
 }
-@media (max-width:639px){
-  .rg-node{width:22px;height:22px;margin:-11px 0 0 -11px}
-  .rg-node-in{font-size:10px}
-  .rg-card{padding:16px 16px 14px}
-  .rg-top{flex-direction:column;align-items:stretch;gap:8px}
-  .rg-chip{justify-content:center;width:100%}
-  .rg-t{font-size:17px}
+@media (max-width:767px){
+  .sec-moat{padding:88px 0}
+  .mt-wrap{padding:0 16px}
+  .mt-art{aspect-ratio:1;max-width:360px}
+  .mt-label{display:none}
+  .mt-node span{width:26px;height:26px;font-size:11px}
+  .mt-node span::after{inset:-4px}
+  .mt-ring[data-st="promise"],.mt-ring[data-st="building"]{--w:2.4}
+  .mt-ring[data-st="next"],.mt-ring[data-st="coming"]{--w:2}
+  .mt-ring[data-st="future"]{--w:1.8}
+  .mt-ring[data-st="next"] .mt-line,.mt-ring[data-st="coming"] .mt-line{stroke-dasharray:10 10}
+  .mt-ring[data-st="future"] .mt-line{stroke-dasharray:2 8}
+  .mt-row{padding:14px 14px}
+  .mt-row.active{transform:scale(1.015)}
 }
 
-/* reduced motion: drawn, still, no travelling light */
-.rg-still .rg-draw{transition:none;stroke-dashoffset:0}
-.rg-still .rg-node{transition:none}
-.rg-still .rg-node-in::after,.rg-still .rg-chip.is-building i{animation:none}
-.rg-still .rg-light{display:none}
+/* reduced motion: drawn, lit and still; hover still works */
+.mt-rm .mt-draw{transition:none;stroke-dashoffset:0}
+.mt-rm .mt-ring,.mt-rm .mt-line,.mt-rm .mt-halo,.mt-rm .mt-row,.mt-rm .mt-node span,.mt-rm .mt-label,.mt-rm .mt-logo,.mt-rm .mt-glow{transition:none}
 @media (prefers-reduced-motion:reduce){
-  .rg-ring,.rg-node-in,.rg-light i,.rg-chip i,.rg-card::after{animation:none!important}
-  .rg-ring,.rg-card::after,.rg-line,.rg-halo{transition:none}
+  .mt-pulse,.mt-shimmer,.mt-orbit,.mt-chip i{animation:none!important}
+  .mt-pulse,.mt-shimmer{display:none}
 }
