@@ -21,6 +21,7 @@
     padding:16px clamp(18px,4vw,42px);background:rgba(26,35,56,.6);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
   .brand img{display:block;height:24px;width:auto}
+  picture{display:contents}
   .brand img.wm{height:11px}
   .brand b{font-family:var(--disp);font-weight:400;letter-spacing:.14em;font-size:1.05rem}
   .back{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
@@ -63,7 +64,7 @@
   <div class="redline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="/">
-      <img src="/causvia-mark.png" alt=""><img class="wm" src="/causvia-wordmark.png" alt="Causvia">
+      <picture><source srcset="/causvia-mark.webp" type="image/webp"><img src="/causvia-mark.png" alt=""></picture><img class="wm" src="/causvia-wordmark.png" alt="Causvia">
     </a>
     <a class="back" href="/">&larr; Back to Causvia</a>
   </header>
