@@ -530,6 +530,14 @@
   .tag.ok{color:var(--success);background:rgba(34,197,94,.15)}
   .tag.no{color:var(--slate);background:rgba(148,163,184,.15)}
   .tag.mu{color:var(--muted);background:rgba(160,163,184,.12)}
+  .tag-link{text-decoration:none;cursor:pointer;transition:color .15s,background-color .15s,box-shadow .15s}
+  .tag-link:hover{color:#F0D98A;background:rgba(212,175,55,.14);box-shadow:inset 0 0 0 1px rgba(212,175,55,.45)}
+  .ea-link{color:#E8CF7C;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(232,207,124,.4)}
+  .ea-link:hover{color:#F4DF96;text-decoration-color:currentColor}
+  .feat-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding:11px 12px;border-radius:10px;text-decoration:none;
+    font-family:var(--head);font-weight:500;font-size:.9rem;color:#F0D98A;background:rgba(212,175,55,.09);box-shadow:inset 0 0 0 1px rgba(212,175,55,.32);transition:background-color .15s}
+  .feat-cta:hover,.feat-cta:focus-visible{background:rgba(212,175,55,.16)}
+  .xd-ctas{display:flex;flex-wrap:wrap;gap:10px}
   .sv{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
   .sv.in{opacity:1;transform:none}
 
@@ -1151,7 +1159,7 @@
               <circle cx="160" cy="36" r="4" fill="#0EA5A8"/></svg></div>
             <h3>Model-switch lab</h3>
             <p>Thinking of changing AI models? Test the new one against your current model, or against your team, on the same live work first. Cost, quality and speed are compared side by side, with a holdout.</p>
-            <span class="tag mu">Early access</span>
+            <a class="tag mu tag-link" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>
           </article>
           <article class="hwc glass pglow sv" style="transition-delay:.08s">
             <div class="art" aria-hidden="true"><svg viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
@@ -1161,7 +1169,7 @@
                 <rect x="20" y="80" width="280" height="24" rx="6" fill="#1A2338"/><text x="32" y="96" fill="#A0A3B8">EXP-031  AI drafts + review</text><text x="236" y="96" fill="#22C55E">VERIFIED</text></g></svg></div>
             <h3>Failure memory</h3>
             <p>Every experiment that didn't work is kept, with the reason. Your team never repeats a failed test, and new proposals start from what has already been ruled out.</p>
-            <span class="tag mu">Early access</span>
+            <a class="tag mu tag-link" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>
           </article>
           <article class="hwc glass pglow sv" style="transition-delay:.16s">
             <div class="art" aria-hidden="true"><svg viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
@@ -1171,7 +1179,7 @@
               <g font-family="JetBrains Mono" font-size="10"><text x="46" y="66" fill="#0EA5A8">AI</text><text x="140" y="66" fill="#A0A3B8">AI + HUMAN</text><text x="240" y="66" fill="#D4AF37">HUMAN</text></g></svg></div>
             <h3>Supervision designer</h3>
             <p>Decide how people and AI share each workflow: who drafts, who reviews, who approves, and when autonomy steps back. Then test the design before you roll it out.</p>
-            <span class="tag mu">Early access</span>
+            <a class="tag mu tag-link" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -1250,7 +1258,7 @@
           <div class="wcol sv" style="transition-delay:.1s" id="stack">
             <span class="eyebrow">Integrations</span>
             <h2 class="title">Works with your operations stack</h2>
-            <p class="lede">Causvia is built to connect with the tools your operations already run on, such as Zendesk, Freshdesk, Salesforce, ServiceNow and your own AI models, so experiments happen inside real work. Integrations are rolling out in early access.</p>
+            <p class="lede">Causvia is built to connect with the tools your operations already run on, such as Zendesk, Freshdesk, Salesforce, ServiceNow and your own AI models, so experiments happen inside real work. Integrations are rolling out in <a class="ea-link" href="/auth?tab=request">early access</a>.</p>
             <div class="dg dg-ob" id="dgOb">
             <!-- layer stack (back → front): ring · base hexes · middle hex · inner core · canvas (spokes, pulses, ripples) · nodes -->
             <svg class="dgl ob-ring orbit-diagram" id="obRing" viewBox="-60 -50 820 700" aria-hidden="true">
@@ -1353,7 +1361,7 @@
           <div class="tc sv" style="transition-delay:.18s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
             <h3>Designed for India's DPDP Act and GDPR</h3><p>Consent, purpose limitation and data-subject rights are part of the design from day one, not added later.</p></div>
         </div>
-        <p class="trust-note sv">Causvia is in early access. Deployment options and data-handling terms are agreed in writing with each partner.</p>
+        <p class="trust-note sv">Causvia is in <a class="ea-link" href="/auth?tab=request">early access</a>. Deployment options and data-handling terms are agreed in writing with each partner.</p>
       </div>
     </section>
 
@@ -1859,6 +1867,7 @@
     for(var fi=0;fi<7;fi++){
       dhtml+='<a class="feat-row" role="menuitem" href="#" data-stage="'+fi+'" style="--rc:'+COL[fi]+'">'
            +'<span class="fic">'+icoC(fi)+'</span><span class="fn">'+STAGE_TITLES[fi]+'</span><span class="fo">'+WHO[fi]+'</span></a>'; }
+    dhtml+='<a class="feat-cta" role="menuitem" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>';
     menu.innerHTML=dhtml;
     var wrap=document.getElementById("featWrap"), btn=document.getElementById("featBtn");
     function closeF(){ wrap.classList.remove("open"); btn.setAttribute("aria-expanded","false"); }
@@ -1891,7 +1900,8 @@
         +(s.delivers?'<div class="xd-box"><span class="k">You walk away with</span><span class="v">'+s.delivers+'</span></div>':'')
         +'<div class="xd-box"><span class="k">Honest edge</span><span class="v">'+s.edge+'</span></div>'
         +'<div class="xd-tech">↳ '+s.tech+'</div>'
-        +'<button class="btn btn-ghost" id="xdFly">Fly to this step <span class="arw" aria-hidden="true">→</span></button></div>';
+        +'<div class="xd-ctas"><a class="btn btn-gold" href="/auth?tab=request">Request early access <span class="arw" aria-hidden="true">→</span></a>'
+        +'<button class="btn btn-ghost" id="xdFly">Fly to this step <span class="arw" aria-hidden="true">→</span></button></div></div>';
       detail.scrollTop=0;
       document.getElementById("xdFly").addEventListener("click",function(){
         closeModal(xpl); if(typeof s.fly==="number") goToProgress(s.fly); else goToStage(s.stage); });
