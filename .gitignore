@@ -1,2 +1,7 @@
 node_modules/
 dist/
+
+# local env (Supabase keys live in Vercel env vars)
+.env
+.env.*
+!.env.example

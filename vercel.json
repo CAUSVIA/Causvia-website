@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/auth", "destination": "/auth.html" },
+    { "source": "/app", "destination": "/app.html" }
+  ]
+}

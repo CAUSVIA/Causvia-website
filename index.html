@@ -317,6 +317,8 @@
   .nav.shrunk{top:10px;height:52px;width:min(1000px,calc(100% - 28px));background:rgba(16,23,40,.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 30px rgba(0,0,0,.38)}
   .nav-l,.nav-r{display:flex;align-items:center;gap:22px}
   .nav-r{justify-content:flex-end}
+  .nav a.nl{white-space:nowrap}
+  @media (max-width:1100px){ .nav-r{gap:16px} }
   .nav a.nl,.nav .feat-btn,.nav .snd{font-family:var(--head);font-weight:500;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
     color:#D3D6E2;text-decoration:none;background:none;border:0;cursor:pointer;padding:6px 0}
   .nav a.nl:hover,.nav .feat-btn:hover,.nav .feat.open .feat-btn,.nav .snd:hover{color:#fff}
@@ -1363,8 +1365,8 @@
         <h2 class="mega" id="ctaTitle">Find your balance.</h2>
         <p class="lede">Every company is becoming half human, half AI. Causvia finds the right balance, by experiment, for every workflow.</p>
         <div class="cta-row">
-          <a class="btn btn-gold btn-lg" data-cta="audit" href="mailto:hello@causvia.com?subject=Free%20workflow%20balance%20audit">Get a free workflow balance audit <span class="arw" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost btn-lg" data-cta="early" href="mailto:hello@causvia.com?subject=Causvia%20early%20access">Join early access</a>
+          <a class="btn btn-gold btn-lg" data-cta="audit" href="/auth?tab=request">Get a free workflow balance audit <span class="arw" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost btn-lg" data-cta="early" href="/auth?tab=request">Join early access</a>
         </div>
       </div>
     </section>
@@ -1383,7 +1385,7 @@
           </div>
           <nav class="fcol" aria-label="Menu"><h5>Menu</h5>
             <a href="#" data-ftabout>About</a><a href="#features">Features</a>
-            <a href="mailto:hello@causvia.com?subject=Free%20workflow%20balance%20audit">Get a free audit</a>
+            <a href="/auth?tab=request">Get a free audit</a>
             <a href="mailto:hello@causvia.com">Contact</a></nav>
           <nav class="fcol" aria-label="Features"><h5>Features</h5>
             <a href="#features" data-fttab="0">Experiment</a><a href="#features" data-fttab="1">Doubt</a><a href="#features" data-fttab="2">Balance</a></nav>
@@ -1462,8 +1464,8 @@
     <h2>Your turn to take the <span class="sig">controls.</span></h2>
     <p class="end-sub">AI flew the routine. Every decision that matters is yours.</p>
     <div class="end-btns">
-      <a class="btn end-gold" id="launch" href="mailto:hello@causvia.com?subject=Free%20workflow%20balance%20audit">Get a free workflow balance audit <span class="arw" aria-hidden="true">→</span></a>
-      <a class="btn end-ghost glass-thin" href="mailto:hello@causvia.com?subject=Causvia%20early%20access">Join early access</a>
+      <a class="btn end-gold" id="launch" href="/auth?tab=request">Get a free workflow balance audit <span class="arw" aria-hidden="true">→</span></a>
+      <a class="btn end-ghost glass-thin" href="/auth?tab=request">Join early access</a>
     </div>
   </div>
 
@@ -1482,7 +1484,8 @@
         <button class="feat-btn" id="featBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="featMenu"><span class="lbl">Features</span><svg class="cx" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="feat-menu glass-thick" id="featMenu" role="menu" aria-label="The Causvia loop"></div>
       </div>
-      <a class="btn btn-gold cta" id="demoTop" href="mailto:hello@causvia.com?subject=Free%20workflow%20balance%20audit"><span class="cl">Get a free audit</span><span class="cs">Free audit</span></a>
+      <a class="nl signin" href="/auth">Sign in</a>
+      <a class="btn btn-gold cta" id="demoTop" href="/auth?tab=request"><span class="cl">Get a free audit</span><span class="cs">Free audit</span></a>
     </div>
     <div class="mmenu glass-thick" id="mMenu" aria-label="Menu"></div>
   </header>
@@ -1675,8 +1678,8 @@
 
         <p class="abt-closer">Built for operations leaders who&rsquo;d rather prove the right balance than guess at it &mdash; with AI handling the routine and your team staying in command.</p>
         <div class="abt-cta">
-          <a class="btn btn-gold btn-lg" href="mailto:hello@causvia.com?subject=Free%20workflow%20balance%20audit">Get a free workflow balance audit</a>
-          <a class="btn btn-ghost btn-lg" href="mailto:hello@causvia.com?subject=Causvia%20early%20access">Join early access <span class="arw" aria-hidden="true">→</span></a>
+          <a class="btn btn-gold btn-lg" href="/auth?tab=request">Get a free workflow balance audit</a>
+          <a class="btn btn-ghost btn-lg" href="/auth?tab=request">Join early access <span class="arw" aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -1912,7 +1915,7 @@
 
     /* --- compact nav: shrinks once the page moves; under 900px a menu button holds About, sound and the loop --- */
     var navEl=document.getElementById("nav"), mTog=document.getElementById("mTog"), mMenu=document.getElementById("mMenu"), sndBtn=document.getElementById("snd");
-    mMenu.innerHTML='<button class="mm-row" type="button" data-act="about">About Causvia</button>'
+    mMenu.innerHTML='<a class="mm-row" href="/auth">Sign in</a><button class="mm-row" type="button" data-act="about">About Causvia</button>'
       +'<button class="mm-row" type="button" data-act="snd">Sound<span class="snd-st" id="mSndSt">Off</span></button><div class="mm-sep"></div>'+dhtml;
     var mSndSt=document.getElementById("mSndSt");
     function sndState(){ mSndSt.textContent=sndBtn.classList.contains("on")?"On":"Off"; }
@@ -2006,11 +2009,11 @@
         el.style.setProperty("--mx",(e.clientX-r.left)+"px"); el.style.setProperty("--my",(e.clientY-r.top)+"px"); }); });
   }
 
-  /* ---- footer subscribe → mail draft (placeholder until a mailing list exists) ---- */
+  /* ---- footer "Get Causvia updates" → the early-access request, email prefilled ---- */
   document.getElementById("subForm").addEventListener("submit",function(e){ e.preventDefault();
     var v=document.getElementById("subEmail").value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ toast("Enter a valid email address"); document.getElementById("subEmail").focus(); return; }
-    window.location.href="mailto:hello@causvia.com?subject=Causvia%20updates&body="+encodeURIComponent("Please add "+v+" to Causvia updates."); });
+    window.location.href="/auth?tab=request&email="+encodeURIComponent(v); });
 
   /* ---- reveal on scroll ---- */
   if(!RM && "IntersectionObserver" in window){

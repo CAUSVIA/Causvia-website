@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in · Causvia</title>
+<meta name="description" content="Sign in to Causvia, or request early access for your operations team.">
+<meta name="theme-color" content="#0B1220">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 110'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23D4AF37'/%3E%3Cstop offset='.5' stop-color='%23F59E0B'/%3E%3Cstop offset='.78' stop-color='%230EA5A8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M72.6 32.4A32 32 0 1 0 72.6 77.6' fill='none' stroke='url(%23g)' stroke-width='16' stroke-linecap='round'/%3E%3Ccircle cx='86' cy='52' r='7' fill='%23D4AF37'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/causvia-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/auth/auth.css">
+<!-- capture the auth redirect (recovery / invite / errors) before the Supabase client consumes and clears it -->
+<script>window.__authUrl={hash:location.hash,search:location.search};</script>
+</head>
+<body>
+<div class="auth" id="auth">
+
+  <!-- ===== Take the controls ===== -->
+  <section class="pilot" id="pilot" aria-labelledby="pilotTitle">
+    <div class="sp" aria-hidden="true">
+      <canvas class="sp-neb" id="spNeb"></canvas>
+      <canvas class="sp-stars" id="spStars"></canvas>
+      <span class="sp-glow g"></span><span class="sp-glow t"></span>
+      <span class="sp-sweep" id="spSweep"></span>
+      <span class="sp-grain"></span>
+    </div>
+    <a class="pilot-back" href="/"><span aria-hidden="true">←</span> causvia.com</a>
+
+    <div class="pilot-in">
+      <div class="pilot-mark" aria-hidden="true"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img src="/causvia-mark.png" alt="" width="400" height="293"></picture></div>
+      <h1 id="pilotTitle">Take the controls.</h1>
+
+      <div class="ap-plate">
+        <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+        <span class="ap-name" aria-hidden="true">Autopilot</span>
+        <div class="ap" id="apSwitch" role="switch" tabindex="0" aria-checked="false" aria-label="Take the controls" aria-describedby="apHint">
+          <span class="ap-track">
+            <span class="ap-opt ai"><b>AI</b></span>
+            <span class="ap-opt you"><b>YOU</b></span>
+            <span class="ap-knob" id="apKnob"><span class="sheen"></span><span class="grip"><i></i><i></i><i></i></span></span>
+          </span>
+        </div>
+        <span class="ap-ticks" aria-hidden="true"><span>Routine</span><span>Decisions</span></span>
+        <span class="vh" id="apHint">Switch from AI to YOU to take the controls and sign in.</span>
+      </div>
+
+      <p class="pilot-sub">AI flies the routine. Every decision that matters is yours.</p>
+    </div>
+    <p class="pilot-cap">causvia · early access</p>
+  </section>
+
+  <!-- ===== Auth card ===== -->
+  <main class="side">
+    <div class="card" id="card">
+      <a class="card-logo" href="/" aria-label="Causvia home">
+        <picture><source srcset="/causvia-mark.webp" type="image/webp"><img class="cl-mark" src="/causvia-mark.png" alt="" width="400" height="293"></picture>
+        <img class="cl-word" src="/causvia-wordmark.png" alt="Causvia" width="137" height="13">
+      </a>
+
+      <div class="tabs" role="tablist" aria-label="Account">
+        <button class="tab" role="tab" id="tabSignin" aria-controls="pSignin" aria-selected="true" type="button">Sign in</button>
+        <button class="tab" role="tab" id="tabRequest" aria-controls="pRequest" aria-selected="false" tabindex="-1" type="button">Request access</button>
+        <span class="tab-ind" aria-hidden="true"></span>
+      </div>
+
+      <!-- ---------- Sign in ---------- -->
+      <section class="panel" role="tabpanel" id="pSignin" aria-labelledby="tabSignin" tabindex="-1">
+
+        <div class="view" id="vSignin">
+          <h2>Welcome back</h2>
+          <p class="sub">Sign in to your experiments. Every recommendation inside links back to its evidence, or says it doesn't have any.</p>
+          <div class="note" id="siNote" role="status" hidden></div>
+          <form id="fSignin" novalidate>
+            <div class="field">
+              <label for="siEmail">Work email</label>
+              <input id="siEmail" name="email" type="email" autocomplete="username" inputmode="email" placeholder="you@company.com" aria-describedby="siEmailErr" required>
+              <p class="err" id="siEmailErr" hidden></p>
+            </div>
+            <div class="field">
+              <label for="siPass">Password</label>
+              <div class="pw">
+                <input id="siPass" name="password" type="password" autocomplete="current-password" placeholder="At least 8 characters" aria-describedby="siPassErr" required>
+                <button class="pw-tog" type="button" aria-controls="siPass" aria-label="Show password" aria-pressed="false"></button>
+              </div>
+              <p class="err" id="siPassErr" hidden></p>
+              <button class="link forgot" type="button" id="toForgot">Forgot password?</button>
+            </div>
+            <button class="btn gold" type="submit" id="siBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Sign in</span></button>
+          </form>
+          <div class="oauth" id="oauth" hidden>
+            <div class="or" role="separator"><span>OR</span></div>
+            <button class="btn ghost" type="button" id="oaGoogle" data-provider="google" hidden><span class="spin" aria-hidden="true"></span>
+              <svg class="pico" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+              <span class="lbl">Continue with Google</span></button>
+            <button class="btn ghost" type="button" id="oaMicrosoft" data-provider="azure" hidden><span class="spin" aria-hidden="true"></span>
+              <svg class="pico" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M1 1h9v9H1z"/><path fill="#7FBA00" d="M11 1h9v9h-9z"/><path fill="#00A4EF" d="M1 11h9v9H1z"/><path fill="#FFB900" d="M11 11h9v9h-9z"/></svg>
+              <span class="lbl">Continue with Microsoft</span></button>
+          </div>
+          <p class="alt"><button class="link" type="button" id="magicBtn"><span class="spin" aria-hidden="true"></span>Email me a sign-in link</button></p>
+        </div>
+
+        <div class="view" id="vForgot" hidden>
+          <h2>Reset your password</h2>
+          <p class="sub">Enter your work email and we'll send you a link to set a new password.</p>
+          <div class="note" id="fpNote" role="status" hidden></div>
+          <form id="fForgot" novalidate>
+            <div class="field">
+              <label for="fpEmail">Work email</label>
+              <input id="fpEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com" aria-describedby="fpEmailErr" required>
+              <p class="err" id="fpEmailErr" hidden></p>
+            </div>
+            <button class="btn gold" type="submit" id="fpBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Send reset link</span></button>
+          </form>
+          <p class="alt"><button class="link back" type="button" data-back><span aria-hidden="true">←</span> Back to sign in</button></p>
+        </div>
+
+        <div class="view" id="vReset" hidden>
+          <h2 id="rsTitle">Set a new password</h2>
+          <p class="sub" id="rsSub">Choose a password with at least 8 characters. A short phrase is easier to remember and harder to guess.</p>
+          <div class="note" id="rsNote" role="status" hidden></div>
+          <form id="fReset" novalidate>
+            <div class="field">
+              <label for="rsPass">New password</label>
+              <div class="pw">
+                <input id="rsPass" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" aria-describedby="rsPassErr" required>
+                <button class="pw-tog" type="button" aria-controls="rsPass" aria-label="Show password" aria-pressed="false"></button>
+              </div>
+              <p class="err" id="rsPassErr" hidden></p>
+            </div>
+            <div class="field">
+              <label for="rsPass2">Confirm new password</label>
+              <input id="rsPass2" name="password2" type="password" autocomplete="new-password" aria-describedby="rsPass2Err" required>
+              <p class="err" id="rsPass2Err" hidden></p>
+            </div>
+            <button class="btn gold" type="submit" id="rsBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Update password</span></button>
+          </form>
+          <p class="alt"><button class="link back" type="button" data-back><span aria-hidden="true">←</span> Back to sign in</button></p>
+        </div>
+      </section>
+
+      <!-- ---------- Request access ---------- -->
+      <section class="panel" role="tabpanel" id="pRequest" aria-labelledby="tabRequest" tabindex="-1" hidden>
+        <div class="view" id="vRequest">
+          <h2>Request early access</h2>
+          <p class="sub">Causvia is onboarding a small group of operations teams. Tell us about yours.</p>
+          <form id="fRequest" novalidate>
+            <div class="field">
+              <label for="rqName">Full name</label>
+              <input id="rqName" name="name" type="text" autocomplete="name" maxlength="120" aria-describedby="rqNameErr" required>
+              <p class="err" id="rqNameErr" hidden></p>
+            </div>
+            <div class="field">
+              <label for="rqEmail">Work email</label>
+              <input id="rqEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com" maxlength="254" aria-describedby="rqEmailErr" required>
+              <p class="err" id="rqEmailErr" hidden></p>
+            </div>
+            <div class="field">
+              <label for="rqCompany">Company</label>
+              <input id="rqCompany" name="company" type="text" autocomplete="organization" maxlength="160" aria-describedby="rqCompanyErr" required>
+              <p class="err" id="rqCompanyErr" hidden></p>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label for="rqRole">Role</label>
+                <div class="sel"><select id="rqRole" name="role" aria-describedby="rqRoleErr" required>
+                  <option value="" selected disabled>Choose…</option>
+                  <option>Head of operations</option><option>Support leader</option><option>CX / quality</option>
+                  <option>IT / engineering</option><option>Founder / executive</option><option>Other</option>
+                </select></div>
+                <p class="err" id="rqRoleErr" hidden></p>
+              </div>
+              <div class="field">
+                <label for="rqSize">Team size</label>
+                <div class="sel"><select id="rqSize" name="team_size" aria-describedby="rqSizeErr" required>
+                  <option value="" selected disabled>Choose…</option>
+                  <option>Under 50</option><option>50–200</option><option>200–1,000</option><option>1,000+</option>
+                </select></div>
+                <p class="err" id="rqSizeErr" hidden></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="rqFlow">Which workflow would you test first?</label>
+              <div class="sel"><select id="rqFlow" name="workflow" aria-describedby="rqFlowErr" required>
+                <option value="" selected disabled>Choose…</option>
+                <option>Customer support</option><option>Claims</option><option>KYC / onboarding</option><option>Back office</option><option>Other</option>
+              </select></div>
+              <p class="err" id="rqFlowErr" hidden></p>
+            </div>
+            <!-- honeypot: invisible to people, tempting to bots -->
+            <div class="hp" aria-hidden="true"><label for="rqSite">Website</label><input id="rqSite" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+            <div class="field check">
+              <label class="cb" for="rqAgree">
+                <input id="rqAgree" name="agree" type="checkbox" aria-describedby="rqAgreeErr" required>
+                <span class="box" aria-hidden="true"></span>
+                <span>I agree to the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/terms.html" target="_blank" rel="noopener">Terms</a></span>
+              </label>
+              <p class="err" id="rqAgreeErr" hidden></p>
+            </div>
+            <div class="note" id="rqNote" role="status" hidden></div>
+            <button class="btn gold" type="submit" id="rqBtn"><span class="spin" aria-hidden="true"></span><span class="lbl">Request access</span></button>
+          </form>
+        </div>
+
+        <div class="view done" id="vDone" hidden tabindex="-1">
+          <svg class="tick" viewBox="0 0 72 72" aria-hidden="true">
+            <circle class="t-ring" cx="36" cy="36" r="31"/><path class="t-check" d="M23 37.5l9 9 17-19"/>
+          </svg>
+          <h2>Request received.</h2>
+          <p class="sub">We review every request personally and reply within two working days.</p>
+          <p class="alt"><a class="link" href="/">Back to causvia.com</a></p>
+        </div>
+      </section>
+
+      <p class="card-foot"><i aria-hidden="true"></i>Doubted before trusted · Early access</p>
+    </div>
+  </main>
+</div>
+<script type="module" src="/src/auth/main.js"></script>
+</body>
+</html>
