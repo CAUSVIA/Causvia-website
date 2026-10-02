@@ -819,25 +819,6 @@
   .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
 
   /* ---- footer ---- */
-  .ft{position:relative;border-top:1px solid var(--border);padding:clamp(56px,7vw,88px) 0 34px;overflow:hidden;background:#0a101d}
-  .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(28px,4vw,64px)}
-  .ft-brand img.fl{width:190px;height:auto;display:block}
-  .ft-brand p{font-size:.95rem;color:var(--muted);margin:16px 0 22px;max-width:36ch;line-height:1.6}
-  .ft-brand label{display:block;font-family:var(--head);font-weight:600;font-size:.95rem;margin-bottom:10px}
-  .sub-row{display:flex;gap:8px;max-width:420px}
-  .sub-row input{flex:1 1 auto;min-width:0;height:44px;border-radius:10px;background:var(--surface);border:1px solid var(--border);padding:0 14px;font-size:.92rem;outline:none}
-  .sub-row input::placeholder{color:#7d8299}
-  .sub-row input:focus{box-shadow:0 0 0 2px var(--teal);border-color:transparent}
-  .fcol h5{font-family:var(--head);font-weight:500;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-  .fcol a{display:block;font-size:.98rem;color:#E4E6EE;text-decoration:none;margin-bottom:11px}
-  .fcol a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
-  .ft-wm{display:block;width:100%;height:auto;margin:clamp(48px,7vw,88px) 0 0;opacity:.07;pointer-events:none}
-  .ft-bar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:22px;margin-top:22px;
-    font-family:var(--mono);font-size:.74rem;color:var(--muted)}
-  .ft-bar .tl{color:#fff;font-family:var(--head);font-weight:500;letter-spacing:.04em}
-  .ft-bar .lg{margin-left:auto;display:flex;gap:18px}
-  .ft-bar a{color:#D3D6E2;text-decoration:none}
-  .ft-bar a:hover{color:#fff;text-decoration:underline}
 
   /* ================= overlays: stage explorer + About (solid surfaces: long reading) ================= */
   .ovl{position:fixed;inset:0;z-index:99998;display:none;flex-direction:column;background:var(--bg);color:var(--ink)}
@@ -895,8 +876,6 @@
     .hw .hwc:last-child{grid-column:1/-1}
     .wired-grid{grid-template-columns:1fr}
     .trust{grid-template-columns:1fr 1fr}
-    .ft-top{grid-template-columns:1fr 1fr 1fr}
-    .ft-brand{grid-column:1/-1}
     .sec-head.split{grid-template-columns:1fr;gap:0}
     .sec-head.split .lede{margin-top:20px}
     .man{flex-direction:column;height:auto;min-height:0}
@@ -947,8 +926,6 @@
     .panel{inset:12px}
     .arms{grid-template-columns:1fr}
     .mock-bar .note{display:none}
-    .ft-top{grid-template-columns:1fr 1fr}
-    .ft-bar .lg{margin-left:0}
     .tab .l{font-size:.84rem}
     .tab{padding:12px 10px 14px}
     .hub-diagram .hlbl{font-size:19px;letter-spacing:.5px}
@@ -1329,35 +1306,8 @@
       </div>
     </section>
 
-    <footer class="ft">
-      <div class="wrap">
-        <div class="ft-top">
-          <div class="ft-brand">
-            <picture><source srcset="/causvia-logo.webp" type="image/webp"><img class="fl" src="/causvia-logo.png" alt="Causvia" width="190" height="109" loading="lazy"></picture>
-            <p>The R&amp;D lab for the hybrid workforce. AI handles the routine; your team stays in command.</p>
-            <form id="subForm" novalidate>
-              <label for="subEmail">Get Causvia updates</label>
-              <div class="sub-row"><input id="subEmail" type="email" placeholder="you@company.com" autocomplete="email" required>
-                <button class="btn btn-gold" type="submit">Subscribe</button></div>
-            </form>
-          </div>
-          <nav class="fcol" aria-label="Menu"><h5>Menu</h5>
-            <a href="/about">About</a><a href="#features">Features</a>
-            <a href="/auth?tab=request">Get a free audit</a>
-            <a href="mailto:hello@causvia.com">Contact</a></nav>
-          <nav class="fcol" aria-label="Features"><h5>Features</h5>
-            <a href="#features" data-fttab="0">Experiment</a><a href="#features" data-fttab="1">Doubt</a><a href="#features" data-fttab="2">Balance</a></nav>
-          <nav class="fcol" aria-label="Social"><h5>Social</h5>
-            <a href="https://www.linkedin.com/in/udharth-mangla/" target="_blank" rel="noopener">LinkedIn</a></nav>
-        </div>
-        <img class="ft-wm" src="/causvia-wordmark.png" alt="" aria-hidden="true" loading="lazy">
-        <div class="ft-bar">
-          <span class="tl">Balance, proven.</span><span>© 2026 Causvia</span>
-          <span class="lg"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></span>
-        </div>
-      </div>
-    </footer>
   </main>
+  <!-- horizon-footer cta="off" -->
 
   <div class="pageline" aria-hidden="true"><i id="plThumb"></i></div>
   <div class="frame" aria-hidden="true"></div>
@@ -1822,9 +1772,18 @@
       setTimeout(function(){ gate.classList.remove("decided"); },6000); });
     return sel;
   })();
-  [].slice.call(document.querySelectorAll("[data-fttab]")).forEach(function(a){
-    a.addEventListener("click",function(e){ e.preventDefault(); var i=+a.dataset.fttab;
-      document.getElementById("features").scrollIntoView({behavior:RM?"auto":"smooth"}); setTimeout(function(){ showTab(i,true); },RM?0:500); }); });
+  /* footer Product links (/?tab=experiment|doubt|balance#features) open the matching showcase tab:
+     in place when already on this page, or once the loader has finished when arriving from another page */
+  (function(){
+    var TABS={experiment:0,doubt:1,balance:2};
+    function open(name,smooth){
+      document.getElementById("features").scrollIntoView({behavior:smooth&&!RM?"smooth":"auto"});
+      setTimeout(function(){ showTab(TABS[name],true); },smooth&&!RM?500:0); }
+    document.addEventListener("click",function(e){ var a=e.target.closest("a[data-tab]"); if(!a||!TABS.hasOwnProperty(a.dataset.tab)) return;
+      e.preventDefault(); history.replaceState(null,"","/?tab="+a.dataset.tab+"#features"); open(a.dataset.tab,true); });
+    var asked=new URLSearchParams(location.search).get("tab");
+    if(asked && TABS.hasOwnProperty(asked)) (function wait(){ if(document.getElementById("boot")) return setTimeout(wait,150); open(asked,false); })();
+  })();
 
   /* ---- manifesto: expanding cards ---- */
   (function(){
@@ -1840,12 +1799,6 @@
       el.addEventListener("pointermove",function(e){ var r=el.getBoundingClientRect();
         el.style.setProperty("--mx",(e.clientX-r.left)+"px"); el.style.setProperty("--my",(e.clientY-r.top)+"px"); }); });
   }
-
-  /* ---- footer "Get Causvia updates" → the early-access request, email prefilled ---- */
-  document.getElementById("subForm").addEventListener("submit",function(e){ e.preventDefault();
-    var v=document.getElementById("subEmail").value.trim();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ toast("Enter a valid email address"); document.getElementById("subEmail").focus(); return; }
-    window.location.href="/auth?tab=request&email="+encodeURIComponent(v); });
 
   /* ---- reveal on scroll ---- */
   if(!RM && "IntersectionObserver" in window){

@@ -1,5 +1,5 @@
 // About page: things fade up as they enter, the autonomy bars fill, the Flight plan follows the reader,
-// the hero rings drift a few pixels with the mouse, and the footer form hands off to the early-access request.
+// and the hero rings drift a few pixels with the mouse.
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches
 const FINE = matchMedia('(pointer: fine)').matches
 
@@ -50,12 +50,3 @@ if (rings && !RM && FINE) {
     if (!raf) raf = requestAnimationFrame(tick)
   }, { passive: true })
 }
-
-/* ---------- footer "Get Causvia updates" → early-access request, email prefilled ---------- */
-const form = document.getElementById('subForm')
-if (form) form.addEventListener('submit', (e) => {
-  e.preventDefault()
-  const input = document.getElementById('subEmail'), err = document.getElementById('subErr'), v = input.value.trim()
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { err.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return }
-  location.href = '/auth?tab=request&email=' + encodeURIComponent(v)
-})
