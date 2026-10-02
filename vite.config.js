@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite'
 import { fileURLToPath } from 'node:url'
 
-// Multi-page static site: the landing page, /auth (sign-in and early access) and /app, plus the files in /public.
+// Multi-page static site: the landing page, /about, /auth (sign-in and early access) and /app, plus the files in /public.
 const page = (f) => fileURLToPath(new URL(f, import.meta.url))
-const CLEAN = { '/auth': '/auth.html', '/app': '/app.html' }
+const CLEAN = { '/about': '/about.html', '/auth': '/auth.html', '/app': '/app.html' }
 
-// serve /auth and /app without the .html suffix locally, matching the rewrites in vercel.json
+// serve /about, /auth and /app without the .html suffix locally, matching the rewrites in vercel.json
 function cleanUrls() {
   const rewrite = (req, _res, next) => {
     const [path, query] = req.url.split('?')
@@ -25,7 +25,7 @@ export default defineConfig({
   server: { port: Number(process.env.PORT) || 5173 },
   build: {
     rollupOptions: {
-      input: { main: page('index.html'), auth: page('auth.html'), app: page('app.html') },
+      input: { main: page('index.html'), about: page('about.html'), auth: page('auth.html'), app: page('app.html') },
     },
   },
 })

@@ -880,54 +880,6 @@
   .xpl-foot{padding:12px 24px;border-top:1px solid var(--border);font-size:.82rem;line-height:1.5;color:var(--muted);text-align:center}
   .xpl-foot b{color:#fff;font-weight:600}
 
-  .abt-scroll{flex:1;overflow-y:auto;position:relative}
-  .abt-wrap{position:relative;max-width:980px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,4vw,44px) clamp(34px,5vw,64px)}
-  .abt-kicker{font-family:var(--head);font-weight:500;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:18px}
-  .abt-h1{font-family:var(--head);font-weight:600;letter-spacing:-.02em;font-size:clamp(2.1rem,5.4vw,3.8rem);line-height:1.05;margin-bottom:22px}
-  .abt-h1 .sig{background:var(--sig);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .abt-creed{font-size:clamp(1.05rem,2vw,1.25rem);line-height:1.6;color:#C9CCD8;max-width:62ch;margin-bottom:48px;padding-bottom:44px;border-bottom:1px solid var(--border)}
-  .abt-creed span{color:#fff;font-weight:500}
-  .abt-sec{margin:0 0 52px}
-  .abt-h2{font-family:var(--head);font-weight:600;font-size:clamp(1.4rem,2.6vw,1.9rem);letter-spacing:-.01em;margin:0 0 14px;display:flex;align-items:center;gap:14px}
-  .abt-h2 .num{font-family:var(--mono);font-weight:500;font-size:.5em;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:4px 8px}
-  .abt-lead{font-size:1rem;line-height:1.65;color:var(--muted);max-width:66ch;margin:0 0 22px}
-  .abt-lead b{color:#fff;font-weight:600}
-  .abt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:10px}
-  .abt-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px}
-  .abt-card .n{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .abt-card h3{font-family:var(--head);font-weight:600;font-size:1.1rem;margin:10px 0 8px}
-  .abt-card p{font-size:.92rem;line-height:1.6;color:var(--muted)}
-  .abt-run{font-family:var(--mono);font-size:.8rem;color:#D3D6E2;padding:14px 18px;border-radius:12px;margin-bottom:28px;overflow-x:auto;white-space:nowrap;border:1px dashed var(--border)}
-  .stage-map{display:grid;gap:8px}
-  .smap-row{display:grid;grid-template-columns:auto auto 1fr;gap:16px;align-items:center;padding:13px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
-  .smap-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--rc);background:color-mix(in srgb,var(--rc) 15%,transparent)}
-  .smap-ic svg{width:18px;height:18px}
-  .smap-n{font-family:var(--mono);font-size:.74rem;color:var(--muted);min-width:1.8em;text-align:center}
-  .smap-nm{display:block;font-family:var(--head);font-weight:600;font-size:1.02rem}
-  .smap-nm .tag{margin-left:8px;vertical-align:2px}
-  .smap-d{display:block;font-size:.92rem;line-height:1.5;color:var(--muted);margin-top:3px}
-  .smap-row.gate{background:transparent;border-style:dashed}
-  .creed-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 20px}
-  .creed-pt{padding:14px 16px;border-radius:12px;font-size:.93rem;line-height:1.55;color:var(--muted);background:var(--surface);border:1px solid var(--border)}
-  .creed-pt b{color:#fff;font-weight:600}
-  .creed-outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .outcome{padding:14px 16px;border-radius:12px;font-size:.88rem;line-height:1.5;color:var(--muted);border:1px solid var(--border);background:var(--surface)}
-  .outcome b{display:block;font-family:var(--head);font-weight:600;font-size:1rem;margin-bottom:4px}
-  .outcome.ok b{color:var(--success)}.outcome.halt b{color:var(--warn)}.outcome.fail b{color:var(--slate);text-decoration:line-through}
-  .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .diff-pane{border-radius:14px;border:1px solid var(--border);background:var(--surface);overflow:hidden}
-  .dp-head{font-family:var(--mono);font-size:.74rem;padding:11px 16px;border-bottom:1px solid var(--border);color:var(--muted)}
-  .diff-pane.good .dp-head{color:#fff}
-  .diff-pane ul{list-style:none;padding:14px 16px;display:grid;gap:10px}
-  .diff-pane li{font-size:.92rem;line-height:1.5;padding-left:20px;position:relative;color:var(--muted)}
-  .diff-pane li::before{position:absolute;left:0;font-family:var(--mono);font-weight:700}
-  .diff-pane.bad li::before{content:"−";color:var(--slate)}
-  .diff-pane.good li{color:#E4E6EE}
-  .diff-pane.good li::before{content:"+";color:var(--teal)}
-  .diff-verdict{margin-top:12px;font-family:var(--mono);font-size:.76rem;color:#D3D6E2;padding:12px 16px;border-radius:10px;border:1px dashed var(--border)}
-  .abt-closer{text-align:center;max-width:58ch;margin:0 auto 26px;font-size:1.05rem;line-height:1.6;color:#C9CCD8}
-  .abt-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-  .abt-foot{padding:12px 24px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);text-align:center}
 
   /* ================= responsive ================= */
   @media (max-width:1023px){
@@ -962,7 +914,6 @@
     .xr.on{border-bottom-color:var(--rc)}
     .xr.gate{margin:0;border:0;border-bottom:2px solid transparent}
     .xd-box{flex-direction:column;gap:6px}
-    .abt-grid,.creed-list,.creed-outcomes,.diff-grid{grid-template-columns:1fr}
   }
   @media (max-width:899px){
     .nav{padding:0 8px 0 14px;gap:8px}
@@ -998,7 +949,6 @@
     .mock-bar .note{display:none}
     .ft-top{grid-template-columns:1fr 1fr}
     .ft-bar .lg{margin-left:0}
-    .smap-row{grid-template-columns:auto 1fr}.smap-n{display:none}
     .tab .l{font-size:.84rem}
     .tab{padding:12px 10px 14px}
     .hub-diagram .hlbl{font-size:19px;letter-spacing:.5px}
@@ -1392,7 +1342,7 @@
             </form>
           </div>
           <nav class="fcol" aria-label="Menu"><h5>Menu</h5>
-            <a href="#" data-ftabout>About</a><a href="#features">Features</a>
+            <a href="/about">About</a><a href="#features">Features</a>
             <a href="/auth?tab=request">Get a free audit</a>
             <a href="mailto:hello@causvia.com">Contact</a></nav>
           <nav class="fcol" aria-label="Features"><h5>Features</h5>
@@ -1484,7 +1434,7 @@
     <div class="nav-l">
       <button class="mtog" id="mTog" type="button" aria-expanded="false" aria-controls="mMenu" aria-label="Open menu"><svg class="b" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <button class="snd" id="snd" type="button" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="sl">Sound off</span></button>
-      <a href="#" class="nl" id="aboutBtn">About</a>
+      <a href="/about" class="nl">About</a>
     </div>
     <a class="brand" href="#" id="brandHome" aria-label="Causvia home"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img class="bm" src="/causvia-mark.png" alt=""></picture><img class="bw" src="/causvia-wordmark.png" alt="" width="137" height="13"></a>
     <div class="nav-r">
@@ -1578,121 +1528,6 @@
   </div>
 
   <!-- About overlay -->
-  <div class="ovl abt" id="abt" aria-hidden="true" role="dialog" aria-modal="true" aria-label="About Causvia">
-    <div class="ovl-bar"><span class="ovl-brand"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img src="/causvia-mark.png" alt=""></picture>About Causvia</span><button class="btn btn-ghost ovl-x" id="abtClose">Close ✕</button></div>
-    <div class="abt-scroll">
-      <div class="abt-wrap">
-        <span class="abt-kicker">About Causvia · The R&amp;D lab for the hybrid workforce</span>
-        <h1 class="abt-h1">AI flies the routine.<br><span class="sig">You command the flight.</span></h1>
-        <p class="abt-creed">Causvia finds, by experiment, the right balance between people and AI in every workflow &mdash; goal, study, propose, approve, run, doubt, remember &mdash; as one continuous loop. <span>AI runs and remembers the experiments. Humans make the calls.</span></p>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">01</span>What Causvia is</h2>
-          <p class="abt-lead">Causvia is an AI-human experiment engine for operations teams. Instead of guessing how much work to hand to AI, it <b>tests the split</b> on real workflows and keeps the <b>evidence</b>. Not a chatbot. Not another automation vendor pushing for maximum autonomy. One system that runs disciplined experiments, doubts its own results, and remembers everything it learns.</p>
-          <div class="abt-run">state the goal &rarr; study the workflow &rarr; propose an experiment &rarr; a human approves &rarr; run it against a holdout &rarr; the Skeptic attacks the result &rarr; remember what was proven</div>
-          <div class="abt-grid">
-            <div class="abt-card"><span class="n">One loop</span><h3>Not a suite</h3><p>Seven steps, one continuous cycle. Every experiment feeds the next, so the whole operation learns instead of each team forgetting its own lessons.</p></div>
-            <div class="abt-card"><span class="n">Humans in command</span><h3>Not autopilot</h3><p>AI proposes; people approve. Decisions about direction, customers, budget and ethics always wait for a human, and autonomy retreats the moment confidence drops.</p></div>
-            <div class="abt-card"><span class="n">It shows its proof</span><h3>Not a pitch</h3><p>Every recommendation links to the experiment behind it &mdash; the data, the holdout, the confidence &mdash; or says plainly that it isn&rsquo;t proven yet.</p></div>
-          </div>
-        </div>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">02</span>Why it exists</h2>
-          <p class="abt-lead">Every operations leader is being told to automate. Most vendors measure success by how much work they take away from people, not by whether <b>customers</b> and <b>teams</b> end up better off. Some workflows get worse with more AI; others are held back by too little. Nobody knows the right split, because nobody tests it.</p>
-          <p class="abt-lead">Causvia exists to replace that guesswork with evidence &mdash; to find, workflow by workflow, where AI should lead, where people should, and where they work best together, and to prove it before anything changes at scale.</p>
-        </div>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">03</span>One loop, seven steps</h2>
-          <p class="abt-lead">Not a suite of tools &mdash; one engine. Every experiment moves through the same seven steps, and what it learns flows into the next one. Causvia is in early access: the loop is being built with design partners now.</p>
-          <div class="stage-map">
-            <div class="smap-row" data-i="0"><span class="smap-ic"></span><span class="smap-n">01</span><span class="smap-b"><span class="smap-nm">Goal<span class="tag hu">Human</span></span><span class="smap-d">Your team states the outcome and the limits &mdash; target, budget, and what is off-limits.</span></span></div>
-            <div class="smap-row" data-i="1"><span class="smap-ic"></span><span class="smap-n">02</span><span class="smap-b"><span class="smap-nm">Study<span class="tag ai">AI</span></span><span class="smap-d">AI studies the workflow as it runs today &mdash; volumes, handle times, quality, and where people and AI each do best.</span></span></div>
-            <div class="smap-row" data-i="2"><span class="smap-ic"></span><span class="smap-n">03</span><span class="smap-b"><span class="smap-nm">Propose<span class="tag ai">AI</span></span><span class="smap-d">AI proposes an experiment: a specific change to the human&ndash;AI split, with the expected impact and the risk.</span></span></div>
-            <div class="smap-row" data-i="3"><span class="smap-ic"></span><span class="smap-n">04</span><span class="smap-b"><span class="smap-nm">Approve<span class="tag hu">Human</span></span><span class="smap-d">A human approval gate. Nothing runs until a person says yes, with the evidence in front of them.</span></span></div>
-            <div class="smap-row" data-i="4"><span class="smap-ic"></span><span class="smap-n">05</span><span class="smap-b"><span class="smap-nm">Run<span class="tag ai">AI</span></span><span class="smap-d">The experiment runs on live work against a holdout group, so the result can be compared fairly.</span></span></div>
-            <div class="smap-row gate"><span class="smap-ic"></span><span class="smap-n">&#10192;</span><span class="smap-b"><span class="smap-nm">Guardrail<span class="tag hu">Human</span></span><span class="smap-d">Customer quality and team wellbeing are watched throughout &mdash; cross a limit and the run halts and says why.</span></span></div>
-            <div class="smap-row" data-i="5"><span class="smap-ic"></span><span class="smap-n">06</span><span class="smap-b"><span class="smap-nm">Doubt<span class="tag ai">AI</span></span><span class="smap-d">The Skeptic attacks the result &mdash; seasonality, ticket mix, sample size, luck. Only survivors are trusted.</span></span></div>
-            <div class="smap-row" data-i="6"><span class="smap-ic"></span><span class="smap-n">07</span><span class="smap-b"><span class="smap-nm">Remember<span class="tag ai">AI</span></span><span class="smap-d">Every result, failures included, goes into the evidence ledger &mdash; a living memory of what works and why.</span></span></div>
-          </div>
-        </div>
-
-        <div class="abt-sec abt-creed-sec">
-          <h2 class="abt-h2"><span class="num">04</span>The one rule: doubted before trusted</h2>
-          <p class="abt-lead">This is the heart of Causvia, and the reason to trust it. A finding only becomes a recommendation after it has <b>survived the Skeptic</b> &mdash; and every recommendation carries its evidence and its confidence. If something isn&rsquo;t proven, Causvia says so.</p>
-          <div class="creed-list">
-            <div class="creed-pt"><b>Real experiments</b> &mdash; recommendations come from controlled tests on your own workflows, with holdout groups, not from industry averages.</div>
-            <div class="creed-pt"><b>Real doubt</b> &mdash; the Skeptic is independent; only a human can overrule it, and the reason is recorded.</div>
-            <div class="creed-pt"><b>Real gates</b> &mdash; anything that changes how customers or people are treated waits for human approval.</div>
-            <div class="creed-pt"><b>Honest empty</b> &mdash; a new workspace reads &ldquo;No experiments yet&rdquo;, never borrowed benchmarks dressed up as your results.</div>
-          </div>
-          <div class="creed-outcomes">
-            <span class="outcome ok"><b>Verified</b>The result survived every check and is ready for your decision.</span>
-            <span class="outcome halt"><b>Not proven</b>The evidence is too thin to act on &mdash; and Causvia tells you why.</span>
-            <span class="outcome fail"><b>Rejected</b>It looked like a win but wasn&rsquo;t. It stays visible, never hidden.</span>
-          </div>
-        </div>
-
-        <div class="abt-sec abt-diff">
-          <h2 class="abt-h2"><span class="num">05</span>Why Causvia is different</h2>
-          <div class="diff-grid">
-            <div class="diff-pane bad">
-              <div class="dp-head"><i>−</i> typical.ai-vendors</div>
-              <ul>
-                <li>Success measured by how much work moves to AI</li>
-                <li>Other companies&rsquo; benchmarks presented as your ROI</li>
-                <li>Autonomy switched on everywhere, all at once</li>
-                <li>&ldquo;Wins&rdquo; that are really seasonality or luck</li>
-              </ul>
-            </div>
-            <div class="diff-pane good">
-              <div class="dp-head"><i>+</i> causvia.loop</div>
-              <ul>
-                <li>Success measured by outcomes for customers and teams</li>
-                <li>Every recommendation backed by an experiment on your own work</li>
-                <li>Autonomy earned workflow by workflow, through human gates</li>
-                <li>Every result attacked by the Skeptic before it&rsquo;s trusted</li>
-              </ul>
-            </div>
-          </div>
-          <div class="diff-verdict mono">diff → they sell automation. causvia finds the balance, and proves it.</div>
-        </div>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">06</span>Why it holds up</h2>
-          <p class="abt-lead">Automation itself is becoming a commodity &mdash; any vendor can plug a model into a workflow. Causvia&rsquo;s defensibility is knowing <i>where</i> it should, built from evidence that compounds over time.</p>
-          <div class="moat-grid">
-            <div class="moat-tile"><span class="mt-n">Compounding</span><h4>Memory that grows</h4><p>Every experiment, including the failures, is kept in the evidence ledger. The longer Causvia runs, the more it knows about your operation.</p></div>
-            <div class="moat-tile"><span class="mt-n">Independent</span><h4>A Skeptic you can&rsquo;t silence</h4><p>The Skeptic runs its own checks and can only be overruled by a human, with the reason recorded &mdash; so the system can&rsquo;t quietly lower its own standards.</p></div>
-            <div class="moat-tile"><span class="mt-n">Integrity</span><h4>Flags surprises, never overclaims</h4><p>Unusual results are flagged to a person. Every finding states its confidence, and &ldquo;not proven&rdquo; is shown plainly.</p></div>
-            <div class="moat-tile"><span class="mt-n">Auditable</span><h4>Evidence is first-class</h4><p>Every recommendation traces back to the experiment, data and checks behind it &mdash; ready for a manager, an auditor or a regulator.</p></div>
-          </div>
-        </div>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">07</span>Who it&rsquo;s for</h2>
-          <div class="abt-grid">
-            <div class="abt-card"><span class="n">Heads of operations</span><h3>Balance with proof</h3><p>Leaders asked to &ldquo;add AI&rdquo; who want evidence of where it helps before they reshape their teams.</p></div>
-            <div class="abt-card"><span class="n">Support leaders &amp; BPOs</span><h3>Quality at scale</h3><p>Teams running high-volume queues in Zendesk, Freshdesk, Salesforce or ServiceNow who need cost and quality to move together.</p></div>
-            <div class="abt-card"><span class="n">Banks &amp; insurers</span><h3>Decisions you can defend</h3><p>Regulated teams that need every change to how customers are served approved by a person and backed by a record.</p></div>
-          </div>
-        </div>
-
-        <div class="abt-sec">
-          <h2 class="abt-h2"><span class="num">08</span>Where it&rsquo;s going</h2>
-          <p class="abt-lead">Causvia starts in customer support &mdash; but the goal &rarr; experiment &rarr; remember loop works anywhere people and AI share the work. The same engine is built to expand into <b>claims</b>, <b>KYC</b>, <b>sales</b> and every knowledge workflow, carrying the same rule with it: AI runs the experiments, humans make the calls.</p>
-        </div>
-
-        <p class="abt-closer">Built for operations leaders who&rsquo;d rather prove the right balance than guess at it &mdash; with AI handling the routine and your team staying in command.</p>
-        <div class="abt-cta">
-          <a class="btn btn-gold btn-lg" href="/auth?tab=request">Get a free workflow balance audit</a>
-          <a class="btn btn-ghost btn-lg" href="/auth?tab=request">Join early access <span class="arw" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </div>
-    <div class="abt-foot">Doubted before trusted · Every recommendation has an experiment behind it</div>
-  </div>
 
 <script>
 "use strict";
@@ -1730,11 +1565,6 @@
 
   var GATE_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8 12h8"/></svg>';
   function icoC(i){ return GLY[i].replace(/#0B1220/g,"currentColor"); }
-  [].slice.call(document.querySelectorAll(".smap-row")).forEach(function(row){
-    var i=row.dataset.i, chip=row.querySelector(".smap-ic");
-    row.style.setProperty("--rc", i==null?GOLD:COL[+i]);
-    chip.innerHTML = (i==null) ? GATE_ICON : icoC(+i);
-  });
   var THRU="Set the goal → study the workflow → propose an experiment → a human approves → run it against a holdout → the Skeptic doubts the result → remember what was proven. AI runs and remembers the experiments; humans make the calls. Every recommendation traces back to a real experiment, or it's marked not proven.";
   var STAGES_FULL=[
     { num:"01", name:"Goal", color:COL[0], icon:0, stage:0,
@@ -1915,17 +1745,10 @@
     menu.addEventListener("click",function(e){ var row=e.target.closest(".feat-row"); if(!row) return;
       e.preventDefault(); closeF(); openExplorer(STAGE_TO_FULL[+row.dataset.stage]); });
 
-    /* --- About --- */
-    var abt=document.getElementById("abt");
-    function openAbout(){ openModal(abt); }
-    document.getElementById("aboutBtn").addEventListener("click",function(e){ e.preventDefault(); openAbout(); });
-    document.getElementById("abtClose").addEventListener("click",function(){ closeModal(abt); });
-    [].slice.call(document.querySelectorAll("[data-ftabout]")).forEach(function(a){
-      a.addEventListener("click",function(e){ e.preventDefault(); openAbout(); }); });
 
     /* --- compact nav: shrinks once the page moves; under 900px a menu button holds About, sound and the loop --- */
     var navEl=document.getElementById("nav"), mTog=document.getElementById("mTog"), mMenu=document.getElementById("mMenu"), sndBtn=document.getElementById("snd");
-    mMenu.innerHTML='<a class="mm-row" href="/auth">Sign in</a><button class="mm-row" type="button" data-act="about">About Causvia</button>'
+    mMenu.innerHTML='<a class="mm-row" href="/auth">Sign in</a><a class="mm-row" href="/about">About Causvia</a>'
       +'<button class="mm-row" type="button" data-act="snd">Sound<span class="snd-st" id="mSndSt">Off</span></button><div class="mm-sep"></div>'+dhtml;
     var mSndSt=document.getElementById("mSndSt");
     function sndState(){ mSndSt.textContent=sndBtn.classList.contains("on")?"On":"Off"; }
@@ -1934,7 +1757,6 @@
       mTog.setAttribute("aria-expanded",o?"true":"false"); mTog.setAttribute("aria-label",o?"Close menu":"Open menu"); if(o) sndState(); });
     mMenu.addEventListener("click",function(e){ var t=e.target.closest(".feat-row,[data-act]"); if(!t) return; e.preventDefault();
       if(t.classList.contains("feat-row")){ closeM(); openExplorer(STAGE_TO_FULL[+t.dataset.stage]); }
-      else if(t.dataset.act==="about"){ closeM(); openAbout(); }
       else { sndBtn.click(); sndState(); } });
     document.addEventListener("click",function(e){ if(!navEl.contains(e.target)) closeM(); });
     addEventListener("resize",function(){ if(innerWidth>=900) closeM(); },{passive:true});
@@ -1943,7 +1765,7 @@
     addEventListener("scroll",navShrink,{passive:true}); navShrink();
 
     addEventListener("keydown",function(e){
-      if(e.key==="Escape"){ if(abt.classList.contains("open")) closeModal(abt); else if(xpl.classList.contains("open")) closeModal(xpl); else { closeF(); closeM(); } return; }
+      if(e.key==="Escape"){ if(xpl.classList.contains("open")) closeModal(xpl); else { closeF(); closeM(); } return; }
       if(!xpl.classList.contains("open")) return;
       if(e.key==="ArrowDown"||e.key==="ArrowRight"){ e.preventDefault(); render((cur+1)%STAGES_FULL.length); }
       else if(e.key==="ArrowUp"||e.key==="ArrowLeft"){ e.preventDefault(); render((cur-1+STAGES_FULL.length)%STAGES_FULL.length); }
