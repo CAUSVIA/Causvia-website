@@ -96,17 +96,12 @@ a{color:inherit}
 
 /* ================= Auth card ================= */
 .side{position:relative;display:flex;align-items:center;justify-content:center;padding:112px 40px 48px;min-height:100vh;min-height:100dvh;
-  background:radial-gradient(70% 55% at 75% 18%,rgba(26,35,56,.7),rgba(26,35,56,0) 70%),radial-gradient(60% 50% at 20% 100%,rgba(14,165,168,.05),rgba(14,165,168,0) 70%),var(--bg);
+  background:radial-gradient(circle 420px at 62% 40%,rgba(var(--glow-gold),.1),rgba(var(--glow-gold),0) 70%),radial-gradient(70% 55% at 75% 18%,rgba(26,35,56,.7),rgba(26,35,56,0) 70%),
+    radial-gradient(60% 50% at 20% 100%,rgba(14,165,168,.08),rgba(14,165,168,0) 70%),var(--bg);
   border-left:1px solid rgba(42,59,92,.55)}
-.card{position:relative;width:100%;max-width:420px;padding:30px 32px 22px;border-radius:24px;
-  background:rgba(26,35,56,.55);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 90px -40px rgba(0,0,0,.9),0 0 0 1px rgba(42,59,92,.55),0 0 90px -40px rgba(212,175,55,0);
-  transition:box-shadow 1.4s var(--ease)}
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(135deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 55%,rgba(212,175,55,.12));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-.you .card{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 90px -40px rgba(0,0,0,.9),0 0 0 1px rgba(42,59,92,.55),0 0 90px -30px rgba(212,175,55,.32)}
+.card{position:relative;width:100%;max-width:420px;padding:30px 32px 22px;border-radius:var(--r-lg);transition:box-shadow 1.4s var(--ease)}   /* glass-2 */
+.card.glass-2{box-shadow:inset 0 1px 0 var(--g-top),0 40px 90px -40px rgba(0,0,0,.9),0 0 90px -40px rgba(212,175,55,0)}
+.you .card.glass-2{box-shadow:inset 0 1px 0 var(--g-top),0 40px 90px -40px rgba(0,0,0,.9),0 0 90px -30px rgba(212,175,55,.32)}
 .card-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;text-decoration:none;border-radius:8px}
 .cl-mark{display:block;height:26px;width:auto}
 .cl-word{display:block;height:12px;width:auto}
@@ -240,6 +235,4 @@ form .note{margin:4px 0 14px}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
   .sp-sweep{display:none}
 }
-@media (prefers-reduced-transparency:reduce){
-  .card{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
-}
+

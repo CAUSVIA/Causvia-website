@@ -24,18 +24,13 @@ picture{display:contents}
 .o2{right:-360px;top:260px;background:radial-gradient(closest-side,rgba(14,165,168,.12),rgba(14,165,168,0))}
 main{position:relative;z-index:1}
 
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
-  background:linear-gradient(135deg,rgba(255,255,255,.26),rgba(255,255,255,.04) 60%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
 
 /* page */
 .ch{max-width:860px;margin:0 auto;padding:96px 32px 112px}
 .kicker{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
 .ch h1{font-family:var(--head);font-weight:600;font-size:clamp(36px,5.4vw,60px);line-height:1.04;letter-spacing:-.03em;text-wrap:balance}
 .lead{font-size:18px;line-height:1.6;color:var(--muted);max-width:40em;margin:22px 0 40px;text-wrap:pretty}
-.card{position:relative;padding:12px 36px;border-radius:24px;background:rgba(26,35,56,.6);border:1px solid rgba(255,255,255,.12);
-  -webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);box-shadow:0 24px 60px -36px rgba(0,0,0,.7)}
-.card::before{opacity:.6}
+.card{position:relative;padding:12px 36px;border-radius:var(--r-lg)}     /* the material: glass-2 (src/glass/glass.css) */
 .ch-list{list-style:none}
 .ch-list li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:baseline;padding:22px 0}
 .ch-list li+li{border-top:1px solid rgba(42,59,92,.8)}

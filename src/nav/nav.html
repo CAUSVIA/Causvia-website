@@ -4,7 +4,7 @@
     <ul class="sn-links">
       <li class="sn-prod">
         <button class="sn-link sn-drop-btn" id="snDropBtn" type="button" aria-expanded="false" aria-controls="snDrop">Product<svg class="sn-chev" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="sn-drop" id="snDrop" hidden>
+        <div class="sn-drop glass-3" id="snDrop" hidden>
           <p class="sn-drop-h" id="snDropH">The Causvia loop</p>
           <ul aria-labelledby="snDropH">
             <li><a class="sn-feat" href="/?explore=1" data-step="0" style="--c:#D4AF37">
@@ -35,13 +35,13 @@
       <li><a class="sn-link" href="/about" data-nav="about">About</a></li>
     </ul>
     <div class="sn-right">
-      <button class="sn-sound" id="snd" type="button" aria-label="Sound" aria-pressed="false"><svg class="sn-ico-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg><svg class="sn-ico-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.6 5.4a9.5 9.5 0 0 1 0 13.2"/></svg><span class="sn-tip" aria-hidden="true">Sound off</span></button>
+      <button class="sn-sound" id="snd" type="button" aria-label="Sound" aria-pressed="false" data-sound-toggle><svg class="sn-ico-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg><svg class="sn-ico-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.6 5.4a9.5 9.5 0 0 1 0 13.2"/></svg><span class="sn-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="sn-tip" aria-hidden="true">Sound off</span></button>
       <a class="sn-signin" href="/auth" data-nav="auth">Sign in</a>
       <a class="sn-cta" href="/auth?tab=request"><span class="sn-cta-l">Get a free audit</span><span class="sn-cta-s">Free audit</span></a>
       <button class="sn-menu" id="snMenuBtn" type="button" aria-expanded="false" aria-controls="snSheet" aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </nav>
-  <div class="sn-sheet" id="snSheet" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="sn-sheet glass-3" id="snSheet" role="dialog" aria-modal="true" aria-label="Menu" hidden>
     <div class="sn-sheet-top">
       <a class="sn-logo" href="/" aria-label="Causvia home"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img class="sn-mark" src="/causvia-mark.png" alt="" width="400" height="293"></picture><img class="sn-word" src="/causvia-wordmark.png" alt="" width="137" height="13"></a>
       <button class="sn-close" id="snClose" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -61,7 +61,7 @@
       <li><a class="sn-sl" href="/#features" data-nav="how">How it works</a></li>
       <li><a class="sn-sl" href="/about" data-nav="about">About</a></li>
       <li><a class="sn-sl" href="/auth" data-nav="auth">Sign in</a></li>
-      <li><button class="sn-sl sn-sheet-sound" id="snSound2" type="button" aria-pressed="false"><svg class="sn-ico-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg><svg class="sn-ico-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.6 5.4a9.5 9.5 0 0 1 0 13.2"/></svg><span class="sn-sound-l">Sound off</span></button></li>
+      <li><button class="sn-sl sn-sheet-sound" id="snSound2" type="button" aria-pressed="false" data-sound-toggle><svg class="sn-ico-off" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg><svg class="sn-ico-on" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.6 5.4a9.5 9.5 0 0 1 0 13.2"/></svg><span class="sn-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="sn-sound-l">Sound off</span></button></li>
     </ul>
   </div>
 </header>

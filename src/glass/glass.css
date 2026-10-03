@@ -1,0 +1,78 @@
+/* ================= Liquid glass: one material for the whole site =================
+   glass-1  light panels: list rows, small chips, status labels, the footer sign-up field
+   glass-2  standard cards, form panels, dropdown-sized panels
+   glass-3  navbar, menus, key feature cards
+   Every level: backdrop blur + saturate(140%), a 1px hairline, an inset top highlight, a soft top sheen
+   and a soft outer shadow. The sheen, tint and pointer highlight are background layers on the element
+   itself, so components keep their own ::before / ::after. */
+@property --g-hl{syntax:"<number>";inherits:false;initial-value:0}
+@property --g-sheen{syntax:"<number>";inherits:false;initial-value:.06}
+
+:root{
+  --g1-bg:rgba(26,35,56,.35); --g1-blur:12px;
+  --g2-bg:rgba(26,35,56,.55); --g2-blur:20px;
+  --g3-bg:rgba(15,22,38,.72); --g3-blur:28px;
+  --g-line:rgba(255,255,255,.08);
+  --g-top:rgba(255,255,255,.12);
+  --g-shadow:0 18px 44px -26px rgba(0,0,0,.7);
+  --g-solid:#141C2E;                 /* without backdrop-filter, or when transparency is reduced */
+  /* text tones that keep 4.5:1 on any glass level over the brightest glow (14%), sheen and hover highlight included */
+  --ink-muted:#B8BBCC; --teal-ink:#4FD1D4; --green-ink:#4ADE80; --slate-ink:#B4BFCE;
+  --r-sm:12px; --r-md:16px; --r-lg:24px;
+  /* soft brand light behind sections, so the glass has something to tint */
+  --glow-gold:212,175,55; --glow-teal:14,165,168;
+}
+
+.glass-1,.glass-2,.glass-3{
+  --g-bg:var(--g2-bg); --g-blur:var(--g2-blur); --g-tint:rgba(0,0,0,0);
+  --muted:var(--ink-muted);          /* muted text on glass, a touch lighter */
+  background:
+    radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,calc(var(--g-hl) * .05)),rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,rgba(255,255,255,var(--g-sheen)),rgba(255,255,255,0) 46%),
+    linear-gradient(var(--g-tint),var(--g-tint)),
+    var(--g-bg);
+  -webkit-backdrop-filter:blur(var(--g-blur)) saturate(140%);backdrop-filter:blur(var(--g-blur)) saturate(140%);
+  border:1px solid var(--g-line);
+  box-shadow:inset 0 1px 0 var(--g-top),var(--g-shadow);
+  /* no transition here: components keep their own (reveals, fades); glass.js eases the highlight */
+}
+.glass-1{--g-bg:var(--g1-bg);--g-blur:var(--g1-blur);box-shadow:inset 0 1px 0 var(--g-top),0 8px 20px -14px rgba(0,0,0,.6)}
+.glass-3{--g-bg:var(--g3-bg);--g-blur:var(--g3-blur);--g-shadow:0 24px 60px -28px rgba(0,0,0,.8)}
+
+/* a faint tint of a card's accent colour, with a 35% border in the same colour */
+.glass-teal{--g-tint:rgba(14,165,168,.08);border-color:rgba(14,165,168,.35)}
+.glass-gold{--g-tint:rgba(212,175,55,.08);border-color:rgba(212,175,55,.35)}
+
+/* liquid: on hover the sheen brightens; glass.js fades in a soft highlight that follows the pointer (--g-hl, --mx, --my) */
+@media (hover:hover){
+  .glass-2:hover,.glass-3:hover{--g-sheen:.08}
+  .glass-1:hover{--g-sheen:.08}
+}
+
+/* glass inside glass: one blur is enough (the inner panel keeps the material, not a second blur layer) */
+:is(.glass-1,.glass-2,.glass-3) :is(.glass-1,.glass-2,.glass-3){-webkit-backdrop-filter:none;backdrop-filter:none}
+
+/* over a scene that redraws every frame a live blur would re-render constantly: same material, no blur */
+.glass-still{--g-bg:rgba(20,28,46,.92);-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* the hero cards on large screens in Chromium get a faint refracted edge (glass.js adds .cv-refract + the SVG filter) */
+.cv-refract .refract{-webkit-backdrop-filter:blur(var(--g-blur)) saturate(140%) url(#cv-refract);backdrop-filter:blur(var(--g-blur)) saturate(140%) url(#cv-refract)}
+
+/* soft brand light behind a section: gold near human content, teal near AI content. Sized in % of the section and
+   centred vertically, so each glow fades out before the section's top and bottom edges (no seams between sections). */
+.glows{background-repeat:no-repeat;background-image:
+  radial-gradient(var(--ga-w,34%) var(--ga-h,42%) at var(--ga-x,12%) var(--ga-y,50%),rgba(var(--ga-c,var(--glow-gold)),var(--ga-o,.12)),
+    rgba(var(--ga-c,var(--glow-gold)),calc(var(--ga-o,.12) * .45)) 45%,rgba(var(--ga-c,var(--glow-gold)),0)),
+  radial-gradient(var(--gb-w,34%) var(--gb-h,42%) at var(--gb-x,88%) var(--gb-y,50%),rgba(var(--gb-c,var(--glow-teal)),var(--gb-o,.11)),
+    rgba(var(--gb-c,var(--glow-teal)),calc(var(--gb-o,.11) * .45)) 45%,rgba(var(--gb-c,var(--glow-teal)),0))}
+
+/* no backdrop-filter: a solid surface keeps text readable */
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .glass-1,.glass-2,.glass-3{--g-bg:var(--g-solid)}
+}
+@media (prefers-reduced-transparency:reduce){
+  .glass-1,.glass-2,.glass-3{--g-bg:var(--g-solid);-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .glass-1,.glass-2,.glass-3{--g-hl:0!important}
+}

@@ -52,15 +52,15 @@
         <svg class="ring r-dash" data-depth="7" viewBox="0 0 330 330"><circle cx="165" cy="165" r="164"/></svg>
         <span class="ring r-glow" data-depth="10"></span>
         <picture><source srcset="/causvia-mark.webp" type="image/webp"><img class="hero-mark" data-depth="2" src="/causvia-mark.png" alt="" width="400" height="293"></picture>
-        <span class="ring-lbl t">Autonomy · earned</span>
-        <span class="ring-lbl g">Decisions · human</span>
+        <span class="ring-lbl glass-1 t">Autonomy · earned</span>
+        <span class="ring-lbl glass-1 g">Decisions · human</span>
       </div>
     </div>
   </section>
 
   <!-- ========== autonomy map ========== -->
   <section class="wrap">
-    <div class="card amap reveal" id="amap" aria-labelledby="amapLbl">
+    <div class="card glass-2 refract amap reveal" id="amap" aria-labelledby="amapLbl">
       <div class="amap-k">
         <p class="mono-lbl" id="amapLbl">Autonomy map · Example</p>
         <p class="muted">Each split is earned by experiment, not set by default. Illustrative.</p>
@@ -96,11 +96,11 @@
       <section class="sec" id="what" aria-labelledby="whatTag">
         <p class="stag" id="whatTag">§01 · What Causvia is</p>
         <div class="g12">
-          <article class="card c7 reveal">
+          <article class="card glass-2 c7 reveal">
             <h2 class="h3">An experiment engine for teams where people and AI share the work.</h2>
             <p class="body-t">It tests the human–AI split on your real workflows and keeps the evidence. Not a chatbot. Not an automation vendor pushing for maximum autonomy.</p>
           </article>
-          <article class="card c5 reveal">
+          <article class="card glass-2 c5 reveal">
             <p class="mono-lbl teal">Why it exists</p>
             <p class="body-t">Every operations leader is told to automate. Vendors count work taken from people, not outcomes. Some workflows get worse with more AI; others need more.</p>
             <p class="body-t strong">Nobody knows the right split, because nobody tests it.</p>
@@ -122,21 +122,21 @@
             <picture><source srcset="/causvia-mark.webp" type="image/webp"><img class="orbit-mark" src="/causvia-mark.png" alt="" width="400" height="293"></picture>
           </div>
           <ol class="nodes" aria-label="The seven steps of the Causvia loop, in order">
-            <li class="node hu" style="--x:50%;--y:10.3%"><span class="nk">01 · Human</span><span class="nn">Goal</span></li>
-            <li class="node ai" style="--x:81.04%;--y:25.25%"><span class="nk">02 · AI</span><span class="nn">Study</span></li>
-            <li class="node ai" style="--x:88.7%;--y:58.83%"><span class="nk">03 · AI</span><span class="nn">Propose</span></li>
-            <li class="node hu gate" style="--x:67.22%;--y:85.77%"><span class="nk">04 · Human</span><span class="nn">Approve</span></li>
-            <li class="node ai" style="--x:32.78%;--y:85.77%"><span class="nk">05 · AI</span><span class="nn">Run</span></li>
-            <li class="node ai" style="--x:11.3%;--y:58.83%"><span class="nk">06 · AI</span><span class="nn">Doubt</span></li>
-            <li class="node ai" style="--x:18.96%;--y:25.25%"><span class="nk">07 · AI</span><span class="nn">Remember</span></li>
+            <li class="node glass-2 glass-still hu" style="--x:50%;--y:10.3%"><span class="nk">01 · Human</span><span class="nn">Goal</span></li>
+            <li class="node glass-2 glass-still ai" style="--x:81.04%;--y:25.25%"><span class="nk">02 · AI</span><span class="nn">Study</span></li>
+            <li class="node glass-2 glass-still ai" style="--x:88.7%;--y:58.83%"><span class="nk">03 · AI</span><span class="nn">Propose</span></li>
+            <li class="node glass-2 glass-still hu gate" style="--x:67.22%;--y:85.77%"><span class="nk">04 · Human</span><span class="nn">Approve</span></li>
+            <li class="node glass-2 glass-still ai" style="--x:32.78%;--y:85.77%"><span class="nk">05 · AI</span><span class="nn">Run</span></li>
+            <li class="node glass-2 glass-still ai" style="--x:11.3%;--y:58.83%"><span class="nk">06 · AI</span><span class="nn">Doubt</span></li>
+            <li class="node glass-2 glass-still ai" style="--x:18.96%;--y:25.25%"><span class="nk">07 · AI</span><span class="nn">Remember</span></li>
           </ol>
         </div>
         <div class="g2">
-          <article class="card guard reveal">
+          <article class="card glass-2 guard reveal">
             <p class="mono-lbl yellow">Always on · Guardrails</p>
             <p class="body-t">Quality and team wellbeing are watched in every run. Cross a limit and it halts automatically and says why.</p>
           </article>
-          <article class="card reveal">
+          <article class="card glass-2 reveal">
             <p class="mono-lbl white">Holdout</p>
             <p class="body-t">A small share of work that stays on the current process, so every experiment is compared fairly.</p>
           </article>
@@ -147,14 +147,14 @@
       <section class="sec" id="rule" aria-labelledby="ruleTitle">
         <p class="stag">§03 · The one rule</p>
         <h2 class="h2 big reveal" id="ruleTitle">Doubted before trusted.</h2>
-        <article class="card reveal">
+        <article class="card glass-2 reveal">
           <h3 class="h3">The Skeptic attacks every result</h3>
           <p class="body-t">Seasonality, ticket mix, sample size, luck. Only survivors become recommendations, each with its evidence and confidence. Only a human can overrule the Skeptic, and the reason is recorded.</p>
         </article>
         <div class="g3">
-          <article class="card verdict ok reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> Verified</p><p class="body-t">Survived every check. Ready for your decision.</p></article>
-          <article class="card verdict np reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> Not proven</p><p class="body-t">Too thin to act on, and Causvia says why.</p></article>
-          <article class="card verdict no reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> <s>Rejected</s></p><p class="body-t">Looked like a win but wasn't. Kept visible.</p></article>
+          <article class="card glass-2 verdict ok reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> Verified</p><p class="body-t">Survived every check. Ready for your decision.</p></article>
+          <article class="card glass-2 verdict np reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> Not proven</p><p class="body-t">Too thin to act on, and Causvia says why.</p></article>
+          <article class="card glass-2 verdict no reveal"><p class="mono-lbl"><span aria-hidden="true">●</span> <s>Rejected</s></p><p class="body-t">Looked like a win but wasn't. Kept visible.</p></article>
         </div>
       </section>
 
@@ -163,7 +163,7 @@
         <p class="stag">§04 · Why it's different</p>
         <h2 class="h2 reveal" id="diffTitle">They sell automation. Causvia finds the balance.</h2>
         <div class="g2">
-          <article class="card vs them reveal">
+          <article class="card glass-2 vs them reveal">
             <p class="mono-lbl">Typical AI vendors</p>
             <ul>
               <li>Success = how much work moves to AI</li>
@@ -171,7 +171,7 @@
               <li>Autonomy switched on everywhere at once</li>
             </ul>
           </article>
-          <article class="card vs us reveal">
+          <article class="card glass-2 glass-teal vs us reveal">
             <p class="mono-lbl teal">Causvia</p>
             <ul>
               <li>Success = outcomes for customers and teams</li>
@@ -185,13 +185,13 @@
       <!-- §05 -->
       <section class="sec" id="audit" aria-labelledby="auditTitle">
         <p class="stag">§05 · The free workflow balance audit</p>
-        <article class="card audit reveal">
+        <article class="card glass-2 glass-gold audit reveal">
           <h2 class="h3 lg" id="auditTitle">Your first flight, with nothing at risk.</h2>
           <ol class="steps">
-            <li><span class="ab-sn g">01</span><p>You choose one workflow, such as refunds or claims.</p></li>
-            <li><span class="ab-sn t">02</span><p>We study it using read-only data from your tools.</p></li>
-            <li><span class="ab-sn t">03</span><p>You get a report and the first experiment we'd propose.</p></li>
-            <li><span class="ab-sn g">04</span><p>Nothing changes without your approval.</p></li>
+            <li class="glass-1"><span class="ab-sn g">01</span><p>You choose one workflow, such as refunds or claims.</p></li>
+            <li class="glass-1"><span class="ab-sn t">02</span><p>We study it using read-only data from your tools.</p></li>
+            <li class="glass-1"><span class="ab-sn t">03</span><p>You get a report and the first experiment we'd propose.</p></li>
+            <li class="glass-1"><span class="ab-sn g">04</span><p>Nothing changes without your approval.</p></li>
           </ol>
           <div class="audit-foot">
             <p class="meta"><span>Timeline · [TIMELINE]</span><span>Data needed · [DATA NEEDED]</span></p>
@@ -204,11 +204,11 @@
       <section class="sec" id="who" aria-labelledby="whoTag">
         <p class="stag" id="whoTag">§06 · Who it's for</p>
         <div class="g3">
-          <article class="card reveal"><p class="mono-lbl">Heads of operations</p><h3 class="h4">Balance with proof</h3><p class="body-t">Proof of where AI helps before reshaping teams.</p></article>
-          <article class="card reveal"><p class="mono-lbl">Support leaders &amp; BPOs</p><h3 class="h4">Quality at scale</h3><p class="body-t">Cost and quality moving together in high-volume queues.</p></article>
-          <article class="card reveal"><p class="mono-lbl">Banks &amp; insurers</p><h3 class="h4">Decisions you can defend</h3><p class="body-t">Every change approved by a person and on record.</p></article>
+          <article class="card glass-2 reveal"><p class="mono-lbl">Heads of operations</p><h3 class="h4">Balance with proof</h3><p class="body-t">Proof of where AI helps before reshaping teams.</p></article>
+          <article class="card glass-2 reveal"><p class="mono-lbl">Support leaders &amp; BPOs</p><h3 class="h4">Quality at scale</h3><p class="body-t">Cost and quality moving together in high-volume queues.</p></article>
+          <article class="card glass-2 reveal"><p class="mono-lbl">Banks &amp; insurers</p><h3 class="h4">Decisions you can defend</h3><p class="body-t">Every change approved by a person and on record.</p></article>
         </div>
-        <div class="card outline split reveal">
+        <div class="card glass-2 outline split reveal">
           <div><p class="mono-lbl teal">Where it's going</p><p class="body-t">Starting in customer support, then claims, KYC, sales and every knowledge workflow.</p></div>
           <div><p class="mono-lbl gold">Who's behind it</p><p class="body-t">Built by Aurexis AI Private Limited, registered in Haryana, India.</p><p class="body-t muted">[FOUNDER NOTE]</p></div>
         </div>

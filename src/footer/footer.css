@@ -9,7 +9,9 @@
   --hz-planet:max(2200px,140vw);
   --hz-wm:min(1120px,calc(100vw - 64px));
   --hz-gutter:max(32px,calc((100% - 1120px) / 2));   /* the navbar's 1120px column */
-  position:relative;z-index:6;isolation:isolate;overflow:hidden;background:var(--hz-bg);color:#fff;
+  position:relative;z-index:6;isolation:isolate;overflow:hidden;color:#fff;background:
+    radial-gradient(32% 200px at 14% 230px,rgba(var(--glow-gold),.09),rgba(var(--glow-gold),0)),
+    radial-gradient(30% 190px at 86% 210px,rgba(var(--glow-teal),.08),rgba(var(--glow-teal),0)),var(--hz-bg);
   font-family:var(--hz-sans);font-size:15px;line-height:1.5;text-align:left;border-top:1px solid rgba(42,59,92,.6);
   -webkit-font-smoothing:antialiased}
 .hz *,.hz *::before,.hz *::after{box-sizing:border-box}
@@ -25,11 +27,9 @@
 .hz-in{position:relative;z-index:2;max-width:1184px;margin:0 auto;padding:80px 32px 0}
 
 /* ---- CTA card (per page: data-footer-cta="on|off") ---- */
-.hz-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-bottom:64px;padding:36px 40px;border-radius:24px;
-  background:rgba(26,35,56,.6);border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 60px -36px rgba(0,0,0,.7)}
+.hz-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-bottom:64px;padding:36px 40px;border-radius:var(--r-lg)}   /* glass-2 */
 .hz[data-footer-cta="off"] .hz-cta{display:none}
-.hz .hz-k{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--hz-head-c);margin-bottom:10px}
+.hz .hz-k{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
 .hz .hz-cta-t{font-weight:600;font-size:34px;line-height:1.15;letter-spacing:-.02em;color:#fff;text-wrap:balance}
 .hz-cta-btns{display:flex;gap:12px;flex:none}
 .hz .hz-btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:999px;border:1px solid transparent;
@@ -57,14 +57,13 @@
 /* ---- updates sign-up: one pill holding the email field and the button ---- */
 .hz-form{margin-top:32px;max-width:420px}
 .hz .hz-form label{display:block;font-weight:600;font-size:14px;line-height:1.4;color:#fff;margin-bottom:10px}
-.hz-pill{display:flex;align-items:center;gap:6px;height:48px;padding:0 5px 0 0;border-radius:12px;background:#141C2E;border:1px solid rgba(255,255,255,.08);
-  transition:border-color .15s ease,box-shadow .15s ease}
-.hz-pill:hover{border-color:rgba(255,255,255,.16)}
-.hz-pill:focus-within{border-color:var(--hz-teal);box-shadow:0 0 0 1px var(--hz-teal)}          /* 2px teal ring */
-.hz-pill:has(input[aria-invalid="true"]){border-color:#EF4444;box-shadow:0 0 0 1px #EF4444}
+.hz-pill{display:flex;align-items:center;gap:6px;height:48px;padding:0 5px 0 0;border-radius:var(--r-sm);transition:border-color .15s ease,box-shadow .15s ease}   /* glass-1 */
+.hz .hz-pill:hover{border-color:rgba(255,255,255,.16)}
+.hz .hz-pill:focus-within{border-color:var(--hz-teal);box-shadow:0 0 0 1px var(--hz-teal)}          /* 2px teal ring */
+.hz .hz-pill:has(input[aria-invalid="true"]){border-color:#EF4444;box-shadow:0 0 0 1px #EF4444}
 .hz .hz-pill input{flex:1 1 auto;min-width:0;height:100%;padding:0 14px;border:0;border-radius:12px 0 0 12px;background:transparent;
   color:#fff;font-family:var(--hz-sans);font-weight:400;font-size:15px;outline:none}
-.hz .hz-pill input::placeholder{color:var(--hz-head-c);opacity:1}
+.hz .hz-pill input::placeholder{color:var(--hz-muted);opacity:1}
 .hz .hz-sub{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;border-radius:8px;border:0;cursor:pointer;
   background:var(--hz-gold);color:#0B1220;font-family:var(--hz-sans);font-weight:600;font-size:14px;white-space:nowrap;transition:background-color .15s ease}
 .hz .hz-sub:hover:not(:disabled){background:#E0BE4F}

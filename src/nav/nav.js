@@ -1,7 +1,8 @@
 // Site navbar: scroll state, the Product dropdown (hover + click + keyboard), the mobile sheet and the sound toggle.
 // The markup is injected at build time by the site-nav plugin in vite.config.js.
+import '../glass/glass.js'
 import './nav.css'
-import { toggleSound } from './sound.js'
+import { cvAudio } from '../sound/ambient.js'
 
 const nav = document.getElementById('siteNav')
 if (nav) init(nav)
@@ -102,15 +103,15 @@ function init(nav) {
     if (sheet.contains(a)) closeSheet(false)
   })
 
-  /* ---- sound: the speaker button reflects its state; the sheet's labelled button drives the same control ---- */
-  function syncSound() {
-    const on = snd.getAttribute('aria-pressed') === 'true', label = on ? 'Sound on' : 'Sound off'
+  /* ---- sound: the speaker and the menu's labelled button drive the ambient soundscape (src/sound/ambient.js) ---- */
+  function syncSound({ on, playing }) {
+    const label = on ? 'Sound on' : 'Sound off'
+    for (const b of [snd, snd2]) { b.setAttribute('aria-pressed', String(on)); b.classList.toggle('playing', playing) }
     snd.querySelector('.sn-tip').textContent = label
-    snd2.setAttribute('aria-pressed', String(on)); snd2.querySelector('.sn-sound-l').textContent = label
+    snd2.querySelector('.sn-sound-l').textContent = label
   }
-  new MutationObserver(syncSound).observe(snd, { attributes: true, attributeFilter: ['aria-pressed'] })
-  syncSound()
-  snd2.addEventListener('click', () => snd.click())
-  // the home page runs its own copy of the engine (it also plays the flight's cues); everywhere else this one does
-  if (!window.__homeSound) snd.addEventListener('click', () => { toggleSound(snd) })
+  addEventListener('cv-sound', (e) => syncSound(e.detail))
+  syncSound(cvAudio.state())
+  snd.addEventListener('click', () => cvAudio.toggle())
+  snd2.addEventListener('click', () => cvAudio.toggle())
 }

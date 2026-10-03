@@ -32,7 +32,6 @@
     --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     --mono:var(--sans);   /* labels are Inter; only the cockpit readouts keep JetBrains Mono (below) */
     --ease:cubic-bezier(.2,.8,.2,1); --liquid:cubic-bezier(.34,1.4,.64,1);
-    --glass-thin:rgba(26,35,56,.45); --glass:rgba(26,35,56,.60); --glass-thick:rgba(26,35,56,.75);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -42,22 +41,7 @@
   :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
   .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-  /* ================= liquid glass ================= */
-  .glass,.glass-thin,.glass-thick{position:relative;background:var(--glass);
-    -webkit-backdrop-filter:blur(32px) saturate(160%);backdrop-filter:blur(32px) saturate(160%);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 11px 34px rgba(0,0,0,.3)}
-  .glass-thin{background:var(--glass-thin);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%)}
-  .glass-thick{background:var(--glass-thick);-webkit-backdrop-filter:blur(40px) saturate(160%);backdrop-filter:blur(40px) saturate(160%);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 48px rgba(0,0,0,.42)}
-  /* rim light: 1px edge fading from top-left to bottom-right */
-  .glass::before,.glass-thin::before,.glass-thick::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
-    background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.04) 60%);
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-            mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
-  /* pointer glow (set by JS on fine pointers) */
-  .pglow::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .2s ease-out;
-    background:radial-gradient(200px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.08),transparent 70%)}
-  .pglow:hover::after{opacity:1}
+  /* ================= liquid glass: the shared material lives in src/glass/glass.css (glass-1 / glass-2 / glass-3) ================= */
   /* ambient light field: gold orb (human) top-left, teal orb (AI) bottom-right */
   .orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
   .orbs::before,.orbs::after{content:"";position:absolute;width:60vw;max-width:900px;aspect-ratio:1;border-radius:50%;
@@ -122,7 +106,7 @@
   .card::after{content:"";position:absolute;left:0;top:16px;bottom:16px;width:2px;border-radius:2px;background:var(--c)}
   .card.on{opacity:1;transform:none}
   /* cards float over the moving 3D scene: no live backdrop blur (it would re-render every frame) */
-  .card.glass{background:rgba(22,31,52,.93);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .card.glass-2{--g-tint:color-mix(in srgb,var(--c) 8%,transparent);border-color:color-mix(in srgb,var(--c) 35%,transparent)}
   .card .h{display:flex;align-items:center;gap:10px;margin-bottom:7px}
   .card .em{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto;background:var(--c)}
   .card .em svg{width:18px;height:18px}
@@ -220,7 +204,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .warnbar{display:flex;align-items:center;gap:.5em;background:var(--gold);color:#0B1220;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
     padding:.5em .7em;border-radius:3px;white-space:nowrap;animation:gatebreathe 4s ease-in-out infinite}
-  @keyframes gatebreathe{0%,100%{box-shadow:0 0 8px rgba(212,175,55,.2)}50%{box-shadow:0 0 16px rgba(212,175,55,.45)}}
+  @keyframes gatebreathe{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 8px rgba(212,175,55,.2)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 16px rgba(212,175,55,.45)}}
   .readout{list-style:none;display:grid;gap:.7em;margin:0;padding:0 .15em;font-weight:500;color:#9fdfe0}
   .readout li{display:flex;justify-content:space-between;gap:.8em;white-space:nowrap}
   .readout li b{font-weight:700;color:#fff}
@@ -296,10 +280,10 @@
     background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:endsweep 4.8s ease-in-out 2.2s infinite}
   @keyframes endsweep{0%{left:-60%}22%,100%{left:130%}}
   .end-gold:hover{filter:brightness(1.05)}
-  .end-ghost{height:48px;padding:0 22px;font-size:14px;color:#fff;border-radius:10px;border:1px solid rgba(255,255,255,.2)}
-  .end-ghost:hover{border-color:rgba(255,255,255,.45)}
+  .btn.end-ghost{height:48px;padding:0 22px;font-size:14px;color:#fff;border-radius:10px;border:1px solid rgba(255,255,255,.2)}
+  .btn.end-ghost:hover{border-color:rgba(255,255,255,.45)}
 
-  .toast{position:fixed;left:50%;bottom:30px;z-index:9;transform:translate(-50%,14px);background:var(--surface);border:1px solid var(--border);
+  .toast{position:fixed;left:50%;bottom:30px;z-index:9;transform:translate(-50%,14px);
     font-size:.82rem;font-weight:600;padding:11px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
   .toast.show{opacity:1;transform:translate(-50%,0)}
   .rail{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;gap:9px;pointer-events:none}
@@ -471,7 +455,7 @@
   .sec-head.split .lede{margin-top:0}
   .tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.66rem;font-weight:500;letter-spacing:.06em;
     padding:3px 8px;border-radius:6px;text-transform:uppercase}
-  .tag.ai{color:var(--teal);background:rgba(14,165,168,.15)}
+  .tag.ai{color:var(--teal-ink);background:rgba(14,165,168,.15)}
   .tag.hu{color:var(--gold);background:rgba(212,175,55,.15)}
   .tag.ok{color:var(--success);background:rgba(34,197,94,.15)}
   .tag.no{color:var(--slate);background:rgba(148,163,184,.15)}
@@ -488,10 +472,12 @@
   .show{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:clamp(28px,4vw,64px);align-items:start}
   .show>*{min-width:0}
   .tabs{display:flex;flex-direction:column;gap:6px}
-  .tab{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;text-align:left;padding:18px 20px 20px;border-radius:14px;background:none;
+  .tab{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;text-align:left;padding:18px 20px 20px;border-radius:12px;background:none;
     border:1px solid transparent;cursor:pointer;position:relative;transition:background .2s ease-out,border-color .2s ease-out}
   .tab:hover{background:rgba(255,255,255,.025)}
-  .tab.on{background:var(--surface);border-color:var(--border)}
+  .tab.on{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,0) 46%),var(--g1-bg);border-color:var(--g-line);
+    -webkit-backdrop-filter:blur(var(--g1-blur)) saturate(140%);backdrop-filter:blur(var(--g1-blur)) saturate(140%);box-shadow:inset 0 1px 0 var(--g-top)}
+  @media (prefers-reduced-transparency:reduce){ .tab.on{background:var(--g-solid);-webkit-backdrop-filter:none;backdrop-filter:none} }
   .tab .n{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--muted);padding-top:6px}
   .tab.on .n{color:var(--ink)}
   .tab .l{font-family:var(--sans);font-weight:600;font-size:clamp(1.3rem,2.3vw,1.9rem);letter-spacing:.02em;text-transform:uppercase;color:#8A8FA8;
@@ -532,14 +518,15 @@
   .who{font-family:var(--sans);font-weight:600;font-size:.86rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .who .t{font-family:var(--mono);font-weight:400;font-size:.68rem;color:var(--muted)}
   .bub{font-size:.9rem;line-height:1.55;color:#D9DBE6;margin-top:4px}
-  .prop{margin-top:10px;border-radius:12px;border:1px solid rgba(14,165,168,.45);background:var(--surface);padding:12px 14px}
-  .prop .ph{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--teal);margin-bottom:10px}
+  .prop{margin-top:10px;border-radius:12px;padding:12px 14px}
+  .prop .ph{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--teal-ink);margin-bottom:10px}
   .arms{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .arm{border:1px solid var(--border);border-radius:10px;padding:10px;background:#141c2e}
+  .arm{border-radius:12px;padding:10px}
   .arm b{display:block;font-family:var(--mono);font-size:.66rem;color:var(--muted);font-weight:500;margin-bottom:4px}
   .arm span{font-size:.84rem;line-height:1.4}
   .meta{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:10px;line-height:1.6}
-  .gate{border-radius:14px;padding:14px 16px;border-left:4px solid var(--gold);animation:gatebreathe 4s ease-in-out infinite}
+  .gate{border-radius:12px;padding:14px 16px;animation:gatebreathe 4s ease-in-out infinite}
+  .gate.glass-3{border-left:4px solid var(--gold)}
   .gate .q{font-family:var(--sans);font-weight:600;font-size:.98rem;margin:6px 0 4px}
   .gate .imp{font-size:.84rem;color:var(--muted);line-height:1.5}
   .gate .gb{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
@@ -552,13 +539,13 @@
   .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
   @keyframes tdot{50%{opacity:1}}
   /* skeptic */
-  .verd{border-radius:14px;background:var(--surface);border:1px solid var(--border);padding:16px;opacity:0;transform:translateY(8px)}
+  .verd{border-radius:12px;padding:16px;opacity:0;transform:translateY(8px)}
   .panel.on .verd{animation:msgin .5s var(--ease) forwards}
   .panel.on .verd.rej{animation-delay:.5s}
   .verd .vh2{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap}
   .verd .vt{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
   .verd .claim{font-family:var(--sans);font-weight:600;font-size:1rem;line-height:1.4}
-  .verd.rej{border-color:rgba(148,163,184,.3);background:#151c2c}
+  .verd.rej{border-color:rgba(148,163,184,.3);--g-tint:rgba(148,163,184,.05)}
   .verd.rej .claim{color:var(--slate);text-decoration:line-through;text-decoration-color:rgba(148,163,184,.7)}
   .checks{list-style:none;display:grid;gap:7px;margin:12px 0}
   .checks li{display:flex;align-items:center;gap:10px;font-size:.86rem;color:#D9DBE6;opacity:0}
@@ -595,7 +582,7 @@
 
   /* ---- hybrid workforce cards ---- */
   .hw{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
-  .hwc{border-radius:18px;padding:26px 24px 28px;display:flex;flex-direction:column;gap:14px;min-height:340px}
+  .hwc{border-radius:16px;padding:26px 24px 28px;display:flex;flex-direction:column;gap:14px;min-height:340px}
   .hwc .art{height:120px;border-radius:12px;background:#0d1527;border:1px solid rgba(42,59,92,.7);position:relative;overflow:hidden}
   .hwc .art svg{position:absolute;inset:0;width:100%;height:100%}
   .hwc h3{font-family:var(--head);font-weight:600;font-size:1.25rem}
@@ -632,7 +619,7 @@
   .orbit-diagram .orb-ring{transform-box:view-box;transform-origin:350px 310px;animation:spin 38s linear infinite}
   .orbit-diagram .oturn{animation:spin 38s linear infinite reverse}
   .stack-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;justify-content:center}
-  .stack-list span{font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:5px 11px}
+  .stack-list span{font-family:var(--mono);font-size:.7rem;color:var(--muted);border-radius:999px;padding:5px 11px}
 
   /* ---- animated diagrams: evidence flow + integration orbit ---- */
   .dg{position:relative;width:100%;max-width:620px;margin:36px auto 0}
@@ -667,18 +654,15 @@
     opacity:0;transform:translate(-50%,-170%);transition:opacity .25s ease-out}
   .ev-noise.on{opacity:1}
   .ev-chip{position:absolute;left:50%;top:96.5%;transform:translate(-50%,10px);opacity:0;pointer-events:none;cursor:default;
-    display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:10px;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:12px;white-space:nowrap;
     font-family:var(--mono);font-size:11px;font-weight:500;color:#fff;letter-spacing:.02em;
-    background:rgba(26,35,56,.72);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
-    border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 30px rgba(0,0,0,.35);
     transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
   .ev-chip.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
   .ev-chip svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:var(--success);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
   .ev-chip:hover,.ev-chip:focus-visible{border-color:rgba(34,197,94,.55)}
-  .dg-tip{position:absolute;left:0;top:0;z-index:3;width:max-content;max-width:min(260px,80%);padding:9px 12px;border-radius:10px;pointer-events:none;
+  .dg-tip{position:absolute;left:0;top:0;z-index:3;width:max-content;max-width:min(260px,80%);padding:9px 12px;border-radius:12px;pointer-events:none;
     font-family:var(--sans);font-size:12.5px;line-height:1.45;color:#E4E6EE;opacity:0;transform:translate(-50%,calc(-100% - 10px));transition:opacity .2s ease-out;
-    background:rgba(26,35,56,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
-    border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 32px rgba(0,0,0,.4)}
+}
   .dg-tip.on{opacity:1}
   .dg-tip b{font-family:var(--mono);font-weight:500;color:#fff}
   .dg-tip .ea{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:3px}
@@ -729,9 +713,19 @@
     .orbit-diagram .orb-track{stroke:rgba(160,163,184,.3);stroke-width:2.6} }
   /* ---- manifesto ---- */
   .sec-man{background:linear-gradient(180deg,var(--bg),#0a1120 50%,var(--bg))}
+  /* brand light for the glass to pick up (src/glass/glass.css .glows): gold near human content, teal near AI content */
+  .sec-show{--ga-x:10%;--ga-y:62%;--ga-h:34%;--ga-o:.09;--gb-x:80%;--gb-y:58%;--gb-w:38%;--gb-h:38%;--gb-o:.12}   /* tabs (people choose) · the AI experiment */
+  .sec-hw{--ga-x:16%;--ga-y:62%;--ga-h:34%;--ga-o:.11;--gb-x:84%;--gb-y:58%;--gb-h:36%;--gb-o:.11}
+  .sec-wired{--ga-c:var(--glow-teal);--ga-x:26%;--ga-y:52%;--ga-w:38%;--ga-h:42%;--ga-o:.11;--gb-c:var(--glow-gold);--gb-x:86%;--gb-y:60%;--gb-h:34%;--gb-o:.08}
+  .sec-man.glows{background-image:
+    radial-gradient(34% 40% at 16% 50%,rgba(var(--glow-gold),.1),rgba(var(--glow-gold),.045) 45%,rgba(var(--glow-gold),0)),
+    radial-gradient(34% 40% at 86% 50%,rgba(var(--glow-teal),.1),rgba(var(--glow-teal),.045) 45%,rgba(var(--glow-teal),0)),
+    linear-gradient(180deg,var(--bg),#0a1120 50%,var(--bg))}
+  .sec-trust{--ga-x:10%;--ga-y:58%;--ga-h:38%;--ga-o:.11;--gb-x:90%;--gb-y:52%;--gb-h:40%;--gb-o:.09}
+  .sec-moat{--ga-x:20%;--ga-y:48%;--ga-w:36%;--ga-h:40%;--ga-o:.09;--gb-x:80%;--gb-y:56%;--gb-w:36%;--gb-h:40%;--gb-o:.1}
   .man{display:flex;gap:14px;height:min(560px,70vh);min-height:460px}
-  .mcard{flex:1 1 0;min-width:0;border-radius:20px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
-    transition:flex-grow .5s var(--liquid);text-align:left;border:0;padding:0;color:inherit}
+  .mcard{flex:1 1 0;min-width:0;border-radius:24px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+    transition:flex-grow .5s var(--liquid);text-align:left;padding:0;color:inherit}
   .mcard.on{flex-grow:2.6;cursor:default}
   .mcard .mart{flex:1;position:relative;min-height:0}
   .mcard .mart svg{position:absolute;inset:0;width:100%;height:100%}
@@ -744,7 +738,7 @@
 
   /* ---- trust ---- */
   .trust{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px)}
-  .tc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
+  .tc{border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
   .tc .ti2{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#0B1220;border:1px solid var(--border)}
   .tc .ti2 svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
   .tc h3{font-family:var(--head);font-weight:600;font-size:1.06rem;line-height:1.35}
@@ -877,7 +871,6 @@
     .end-gold::before{display:none}
   }
   @media (prefers-reduced-transparency:reduce){
-    .glass,.glass-thin,.glass-thick{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
     .orbs,#sky .horb,.bt-orb{display:none}
   }
 </style>
@@ -909,7 +902,7 @@
   <main class="after" id="after">
 
     <!-- 01/02/03 showcase -->
-    <section class="sec sec-show" id="features" aria-labelledby="featTitle">
+    <section class="sec sec-show glows" id="features" aria-labelledby="featTitle">
       <div class="orbs" aria-hidden="true"></div>
       <div class="wrap">
         <div class="sec-head split sv">
@@ -939,7 +932,7 @@
           <div class="stage">
             <!-- 01 experiment: team chat + approval gate -->
             <div class="panel on" role="tabpanel" id="pan-0" aria-labelledby="tab-0">
-              <div class="mock glass">
+              <div class="mock glass-2">
                 <div class="mock-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ch"># support-ops</span><span class="note">Illustrative mock · fictional names</span></div>
                 <div class="mock-body">
                   <div class="msg"><span class="av hu" aria-hidden="true">MF</span>
@@ -948,11 +941,11 @@
                   <div class="msg"><span class="av ai" aria-hidden="true"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img src="/causvia-mark.png" alt=""></picture></span>
                     <div><div class="who">Causvia <span class="tag ai">AI · proposal</span><span class="t">10:32</span></div>
                       <div class="bub">I'd like to test two ways of splitting refund tickets before anything changes for the whole queue.</div>
-                      <div class="prop"><div class="ph">EXP-031 · Refund tickets</div>
-                        <div class="arms"><div class="arm"><b>ARM A</b><span>AI drafts, human approves</span></div><div class="arm"><b>ARM B</b><span>AI handles fully</span></div></div>
+                      <div class="prop glass-1 glass-teal"><div class="ph">EXP-031 · Refund tickets</div>
+                        <div class="arms"><div class="arm glass-1"><b>ARM A</b><span>AI drafts, human approves</span></div><div class="arm glass-1"><b>ARM B</b><span>AI handles fully</span></div></div>
                         <div class="meta">holdout 20% · 14 days · ~1,200 tickets<br>guardrail: CSAT ≥ 4.4 · agent workload ≤ baseline</div></div></div></div>
                   <div class="msg"><span class="av hu" aria-hidden="true">MF</span>
-                    <div class="gate glass-thick" id="gate">
+                    <div class="gate glass-3 glass-gold" id="gate">
                       <span class="tag hu">Awaiting your approval</span>
                       <div class="q">Run EXP-031 on refund tickets for 14 days?</div>
                       <div class="imp">Expected: 15–25% faster handling in arm A. Risk to CSAT: low (estimate, not yet proven).</div>
@@ -966,7 +959,7 @@
             <!-- 02 doubt: skeptic verdicts -->
             <div class="panel" role="tabpanel" id="pan-1" aria-labelledby="tab-1">
               <div style="display:grid;gap:14px">
-                <div class="verd">
+                <div class="verd glass-1">
                   <div class="vh2"><span class="vt">SKEPTIC VERDICT · EXP-031 · ARM A</span><span class="tag ok">✓ Verified</span></div>
                   <div class="claim">AI drafts with human approval cut refund handle time by 21%.</div>
                   <ul class="checks">
@@ -978,7 +971,7 @@
                   <div class="chip"><span>EXP-031 · 1,184 tickets · 14 days</span><span class="conf">confidence <i><b style="--w:86%"></b></i> 86%</span></div>
                   <div class="vsum">Seasonality ruled out · Ticket mix balanced · Verified</div>
                 </div>
-                <div class="verd rej">
+                <div class="verd glass-1 rej">
                   <div class="vh2"><span class="vt">SKEPTIC VERDICT · EXP-031 · ARM B</span><span class="tag no">Rejected</span></div>
                   <div class="claim">Full AI handling raised CSAT by 9%.</div>
                   <p class="reason"><b>Reason:</b> a launch-week promotion shifted the mix toward simple refunds. After adjusting for ticket mix, no effect remained. This result stays in the ledger.</p>
@@ -989,7 +982,7 @@
 
             <!-- 03 balance: autonomy meter -->
             <div class="panel" role="tabpanel" id="pan-2" aria-labelledby="tab-2">
-              <div class="mock" style="background:var(--surface);border:1px solid var(--border);padding:18px 18px 14px">
+              <div class="mock glass-2" style="padding:18px 18px 14px">
                 <div class="meter-head"><h4>Autonomy by workflow</h4>
                   <div class="legend"><span><i style="background:var(--teal)"></i>AI share</span><span><i style="background:var(--gold)"></i>Human share</span></div></div>
                 <div id="meters"></div>
@@ -1002,14 +995,14 @@
     </section>
 
     <!-- built for the hybrid workforce -->
-    <section class="sec sec-hw" id="hybrid" aria-labelledby="hwTitle">
+    <section class="sec sec-hw glows" id="hybrid" aria-labelledby="hwTitle">
       <div class="wrap">
         <div class="sec-head split sv">
           <div><span class="eyebrow">The product</span><h2 class="title" id="hwTitle">Built for the hybrid workforce</h2></div>
           <p class="lede">Every company is becoming half human, half AI. These are the tools that help you run that mix on evidence, not guesswork.</p>
         </div>
         <div class="hw">
-          <article class="hwc glass pglow sv">
+          <article class="hwc glass-2 sv">
             <div class="art" aria-hidden="true"><svg viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
               <g fill="none" stroke-linecap="round"><path d="M20 84 C80 84 90 36 160 36 S240 70 300 46" stroke="#0EA5A8" stroke-width="2"/>
               <path d="M20 70 C80 70 100 80 160 66 S250 30 300 34" stroke="#5B9BD5" stroke-width="2" stroke-dasharray="4 6"/>
@@ -1020,7 +1013,7 @@
             <p>Thinking of changing AI models? Test the new one against your current model, or against your team, on the same live work first. Cost, quality and speed are compared side by side, with a holdout.</p>
             <a class="tag mu tag-link" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>
           </article>
-          <article class="hwc glass pglow sv" style="transition-delay:.08s">
+          <article class="hwc glass-2 sv" style="transition-delay:.08s">
             <div class="art" aria-hidden="true"><svg viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
               <g font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10">
                 <rect x="20" y="16" width="280" height="24" rx="6" fill="#1A2338"/><text x="32" y="32" fill="#A0A3B8">EXP-017  bot-only refunds</text><text x="236" y="32" fill="#94A3B8">REJECTED</text>
@@ -1030,7 +1023,7 @@
             <p>Every experiment that didn't work is kept, with the reason. Your team never repeats a failed test, and new proposals start from what has already been ruled out.</p>
             <a class="tag mu tag-link" href="/auth?tab=request">Request early access <span aria-hidden="true">→</span></a>
           </article>
-          <article class="hwc glass pglow sv" style="transition-delay:.16s">
+          <article class="hwc glass-2 sv" style="transition-delay:.16s">
             <div class="art" aria-hidden="true"><svg viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet">
               <g font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#A0A3B8"><text x="24" y="26">DRAFT</text><text x="132" y="26">REVIEW</text><text x="246" y="26">APPROVE</text></g>
               <g fill="none" stroke-width="2"><rect x="20" y="40" width="80" height="44" rx="10" stroke="#0EA5A8"/><rect x="120" y="40" width="80" height="44" rx="10" stroke="#0EA5A8" stroke-dasharray="4 5"/><rect x="220" y="40" width="80" height="44" rx="10" stroke="#D4AF37"/>
@@ -1045,7 +1038,7 @@
     </section>
 
     <!-- evidence hub + operations stack -->
-    <section class="sec sec-wired" id="evidence">
+    <section class="sec sec-wired glows" id="evidence">
       <div class="orbs" aria-hidden="true"></div>
       <div class="wrap">
         <div class="wired-grid">
@@ -1108,9 +1101,9 @@
             <canvas class="dgl dg-cv" id="evCv" aria-hidden="true"></canvas>
             <div class="ev-checks" id="evChecks" aria-hidden="true"><span>Seasonality ✓</span><span>Ticket mix ✓</span><span>Holdout ✓</span></div>
             <div class="ev-noise" id="evNoise" aria-hidden="true">✕ noise</div>
-            <button class="ev-chip" id="evChip" type="button" aria-label="Recommendation: move refunds to AI-handled, 92% confidence, experiment EXP-142. Supported by tickets, quality, CSAT and cost data.">
+            <button class="ev-chip glass-1" id="evChip" type="button" aria-label="Recommendation: move refunds to AI-handled, 92% confidence, experiment EXP-142. Supported by tickets, quality, CSAT and cost data.">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Refunds → AI-handled · 92% confidence · EXP-142</span></button>
-            <div class="dg-tip" id="evTip" role="tooltip"></div>
+            <div class="dg-tip glass-2" id="evTip" role="tooltip"></div>
             </div>
           </div>
 
@@ -1147,23 +1140,23 @@
               <div class="obn" data-a="120" data-c="gold" tabindex="0" role="button" aria-label="Helpdesk: Zendesk, Freshdesk and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></g></svg></div><div class="obn-l"><b>Helpdesk</b><span>Early access</span></div></div>
               <div class="obn" data-a="60" data-c="teal" tabindex="0" role="button" aria-label="Ticketing: ServiceNow, Jira Service Management and similar. Rolling out in early access."><div class="obn-b"><svg viewBox="-40 -40 80 80" aria-hidden="true"><circle class="ob-nc" r="36"/><g class="oic" transform="translate(-14,-14) scale(1.17)"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></g></svg></div><div class="obn-l"><b>Ticketing</b><span>Early access</span></div></div>
             </div>
-            <div class="dg-tip" id="obTip" role="tooltip"></div>
+            <div class="dg-tip glass-2" id="obTip" role="tooltip"></div>
             </div>
-            <div class="stack-list" aria-hidden="true"><span>Helpdesk · early access</span><span>CRM · early access</span><span>Team chat · early access</span><span>Ticketing · early access</span><span>AI models · early access</span><span>Data · early access</span></div>
+            <div class="stack-list" aria-hidden="true"><span class="glass-1">Helpdesk · early access</span><span class="glass-1">CRM · early access</span><span class="glass-1">Team chat · early access</span><span class="glass-1">Ticketing · early access</span><span class="glass-1">AI models · early access</span><span class="glass-1">Data · early access</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- manifesto -->
-    <section class="sec sec-man" id="manifesto" aria-labelledby="manTitle">
+    <section class="sec sec-man glows" id="manifesto" aria-labelledby="manTitle">
       <div class="wrap">
         <div class="sec-head split sv">
           <div><span class="eyebrow">Manifesto</span><h2 class="title" id="manTitle">Balance, proven.</h2></div>
           <p class="lede">The question isn't whether to use AI. It's how much, where, and who stays in charge. Three beliefs shape every part of Causvia.</p>
         </div>
         <div class="man sv" id="man" role="tablist" aria-label="Manifesto">
-          <button class="mcard glass on" role="tab" aria-selected="true" data-m="0">
+          <button class="mcard glass-2 on" role="tab" aria-selected="true" data-m="0">
             <span class="mart man-art" aria-hidden="true"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
               <defs><radialGradient id="ma1" cx=".35" cy=".45" r=".6"><stop offset="0" stop-color="rgba(212,175,55,.35)"/><stop offset="1" stop-color="rgba(212,175,55,0)"/></radialGradient>
               <radialGradient id="ma2" cx=".7" cy=".6" r=".55"><stop offset="0" stop-color="rgba(14,165,168,.35)"/><stop offset="1" stop-color="rgba(14,165,168,0)"/></radialGradient></defs>
@@ -1175,7 +1168,7 @@
             <span class="mtx"><span class="mn">01</span><h3>Evidence over hype</h3>
               <p>The AI industry runs on bold claims. We run on experiments. Every recommendation Causvia makes carries its data, its holdout and its confidence, and when something isn't proven, we say so.</p></span>
           </button>
-          <button class="mcard glass" role="tab" aria-selected="false" data-m="1">
+          <button class="mcard glass-2" role="tab" aria-selected="false" data-m="1">
             <span class="mart man-art" aria-hidden="true"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
               <defs><linearGradient id="mb1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(14,165,168,.55)"/><stop offset=".62" stop-color="rgba(14,165,168,.55)"/><stop offset=".64" stop-color="rgba(212,175,55,.6)"/><stop offset="1" stop-color="rgba(212,175,55,.6)"/></linearGradient>
               <radialGradient id="mb2" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="rgba(212,175,55,.28)"/><stop offset="1" stop-color="rgba(212,175,55,0)"/></radialGradient></defs>
@@ -1186,7 +1179,7 @@
             <span class="mtx"><span class="mn">02</span><h3>Humans in command</h3>
               <p>AI should handle the routine, not make the calls. People set the goals, approve every change and can overrule any result. Autonomy is earned workflow by workflow, and it steps back the moment confidence drops.</p></span>
           </button>
-          <button class="mcard glass" role="tab" aria-selected="false" data-m="2">
+          <button class="mcard glass-2" role="tab" aria-selected="false" data-m="2">
             <span class="mart man-art" aria-hidden="true"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
               <defs><radialGradient id="mc1" cx=".3" cy=".7" r=".6"><stop offset="0" stop-color="rgba(14,165,168,.3)"/><stop offset="1" stop-color="rgba(14,165,168,0)"/></radialGradient>
               <radialGradient id="mc2" cx=".75" cy=".3" r=".55"><stop offset="0" stop-color="rgba(212,175,55,.3)"/><stop offset="1" stop-color="rgba(212,175,55,0)"/></radialGradient></defs>
@@ -1203,7 +1196,7 @@
     </section>
 
     <!-- built for trust -->
-    <section class="sec sec-trust" id="trust" aria-labelledby="trustTitle">
+    <section class="sec sec-trust glows" id="trust" aria-labelledby="trustTitle">
       <div class="orbs" aria-hidden="true"></div>
       <div class="wrap">
         <div class="sec-head split sv">
@@ -1211,13 +1204,13 @@
           <p class="lede">Operations data is customer data. These are the commitments Causvia is being built around, and we confirm the details with every early-access partner.</p>
         </div>
         <div class="trust">
-          <div class="tc sv"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+          <div class="tc glass-2 sv"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
             <h3>Customer data isolation</h3><p>Each customer's data is kept separate from everyone else's, and your tickets and results are not used to train models for other customers.</p></div>
-          <div class="tc sv" style="transition-delay:.06s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/></svg></span>
+          <div class="tc glass-2 sv" style="transition-delay:.06s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/></svg></span>
             <h3>On-premise option</h3><p>When data can't leave your walls, Causvia can be deployed inside your own infrastructure.</p></div>
-          <div class="tc sv" style="transition-delay:.12s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
+          <div class="tc glass-2 sv" style="transition-delay:.12s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span>
             <h3>Full audit trail of every AI decision</h3><p>Every proposal, approval, run and Skeptic verdict is logged with who, what, when and why, ready for a manager, an auditor or a regulator.</p></div>
-          <div class="tc sv" style="transition-delay:.18s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <div class="tc glass-2 sv" style="transition-delay:.18s"><span class="ti2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>
             <h3>Designed for India's DPDP Act and GDPR</h3><p>Consent, purpose limitation and data-subject rights are part of the design from day one, not added later.</p></div>
         </div>
         <p class="trust-note sv">Causvia is in <a class="ea-link" href="/auth?tab=request">early access</a>. Deployment options and data-handling terms are agreed in writing with each partner.</p>
@@ -1225,7 +1218,7 @@
     </section>
 
     <!-- the Causvia moat: seven layers around the core -->
-    <section class="sec sec-moat" id="moats" aria-labelledby="moatTitle">
+    <section class="sec sec-moat glows" id="moats" aria-labelledby="moatTitle">
       <div class="mt-wrap">
         <div class="sec-head mt-head-block sv">
           <div><span class="eyebrow mt-kicker">The Causvia moat</span><h2 class="title" id="moatTitle">Built to get harder to copy every single day.</h2></div>
@@ -1357,13 +1350,13 @@
   <div id="fallback" aria-hidden="true"><svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice"><g fill="none" stroke="#0EA5A8" stroke-width="1" opacity=".5"></g></svg></div>
   <svg id="wires" aria-hidden="true"></svg>
 
-  <div class="card glass" data-i="0"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 01 · Human</span><span class="live"><span class="dot"></span>Setting</span></span></div><div class="ti">Goal</div><div class="ds">Your team sets the outcome and the limits. AI works toward it.</div></div>
-  <div class="card glass" data-i="1"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 02 · AI</span><span class="live"><span class="dot"></span>Observing</span></span></div><div class="ti">Study</div><div class="ds">AI studies how the workflow really runs today.</div></div>
-  <div class="card glass" data-i="2"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 03 · AI</span><span class="live"><span class="dot"></span>Drafting</span></span></div><div class="ti">Propose</div><div class="ds">AI proposes a specific, testable change to the human–AI split.</div></div>
-  <div class="card glass" data-i="3"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 04 · Human</span><span class="live"><span class="dot"></span>Awaiting you</span></span></div><div class="ti">Approve</div><div class="ds">A person approves, adjusts or declines. Nothing runs without a yes.</div></div>
-  <div class="card glass" data-i="4"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 05 · AI</span><span class="live"><span class="dot"></span>Testing</span></span></div><div class="ti">Run</div><div class="ds">The experiment runs on live work against a fair holdout.</div></div>
-  <div class="card glass" data-i="5"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 06 · AI</span><span class="live"><span class="dot"></span>Challenging</span></span></div><div class="ti">Doubt</div><div class="ds">The Skeptic attacks the result before anyone trusts it.</div></div>
-  <div class="card glass" data-i="6"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 07 · AI</span><span class="live"><span class="dot"></span>Recording</span></span></div><div class="ti">Remember</div><div class="ds">Every result, failures included, goes into the evidence ledger.</div></div>
+  <div class="card glass-2 glass-still" data-i="0"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 01 · Human</span><span class="live"><span class="dot"></span>Setting</span></span></div><div class="ti">Goal</div><div class="ds">Your team sets the outcome and the limits. AI works toward it.</div></div>
+  <div class="card glass-2 glass-still" data-i="1"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 02 · AI</span><span class="live"><span class="dot"></span>Observing</span></span></div><div class="ti">Study</div><div class="ds">AI studies how the workflow really runs today.</div></div>
+  <div class="card glass-2 glass-still" data-i="2"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 03 · AI</span><span class="live"><span class="dot"></span>Drafting</span></span></div><div class="ti">Propose</div><div class="ds">AI proposes a specific, testable change to the human–AI split.</div></div>
+  <div class="card glass-2 glass-still" data-i="3"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 04 · Human</span><span class="live"><span class="dot"></span>Awaiting you</span></span></div><div class="ti">Approve</div><div class="ds">A person approves, adjusts or declines. Nothing runs without a yes.</div></div>
+  <div class="card glass-2 glass-still" data-i="4"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 05 · AI</span><span class="live"><span class="dot"></span>Testing</span></span></div><div class="ti">Run</div><div class="ds">The experiment runs on live work against a fair holdout.</div></div>
+  <div class="card glass-2 glass-still" data-i="5"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 06 · AI</span><span class="live"><span class="dot"></span>Challenging</span></span></div><div class="ti">Doubt</div><div class="ds">The Skeptic attacks the result before anyone trusts it.</div></div>
+  <div class="card glass-2 glass-still" data-i="6"><div class="h"><span class="em"></span><span class="stwrap"><span class="st">Step 07 · AI</span><span class="live"><span class="dot"></span>Recording</span></span></div><div class="ti">Remember</div><div class="ds">Every result, failures included, goes into the evidence ledger.</div></div>
 
   <div class="cock">
     <div class="canopy-top" aria-hidden="true"></div>
@@ -1413,7 +1406,7 @@
     <p class="end-sub">AI flew the routine. Every decision that matters is yours.</p>
     <div class="end-btns">
       <a class="btn end-gold" id="launch" href="/auth?tab=request">Get a free workflow balance audit <span class="arw" aria-hidden="true">→</span></a>
-      <a class="btn end-ghost glass-thin" href="/auth?tab=request">Join early access</a>
+      <a class="btn end-ghost glass-1" href="/auth?tab=request">Join early access</a>
     </div>
   </div>
 
@@ -1421,7 +1414,7 @@
   </div>
 
   <!-- site-nav page="home" spacer="off" -->
-  <div class="toast" id="toast" role="status"></div>
+  <div class="toast glass-2" id="toast" role="status"></div>
 
   <!-- boot loader: Causvia power-up sequence (ignition → assembly → system check → reveal → aperture) -->
   <div class="boot" id="boot" role="status" aria-live="polite" aria-label="Causvia is initializing">
@@ -1508,8 +1501,8 @@
 (function(){
   var RM = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var cv=document.getElementById("cv");
-  var _tt; function toast(m){ var t=document.getElementById("toast"); t.textContent=m; t.className="toast show";
-    clearTimeout(_tt); _tt=setTimeout(function(){ t.className="toast"; },2600); }
+  var _tt; function toast(m){ var t=document.getElementById("toast"); t.textContent=m; t.className="toast glass-2 show";
+    clearTimeout(_tt); _tt=setTimeout(function(){ t.className="toast glass-2"; },2600); }
 
   /* ---- loop step icons (Lucide-style strokes) ---- */
   function ico(p){ return '<svg viewBox="0 0 24 24" fill="none" stroke="#0B1220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'; }
@@ -1788,12 +1781,6 @@
       c.addEventListener("mouseenter",function(){ if(matchMedia("(hover:hover) and (min-width:1024px)").matches) pick(j); }); });
   })();
 
-  /* ---- pointer glow on glass cards (fine pointers only) ---- */
-  if(matchMedia("(pointer:fine)").matches){
-    [].slice.call(document.querySelectorAll(".pglow")).forEach(function(el){
-      el.addEventListener("pointermove",function(e){ var r=el.getBoundingClientRect();
-        el.style.setProperty("--mx",(e.clientX-r.left)+"px"); el.style.setProperty("--my",(e.clientY-r.top)+"px"); }); });
-  }
 
   /* ---- reveal on scroll ---- */
   if(!RM && "IntersectionObserver" in window){
@@ -2062,42 +2049,14 @@
   var railDots=[].slice.call(rail.children);
   var secDots=[]; for(var r2=0;r2<2;r2++){ var sb=document.createElement("b"); sb.className="sec"; rail.appendChild(sb); secDots.push(sb); }
 
-  var actx=null, master=null, mDelay=null, padOsc=[], sndOn=false, mStep=0, mTimer=0;
-  var SCALE=[329.63,392.00,440.00,523.25,587.33,659.25,783.99];              // gentle pentatonic, upper register
-  var CHORDS=[[130.81,164.81,196.00],[110.00,130.81,164.81],[146.83,174.61,220.00],[98.00,146.83,196.00]]; // C · Am · F · G
-  function initAudio(){ if(actx) return true;
-    try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return false; }
-    master=actx.createGain(); master.gain.value=0; master.connect(actx.destination);
-    mDelay=actx.createDelay(1.0); mDelay.delayTime.value=0.42;                // spacious echo
-    var fb=actx.createGain(); fb.gain.value=0.34; var wet=actx.createGain(); wet.gain.value=0.3;
-    mDelay.connect(fb); fb.connect(mDelay); mDelay.connect(wet); wet.connect(master);
-    var padLp=actx.createBiquadFilter(); padLp.type="lowpass"; padLp.frequency.value=820; // warm pad bed
-    var padGain=actx.createGain(); padGain.gain.value=0.4; padLp.connect(padGain); padGain.connect(master); padGain.connect(mDelay);
-    padOsc=[]; var base=CHORDS[0];
-    for(var i=0;i<3;i++){ var o=actx.createOscillator(); o.type="triangle"; o.frequency.value=base[i];
-      var og=actx.createGain(); og.gain.value=0.5; o.connect(og); og.connect(padLp); o.start(); padOsc.push(o); }
-    return true; }
-  function mNote(freq,dur,vol){ var t=actx.currentTime+0.02;
-    var o=actx.createOscillator(), g=actx.createGain(); o.type="sine"; o.frequency.value=freq;
-    o.connect(g); g.connect(master); g.connect(mDelay);
-    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.05); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-    o.start(t); o.stop(t+dur+0.05); }
-  function mTick(){ if(!sndOn||!actx) return; var t=actx.currentTime;
-    if(mStep%8===0){ var ch=CHORDS[((mStep/8)|0)%CHORDS.length]; for(var i=0;i<3;i++) padOsc[i].frequency.setTargetAtTime(ch[i],t,0.7); }
-    if(mStep%2===0 && Math.random()<0.66) mNote(SCALE[(Math.random()*SCALE.length)|0],1.8,0.07);
-    mStep++; }
-  function blip(){ if(!actx||!sndOn) return; try{ var o=actx.createOscillator(),g=actx.createGain();
-    o.type="sine"; o.frequency.value=880; o.connect(g); g.connect(master);
+  /* sound: the ambient soundscape is shared by every page (src/sound/ambient.js, turned on by the navbar's speaker);
+     the flight's cues and the boot loader's hum play on top of it through its effects bus, and the music ducks under them */
+  var actx=null;
+  function initAudio(){ var A=window.cvAudio; if(!A) return false; actx=A.context(); return !!actx; }
+  function blip(){ var A=window.cvAudio; if(!A||!A.isPlaying()||(!actx&&!initAudio())) return; try{ var o=actx.createOscillator(),g=actx.createGain();
+    o.type="sine"; o.frequency.value=880; o.connect(g); g.connect(A.fx());
     var t=actx.currentTime; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.05,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.18);
-    o.start(t); o.stop(t+.2); }catch(e){} }
-  document.getElementById("snd").addEventListener("click",function(){
-    if(!initAudio()){ toast("Audio unavailable"); return; }
-    if(actx.state==="suspended") actx.resume();
-    sndOn=!sndOn; master.gain.setTargetAtTime(sndOn?0.16:0.0, actx.currentTime, 0.6);
-    if(sndOn && !mTimer){ mStep=0; mTick(); mTimer=setInterval(mTick,900); }
-    else if(!sndOn && mTimer){ clearInterval(mTimer); mTimer=0; }
-    this.classList.toggle("on",sndOn); this.setAttribute("aria-pressed",sndOn?"true":"false"); });
-  window.__homeSound=true;   // the navbar script leaves the speaker to this engine (it also plays the flight's cues)
+    o.start(t); o.stop(t+.2); A.duck(.5); }catch(e){} }
 
   /* ================= boot loader: Causvia power-up sequence =================
      0–0.6s ignition · 0.6–2.2s assembly + system check · reveal at 100% · aperture exit
@@ -2127,10 +2086,10 @@
 
     /* ---- sound: Web Audio only, off until the visitor asks ---- */
     var bsnd=false, humG=null, humO=[];
-    function startSound(){ if(bsnd) return; if(!initAudio()) return; if(actx.state==="suspended") actx.resume(); bsnd=true;
-      var m=$("snd"); if(m && !sndOn) m.click();
+    function startSound(){ if(bsnd) return; if(!initAudio()) return; bsnd=true;
+      window.cvAudio.set(true); window.cvAudio.hold(true);           // music on (as the speaker would), dipped under the hum
       var lp=actx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=380;
-      humG=actx.createGain(); humG.gain.value=0; lp.connect(humG); humG.connect(actx.destination);
+      humG=actx.createGain(); humG.gain.value=0; lp.connect(humG); humG.connect(window.cvAudio.fx());
       [[55,"sine",.6],[110.5,"triangle",.22]].forEach(function(d){ var o=actx.createOscillator(), g=actx.createGain();
         o.type=d[1]; o.frequency.value=d[0]; g.gain.value=d[2]; o.connect(g); g.connect(lp); o.start(); humO.push(o); });
       humG.gain.setTargetAtTime(.045,actx.currentTime,.4);
@@ -2138,12 +2097,13 @@
     function humPitch(p){ if(!bsnd) return; var t=actx.currentTime;
       humO[0].frequency.setTargetAtTime(55+p*.3,t,.25); humO[1].frequency.setTargetAtTime(110.5+p*.6,t,.25); }
     function blipB(f,v,d){ if(!bsnd) return; var t=actx.currentTime+.005, o=actx.createOscillator(), g=actx.createGain();
-      o.type="sine"; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+      o.type="sine"; o.frequency.value=f; o.connect(g); g.connect(window.cvAudio.fx());
       g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.006); g.gain.exponentialRampToValueAtTime(.0001,t+d);
       o.start(t); o.stop(t+d+.05); }
     function tickS(){ blipB(1760,.022,.06); }
     function chime(){ if(!bsnd) return; [[659.25,.05],[987.77,.03],[1318.5,.012]].forEach(function(c){ blipB(c[0],c[1],1.8); }); }
-    function humOff(){ if(!bsnd||!humG) return; var t=actx.currentTime; humG.gain.setTargetAtTime(0,t,.22); humO.forEach(function(o){ try{ o.stop(t+1.4); }catch(e){} }); }
+    function humOff(){ if(!bsnd||!humG) return; var t=actx.currentTime; humG.gain.setTargetAtTime(0,t,.22); humO.forEach(function(o){ try{ o.stop(t+1.4); }catch(e){} });
+      humG=null; window.cvAudio.hold(false); }
 
     /* ---- input: click enables sound (first), then click / Enter skips ---- */
     var skipOn=false;
