@@ -1,65 +1,73 @@
 /* ================= Horizon footer (shared by every page) =================
    Layers, back to front: horizon glow → wordmark watermark → dark planet with a gold edge → bottom bar.
-   The horizon lives in its own band below the content, so the glow never sits under a link or the form. */
+   The horizon lives in its own band below the content, so the glow never sits under a link or the form. Inter only. */
 .hz{
-  --hz-bg:#0B1220; --hz-surface:#1A2338; --hz-border:#2A3B5C; --hz-gold:#D4AF37; --hz-teal:#0EA5A8; --hz-muted:#A0A3B8;
-  --hz-head:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --hz-bg:#0B1220; --hz-gold:#D4AF37; --hz-teal:#0EA5A8; --hz-muted:#A0A3B8; --hz-link:#C9CCDA; --hz-head-c:#8B90A5;
   --hz-sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --hz-band:320px;          /* height of the horizon band */
   --hz-apex:190px;          /* where the planet's top edge sits inside the band */
   --hz-planet:max(2200px,140vw);
-  --hz-wm:min(1180px,calc(100vw - 64px));
+  --hz-wm:min(1120px,calc(100vw - 64px));
+  --hz-gutter:max(32px,calc((100% - 1120px) / 2));   /* the navbar's 1120px column */
   position:relative;z-index:6;isolation:isolate;overflow:hidden;background:var(--hz-bg);color:#fff;
   font-family:var(--hz-sans);font-size:15px;line-height:1.5;text-align:left;border-top:1px solid rgba(42,59,92,.6);
   -webkit-font-smoothing:antialiased}
 .hz *,.hz *::before,.hz *::after{box-sizing:border-box}
 /* pages style bare p / ul / li / a / h2; keep all of that out of the footer */
 .hz :where(h2,h3,p,ul,li,form,label){margin:0;padding:0;border:0;font:inherit;color:inherit;letter-spacing:normal;text-transform:none}
-.hz ul{list-style:none;display:block}
-.hz li{position:static;padding:0}
-.hz li::before{content:none;display:none}
-.hz a{color:inherit}
-.hz picture{display:contents}
-.hz :focus-visible{outline:2px solid var(--hz-teal);outline-offset:3px;border-radius:6px}
+.hz :where(ul){list-style:none;display:block}
+.hz :where(li){position:static;padding:0}
+.hz :where(li)::before{content:none;display:none}
+.hz :where(a){color:inherit}
+.hz :where(picture){display:contents}
+.hz :focus-visible{outline:2px solid var(--hz-teal);outline-offset:2px;border-radius:6px}
 
-.hz-in{position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:72px 40px 0}
+.hz-in{position:relative;z-index:2;max-width:1184px;margin:0 auto;padding:80px 32px 0}
 
 /* ---- CTA card (per page: data-footer-cta="on|off") ---- */
-.hz-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-bottom:56px;padding:36px 40px;border-radius:24px;
+.hz-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-bottom:64px;padding:36px 40px;border-radius:24px;
   background:rgba(26,35,56,.6);border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 60px -36px rgba(0,0,0,.7)}
 .hz[data-footer-cta="off"] .hz-cta{display:none}
-.hz .hz-k{font-family:var(--hz-sans);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--hz-muted);margin-bottom:10px}
-.hz .hz-cta-t{font-family:var(--hz-head);font-weight:600;font-size:34px;line-height:1.15;letter-spacing:-.02em;color:#fff;text-wrap:balance}
+.hz .hz-k{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--hz-head-c);margin-bottom:10px}
+.hz .hz-cta-t{font-weight:600;font-size:34px;line-height:1.15;letter-spacing:-.02em;color:#fff;text-wrap:balance}
 .hz-cta-btns{display:flex;gap:12px;flex:none}
 .hz .hz-btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:999px;border:1px solid transparent;
-  font-family:var(--hz-sans);font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;
+  font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;
   transition:transform .2s ease,background-color .15s ease,border-color .15s ease,box-shadow .2s ease}
 .hz .hz-btn.gold{background:var(--hz-gold);color:#0B1220}
 .hz .hz-btn.gold:hover{background:#E0BE4F;transform:translateY(-1px);box-shadow:0 10px 22px -12px rgba(212,175,55,.7)}
 .hz .hz-btn.ghost{color:#fff;border-color:rgba(255,255,255,.18)}
 .hz .hz-btn.ghost:hover{border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.04)}
 
-/* ---- main row: brand + form (cols 1–4), link columns (cols 7–12) ---- */
-.hz-main{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start}
-.hz-brand{grid-column:1/span 4}
+/* ---- main row on a 12-column grid: brand block (cols 1–5), three link columns (cols 7–12) ---- */
+.hz-main{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px;align-items:start}
+.hz-brand{grid-column:1/span 5}
 .hz-nav{grid-column:7/span 6;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.hz .hz-logo{display:inline-flex;align-items:center;gap:12px;min-height:44px;text-decoration:none;border-radius:8px}
-.hz .hz-mark{display:block;height:34px;width:auto}
-.hz .hz-word{display:block;height:14px;width:auto}
-.hz .hz-tag{font-size:15px;line-height:1.6;color:var(--hz-muted);max-width:320px;margin:16px 0 26px}
-.hz .hz-form label{display:block;font-weight:600;font-size:13px;color:#fff;margin-bottom:10px}
-.hz-row{display:flex;gap:8px;max-width:400px}
-.hz .hz-row input{flex:1 1 auto;min-width:0;height:44px;padding:0 14px;border-radius:12px;background:var(--hz-surface);border:1px solid var(--hz-border);
-  color:#fff;font-family:var(--hz-sans);font-size:14.5px;outline:none;transition:border-color .15s}
-.hz .hz-row input::placeholder{color:#7d8299}
-.hz .hz-row input:hover{border-color:#3b5080}
-.hz .hz-row input:focus-visible{outline:2px solid var(--hz-teal);outline-offset:2px;border-color:var(--hz-teal)}
-.hz .hz-row input[aria-invalid="true"]{border-color:#EF4444}
-.hz .hz-sub{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;border:0;cursor:pointer;
-  background:var(--hz-gold);color:#0B1220;font-family:var(--hz-sans);font-weight:600;font-size:14px;white-space:nowrap;
-  transition:transform .2s ease,box-shadow .2s ease,background-color .15s ease}
-.hz .hz-sub:hover:not(:disabled){transform:translateY(-2px);background:#E0BE4F;box-shadow:0 10px 20px -10px rgba(212,175,55,.7)}
+.hz .hz-logo{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;border-radius:8px}
+.hz .hz-mark{display:block;height:28px;width:auto}
+.hz .hz-word{display:block;height:12px;width:auto}
+.hz .hz-tag{font-weight:400;font-size:15px;line-height:1.6;color:var(--hz-muted);max-width:360px;margin-top:14px}
+.hz .hz-social{position:relative;display:grid;place-items:center;width:32px;height:32px;margin-top:16px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);color:var(--hz-muted);transition:color .15s ease,border-color .15s ease,background-color .15s ease}
+.hz .hz-social::before{content:"";position:absolute;inset:-6px}          /* 44px touch target around the 32px button */
+.hz .hz-social svg{display:block;width:15px;height:15px;fill:currentColor}
+.hz .hz-social:hover{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.04)}
+
+/* ---- updates sign-up: one pill holding the email field and the button ---- */
+.hz-form{margin-top:32px;max-width:420px}
+.hz .hz-form label{display:block;font-weight:600;font-size:14px;line-height:1.4;color:#fff;margin-bottom:10px}
+.hz-pill{display:flex;align-items:center;gap:6px;height:48px;padding:0 5px 0 0;border-radius:12px;background:#141C2E;border:1px solid rgba(255,255,255,.08);
+  transition:border-color .15s ease,box-shadow .15s ease}
+.hz-pill:hover{border-color:rgba(255,255,255,.16)}
+.hz-pill:focus-within{border-color:var(--hz-teal);box-shadow:0 0 0 1px var(--hz-teal)}          /* 2px teal ring */
+.hz-pill:has(input[aria-invalid="true"]){border-color:#EF4444;box-shadow:0 0 0 1px #EF4444}
+.hz .hz-pill input{flex:1 1 auto;min-width:0;height:100%;padding:0 14px;border:0;border-radius:12px 0 0 12px;background:transparent;
+  color:#fff;font-family:var(--hz-sans);font-weight:400;font-size:15px;outline:none}
+.hz .hz-pill input::placeholder{color:var(--hz-head-c);opacity:1}
+.hz .hz-sub{position:relative;flex:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;border-radius:8px;border:0;cursor:pointer;
+  background:var(--hz-gold);color:#0B1220;font-family:var(--hz-sans);font-weight:600;font-size:14px;white-space:nowrap;transition:background-color .15s ease}
+.hz .hz-sub:hover:not(:disabled){background:#E0BE4F}
 .hz .hz-sub:disabled{cursor:progress}
 .hz-spin{display:none;width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:hz-spin .7s linear infinite}
 .hz-sub.busy .hz-spin{display:inline-block}
@@ -70,27 +78,26 @@
 .hz .hz-msg:empty{display:none}
 .hz .hz-msg:focus{outline:none}
 .hz .hz-msg.err{color:#FCA5A5}
-.hz .hz-msg.err::before{content:"!";flex:none;width:16px;height:16px;border-radius:50%;background:#EF4444;color:#0B1220;font:700 10.5px/16px var(--hz-sans);text-align:center}
-.hz .hz-msg.ok{align-items:center;gap:12px;min-height:44px;margin-top:0;font-weight:600;font-size:15px;color:#fff}
+.hz .hz-msg.err::before{content:"!";flex:none;width:16px;height:16px;border-radius:50%;background:#EF4444;color:#0B1220;font:600 10.5px/16px var(--hz-sans);text-align:center}
+.hz .hz-msg.ok{align-items:center;gap:12px;min-height:48px;margin-top:0;font-weight:600;font-size:15px;color:#fff}
 .hz-check{flex:none;width:28px;height:28px}
 .hz-check circle{fill:rgba(212,175,55,.12);stroke:var(--hz-gold);stroke-width:1.6}
 .hz-check path{fill:none;stroke:var(--hz-gold);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:18;stroke-dashoffset:18;animation:hz-tick .45s ease .1s forwards}
 @keyframes hz-tick{to{stroke-dashoffset:0}}
-.hz-done .hz-row{display:none}
-.hz .hz-fine{margin-top:14px;font-size:12px;line-height:1.5;color:var(--hz-muted)}
-.hz .hz-fine a{color:#D3D6E2;text-decoration:underline;text-underline-offset:3px;padding:12px 2px;margin:-12px -2px}
-.hz .hz-fine a:hover{color:var(--hz-gold)}
+.hz-done .hz-pill{display:none}
+.hz .hz-fine{margin-top:12px;font-weight:400;font-size:13px;line-height:1.5;color:var(--hz-muted)}
+.hz .hz-fine a{text-decoration:underline;text-underline-offset:3px;padding:12px 2px;margin:-12px -2px;transition:color .15s ease}
+.hz .hz-fine a:hover{color:#fff}
 
-.hz .hz-h{font-family:var(--hz-sans);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--hz-muted);margin-bottom:18px}
-.hz-col ul{display:grid;gap:12px}
-.hz .hz-col a{position:relative;display:inline-flex;align-items:center;font-size:15px;line-height:1.5;color:#fff;text-decoration:none;transition:color .15s ease}
-.hz .hz-col a::after{content:"";position:absolute;left:0;right:0;bottom:calc(50% - .82em);height:1px;background:currentColor;
-  transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
-.hz .hz-col a:hover{color:var(--hz-gold)}
-.hz .hz-col a:hover::after{transform:scaleX(1)}
+/* ---- link columns ---- */
+.hz .hz-h{font-weight:600;font-size:12px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;color:var(--hz-head-c);margin-bottom:16px}
+.hz-col ul{display:grid;gap:14px}
+.hz .hz-col a{display:inline-block;padding:7px 0;margin:-7px 0;font-weight:400;font-size:15px;line-height:1.5;color:var(--hz-link);text-decoration:none;
+  white-space:nowrap;transition:color .15s ease}
+.hz .hz-col a:hover{color:#fff}
 
-/* ---- the horizon ---- */
-.hz-horizon{position:relative;z-index:1;height:var(--hz-band);margin-top:40px;pointer-events:none}
+/* ---- the horizon: its own band, 64px below the main row, behind everything ---- */
+.hz-horizon{position:relative;z-index:1;height:var(--hz-band);margin-top:64px;pointer-events:none}
 .hz-glow{position:absolute;left:50%;top:0;width:max(1800px,110vw);height:calc(var(--hz-apex) * 2);   /* an ellipse centred on the horizon */
   transform:translateX(-50%);
   transition:transform 1.2s cubic-bezier(.2,.8,.2,1),opacity 1.2s cubic-bezier(.2,.8,.2,1)}
@@ -106,44 +113,37 @@
 .hz-lit .hz-glow i{animation:hz-breathe 8s ease-in-out 1.2s infinite}
 @keyframes hz-breathe{0%,100%{opacity:1}50%{opacity:.85}}
 
-/* ---- bottom bar, in front of the planet ---- */
+/* ---- bottom bar, on the planet in front of everything ---- */
 .hz-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:64px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;
-  padding:0 max(40px,calc((100% - 1240px) / 2));font-family:var(--hz-sans);font-size:12px;letter-spacing:.04em;color:var(--hz-muted);
+  padding:0 var(--hz-gutter);font-weight:400;font-size:13px;line-height:1.5;color:var(--hz-muted);
   background:linear-gradient(to top,#070B16 55%,rgba(7,11,22,0))}
 .hz-mid{color:#fff}
 .hz-made{justify-self:end}
 
 /* ================= responsive ================= */
+@media (max-width:1199px){ .hz-nav{column-gap:16px} }               /* room for hello@causvia.com in a third of six columns */
 @media (max-width:1023px){
-  .hz-in{padding:64px 32px 0}
-  .hz-brand,.hz-nav{grid-column:1/-1}
-  .hz-nav{margin-top:40px}
+  .hz-main{grid-template-columns:minmax(0,1fr);row-gap:48px}       /* eleven 32px gaps would not fit a phone */
+  .hz-brand,.hz-nav{grid-column:auto}
   .hz-cta{flex-direction:column;align-items:flex-start;gap:22px}
 }
-@media (max-width:1023px),(pointer:coarse){
-  .hz-col ul{gap:0}
-  .hz .hz-col a{min-height:44px}
-  .hz .hz-h{margin-bottom:6px}
-}
 @media (max-width:639px){
-  .hz{--hz-band:290px;--hz-apex:128px;--hz-planet:1200px;--hz-wm:calc(100vw - 32px)}
-  .hz-in{padding:56px 16px 0}
-  .hz-cta{padding:26px 22px;margin-bottom:44px}
+  .hz{--hz-band:290px;--hz-apex:128px;--hz-planet:1200px;--hz-wm:calc(100vw - 64px)}
+  .hz-cta{padding:26px 22px;margin-bottom:48px}
   .hz .hz-cta-t{font-size:26px}
   .hz-cta-btns{flex-direction:column;width:100%}
   .hz .hz-btn{width:100%}
-  .hz-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 24px}
-  .hz-row{flex-direction:column;max-width:none}
-  .hz .hz-sub{width:100%}
-  .hz-horizon{margin-top:32px}
+  .hz-form{max-width:none}
+  .hz .hz-pill input{font-size:16px}          /* 16px keeps iOS from zooming into the field */
+  .hz-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
   .hz-glow{width:900px}
-  .hz-bar{height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px 16px 22px;text-align:center;
+  .hz-bar{height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px 32px 22px;text-align:center;
     background:linear-gradient(to top,#070B16 70%,rgba(7,11,22,0))}
   .hz-made{justify-self:auto}
 }
 @media (prefers-reduced-motion:reduce){
-  .hz-glow,.hz-wm,.hz .hz-btn,.hz .hz-sub,.hz .hz-col a,.hz .hz-col a::after{transition:none}
+  .hz-glow,.hz-wm,.hz .hz-btn,.hz .hz-sub,.hz-pill,.hz .hz-social,.hz .hz-col a,.hz .hz-fine a{transition:none}
   .hz-lit .hz-glow i,.hz-check path{animation:none}
   .hz-check path{stroke-dashoffset:0}
 }
-@media print{ .hz-horizon,.hz-cta,.hz-form{display:none} .hz{background:#fff;color:#111;border:0} }
+@media print{ .hz-horizon,.hz-cta,.hz-form,.hz-social{display:none} .hz{background:#fff;color:#111;border:0} }
