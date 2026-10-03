@@ -48,8 +48,35 @@ function horizonFooter() {
   }
 }
 
+// One shared navbar: every page carries <!-- site-nav page="home|about|auth|…" spacer="on|off" --> and gets
+// src/nav/nav.html (plus its script) in its place. The link for the current page is marked aria-current="page";
+// spacer="on" reserves the bar's height for pages whose content starts at the top.
+const NAV = page('src/nav/nav.html')
+const NAV_MARK = /<!--\s*site-nav(?:\s+page="([\w-]+)")?(?:\s+spacer="(on|off)")?\s*-->/
+function siteNav() {
+  return {
+    name: 'site-nav',
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        const m = html.match(NAV_MARK)
+        if (!m) return html
+        const [, current = '', spacer = 'off'] = m
+        let part = readFileSync(NAV, 'utf8').trim()
+        if (current) part = part.replaceAll(`data-nav="${current}"`, `data-nav="${current}" aria-current="page"`)
+        if (spacer === 'on') part += '\n<div class="sn-space" aria-hidden="true"></div>'
+        return html.replace(NAV_MARK, () => part + '\n<script type="module" src="/src/nav/nav.js"></script>')
+      },
+    },
+    configureServer(server) {
+      server.watcher.add(NAV)
+      server.watcher.on('change', (f) => { if (resolve(f) === NAV) server.ws.send({ type: 'full-reload' }) })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [cleanUrls(), horizonFooter()],
+  plugins: [cleanUrls(), siteNav(), horizonFooter()],
   server: { port: Number(process.env.PORT) || 5173 },
   build: {
     rollupOptions: {

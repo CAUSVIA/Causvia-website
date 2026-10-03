@@ -1,9 +1,8 @@
 :root{
   --bg:#0B1220; --surface:#1A2338; --border:#2A3B5C; --ink:#FFFFFF; --muted:#A0A3B8;
   --gold:#D4AF37; --teal:#0EA5A8; --error:#EF4444; --success:#22C55E;
-  --head:"Sora",ui-sans-serif,system-ui,sans-serif;
-  --sans:"Inter",ui-sans-serif,system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --head:"Sora",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1); --liquid:cubic-bezier(.34,1.4,.64,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -40,14 +39,12 @@ a{color:inherit}
 .sp-grain{position:absolute;inset:0;opacity:.035;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:160px}
 
-.pilot-back{position:absolute;top:26px;left:28px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:lowercase;color:var(--muted);text-decoration:none;padding:6px 2px}
-.pilot-back:hover{color:#fff}
 .pilot-in{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 32px;width:100%;max-width:560px}
 .pilot-mark img{display:block;width:88px;height:auto;filter:brightness(.7) saturate(.75);transition:filter 1.2s var(--ease),transform 1.2s var(--liquid)}
 .you .pilot-mark img{filter:brightness(1.15) saturate(1.1) drop-shadow(0 0 20px rgba(212,175,55,.6)) drop-shadow(0 0 46px rgba(245,158,11,.28));transform:scale(1.05)}
 .pilot h1{font-family:var(--head);font-weight:600;font-size:clamp(2rem,3.3vw,3rem);letter-spacing:-.03em;line-height:1.05;margin:22px 0 32px;text-wrap:balance}
 .pilot-sub{font-size:1.02rem;line-height:1.55;color:var(--muted);max-width:32ch;margin-top:30px;text-wrap:balance}
-.pilot-cap{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:rgba(160,163,184,.72)}
+.pilot-cap{position:absolute;left:0;right:0;bottom:26px;text-align:center;font-family:var(--sans);font-size:11px;letter-spacing:.12em;color:rgba(160,163,184,.72)}
 
 /* ---- the autopilot switch: a machined plate, recessed track, glass knob ---- */
 .ap-plate{position:relative;width:min(400px,86%);padding:18px 24px 16px;border-radius:24px;
@@ -63,7 +60,7 @@ a{color:inherit}
   background:radial-gradient(circle at 35% 30%,#7a8296,#262d3f 72%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.06)}
 .screw::after{content:"";position:absolute;left:1.5px;right:1.5px;top:4px;height:1px;background:rgba(0,0,0,.65);transform:rotate(var(--r,35deg))}
 .s1{left:12px;top:12px}.s2{right:12px;top:12px;--r:-20deg}.s3{left:12px;bottom:12px;--r:80deg}.s4{right:12px;bottom:12px;--r:10deg}
-.ap-name{display:block;font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#C9CCD8;margin-bottom:14px;
+.ap-name{display:block;font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#C9CCD8;margin-bottom:14px;
   text-shadow:0 1px 0 rgba(0,0,0,.6)}
 .ap{position:relative;display:block;border-radius:999px;cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 .ap:active{cursor:grabbing}
@@ -72,8 +69,8 @@ a{color:inherit}
   background:linear-gradient(180deg,#04070d,#0b111d);
   box-shadow:inset 0 4px 12px rgba(0,0,0,.8),inset 0 0 0 1px rgba(42,59,92,.95),0 1px 0 rgba(255,255,255,.07)}
 .ap-opt{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none;
-  font-family:var(--mono);font-weight:700;font-size:16px;letter-spacing:.2em;color:#5b6276;text-shadow:0 1px 0 rgba(255,255,255,.04);transition:color .45s ease}
-.ap-opt b{font-weight:700;padding-left:.2em}
+  font-family:var(--sans);font-weight:600;font-size:16px;letter-spacing:.12em;color:#5b6276;text-shadow:0 1px 0 rgba(255,255,255,.04);transition:color .45s ease}
+.ap-opt b{font-weight:600;padding-left:.2em}
 .ap-opt.ai{color:#0B1220}
 .you .ap-opt.ai{color:#5b6276}.you .ap-opt.you{color:#0B1220}
 .ap-knob{position:absolute;z-index:1;left:6px;top:6px;bottom:6px;width:calc(50% - 6px);border-radius:999px;will-change:transform}
@@ -87,7 +84,7 @@ a{color:inherit}
 .you .ap-knob .grip{right:auto;left:16px}
 .ap-knob .grip i{width:2px;height:22px;border-radius:2px;background:rgba(11,18,32,.28);box-shadow:1px 0 0 rgba(255,255,255,.25)}
 .ap-knob .sheen{position:absolute;z-index:1;left:8%;right:8%;top:3px;height:40%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0))}
-.ap-ticks{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#5b6276}
+.ap-ticks{display:grid;grid-template-columns:1fr 1fr;margin-top:12px;font-family:var(--sans);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#5b6276}
 .ap-ticks span{display:flex;align-items:center;justify-content:center;gap:8px;transition:color .45s}
 .ap-ticks span::before{content:"";width:6px;height:6px;border-radius:50%;background:#262e42;box-shadow:inset 0 0 0 1px rgba(0,0,0,.5);transition:background .45s,box-shadow .45s}
 .ap-ticks span:first-child{color:#86d6d8}
@@ -98,7 +95,7 @@ a{color:inherit}
 .you .ap-ticks span:last-child::before{background:var(--gold);box-shadow:0 0 9px rgba(212,175,55,.95)}
 
 /* ================= Auth card ================= */
-.side{position:relative;display:flex;align-items:center;justify-content:center;padding:48px 40px;min-height:100vh;min-height:100dvh;
+.side{position:relative;display:flex;align-items:center;justify-content:center;padding:112px 40px 48px;min-height:100vh;min-height:100dvh;
   background:radial-gradient(70% 55% at 75% 18%,rgba(26,35,56,.7),rgba(26,35,56,0) 70%),radial-gradient(60% 50% at 20% 100%,rgba(14,165,168,.05),rgba(14,165,168,0) 70%),var(--bg);
   border-left:1px solid rgba(42,59,92,.55)}
 .card{position:relative;width:100%;max-width:420px;padding:30px 32px 22px;border-radius:24px;
@@ -130,7 +127,7 @@ a{color:inherit}
 .card .sub{font-size:14px;line-height:1.55;color:var(--muted);margin-bottom:22px;text-wrap:pretty}
 
 .field{margin-bottom:16px}
-.field>label{display:block;font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#C3C6D4;margin-bottom:8px}
+.field>label{display:block;font-family:var(--sans);font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#C3C6D4;margin-bottom:8px}
 .field input[type=email],.field input[type=text],.field input[type=password],.field select{
   width:100%;height:48px;padding:0 14px;border-radius:12px;border:1px solid var(--border);background:rgba(5,8,15,.48);
   color:#fff;font-family:var(--sans);font-size:15px;transition:border-color .15s,background-color .15s}
@@ -139,7 +136,7 @@ a{color:inherit}
 .field input:focus-visible,.field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal);background:rgba(5,8,15,.62)}
 .field [aria-invalid="true"]{border-color:var(--error)}
 .err{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:12.5px;line-height:1.4;color:#FCA5A5}
-.err::before{content:"!";flex:none;width:16px;height:16px;border-radius:50%;background:var(--error);color:#0B1220;font:700 10.5px/16px var(--sans);text-align:center}
+.err::before{content:"!";flex:none;width:16px;height:16px;border-radius:50%;background:var(--error);color:#0B1220;font:600 10.5px/16px var(--sans);text-align:center}
 .pw{position:relative}
 .pw input{padding-right:50px}
 .pw-tog{position:absolute;right:6px;top:6px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:9px;background:none;cursor:pointer;color:var(--muted)}
@@ -169,12 +166,12 @@ a{color:inherit}
 .loading .pico{display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.or{display:flex;align-items:center;gap:14px;margin:22px 0 16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:#6f7693}
+.or{display:flex;align-items:center;gap:14px;margin:22px 0 16px;font-family:var(--sans);font-size:10.5px;letter-spacing:.12em;color:#6f7693}
 .or::before,.or::after{content:"";flex:1;height:1px;background:var(--border)}
 .alt{margin-top:16px;text-align:center}
 
 .note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;margin:0 0 18px;border:1px solid;font-size:13.5px;line-height:1.5}
-.note::before{flex:none;width:18px;height:18px;border-radius:50%;text-align:center;font:700 11px/18px var(--sans);color:#0B1220}
+.note::before{flex:none;width:18px;height:18px;border-radius:50%;text-align:center;font:600 11px/18px var(--sans);color:#0B1220}
 .note.info{background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.38);color:#F4E6B8}
 .note.info::before{content:"i";background:var(--gold)}
 .note.ok{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.38);color:#C9F5D8}
@@ -211,15 +208,14 @@ form .note{margin:4px 0 14px}
 @keyframes draw{to{stroke-dashoffset:0}}
 
 .card-foot{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:24px;padding-top:18px;border-top:1px solid rgba(42,59,92,.6);
-  font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  font-family:var(--sans);font-weight:500;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .card-foot i{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px rgba(14,165,168,.85)}
 
 /* ================= responsive ================= */
 @media (max-width:899px){
   .auth{grid-template-columns:1fr}
-  .pilot{position:relative;height:220px;min-height:0}
+  .pilot{position:relative;height:290px;min-height:0;padding-top:70px}
   .pilot-mark,.pilot-sub{display:none}
-  .pilot-back{top:12px;left:14px}
   .pilot h1{font-size:22px;margin:4px 0 12px}
   .ap-plate{width:min(300px,80%);padding:10px 16px 10px;border-radius:18px}
   .screw{width:6px;height:6px}.screw::after{top:2.5px;left:1px;right:1px}

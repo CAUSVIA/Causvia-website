@@ -3,7 +3,7 @@
    ring colour alternates gold / teal. Rings and nodes are drawn by rings.js; only transform, opacity and stroke animate. */
 .sec-moat{padding:120px 0}
 .mt-wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 32px;box-sizing:content-box}
-.mt-kicker{font-family:var(--mono);font-weight:500;letter-spacing:.18em}
+.mt-kicker{font-family:var(--sans);font-weight:500;letter-spacing:.12em}
 .mt-head-block .title{max-width:20ch}
 .mt-head-block .lede{max-width:56ch}
 .mt{display:grid;grid-template-columns:minmax(0,720fr) minmax(0,470fr);gap:48px;align-items:center}
@@ -62,7 +62,7 @@
 .mt-node[data-tone="gold"]{--c:#D4AF37;--g:rgba(212,175,55,.6)}
 .mt-node[data-tone="teal"]{--c:#0EA5A8;--g:rgba(14,165,168,.6)}
 .mt-node span{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
-  font-family:var(--mono);font-weight:500;font-size:13px;color:#fff;
+  font-family:var(--sans);font-weight:500;font-size:13px;color:#fff;
   background:radial-gradient(120% 120% at 30% 20%,rgba(255,255,255,.12),rgba(255,255,255,0) 55%),rgba(18,26,44,.92);
   border:1px solid color-mix(in srgb,var(--c) 60%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 16px -6px rgba(0,0,0,.7);
   transition:transform .45s cubic-bezier(.34,1.56,.64,1),opacity .35s ease}
@@ -88,7 +88,7 @@
 .mt-js:not(.mt-ready) .mt-label{opacity:0}
 
 /* legend + note under the visual */
-.mt-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:20px;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.mt-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:20px;font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--muted)}
 .mt-legend span{display:inline-flex;align-items:center;gap:8px}
 .mt-sw{display:inline-block;width:24px;height:0;border-top:1.5px solid #C9CCD8}
 .mt-sw-dash{border-top:1.5px dashed #C9CCD8}
@@ -107,7 +107,7 @@
 .mt-row.active{transform:scale(1.025)}
 .mt-row>*{position:relative}
 .mt-row:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-.mt-n{font-family:var(--mono);font-weight:500;font-size:13px;line-height:1.7;color:#8C93AB;transition:color .3s ease}
+.mt-n{font-family:var(--sans);font-weight:500;font-size:13px;line-height:1.7;color:#8C93AB;transition:color .3s ease}
 .mt-row.lit .mt-n{color:var(--c)}
 .mt-head{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
 .mt-t{margin:0;font-family:var(--head);font-weight:600;font-size:17px;line-height:1.35;color:#E4E6EE;transition:color .3s ease}
@@ -117,7 +117,7 @@
 .mt-link:hover{text-decoration:underline;text-underline-offset:3px}
 
 .mt-chip{display:inline-flex;align-items:center;gap:7px;padding:2px 9px;border-radius:999px;border:1px solid;white-space:nowrap;
-  font-family:var(--mono);font-weight:500;font-size:10.5px;line-height:1.6;letter-spacing:.08em}
+  font-family:var(--sans);font-weight:500;font-size:10.5px;line-height:1.6;letter-spacing:.08em}
 .mt-chip i{flex:none;width:7px;height:7px;border-radius:50%}
 .st-promise{color:#86EFAC;border-color:rgba(34,197,94,.42);background:rgba(34,197,94,.08)}
 .st-promise i{background:#22C55E}

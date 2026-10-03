@@ -10,12 +10,13 @@
 <link rel="apple-touch-icon" href="/causvia-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/src/auth/auth.css">
 <!-- capture the auth redirect (recovery / invite / errors) before the Supabase client consumes and clears it -->
 <script>window.__authUrl={hash:location.hash,search:location.search};</script>
 </head>
 <body>
+<!-- site-nav page="auth" spacer="off" -->
 <div class="auth" id="auth">
 
   <!-- ===== Take the controls ===== -->
@@ -27,7 +28,6 @@
       <span class="sp-sweep" id="spSweep"></span>
       <span class="sp-grain"></span>
     </div>
-    <a class="pilot-back" href="/"><span aria-hidden="true">←</span> causvia.com</a>
 
     <div class="pilot-in">
       <div class="pilot-mark" aria-hidden="true"><picture><source srcset="/causvia-mark.webp" type="image/webp"><img src="/causvia-mark.png" alt="" width="400" height="293"></picture></div>
